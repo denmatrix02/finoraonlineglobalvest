@@ -26,4 +26,7 @@ dist-ssr
 # Supabase Edge Function secrets (never commit API keys)
 supabase/functions/.env
 supabase/.env
+.env
 .env.local
+.env.*.local
+!.env.example

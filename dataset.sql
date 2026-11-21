@@ -350,5 +350,18 @@ CREATE POLICY "allow_all_anon" ON public.transaction_otps     FOR ALL USING (tru
 CREATE POLICY "allow_all_anon" ON public.otp_audit_logs       FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "allow_all_anon" ON public.external_transfers   FOR ALL USING (true) WITH CHECK (true);
 
+-- ============================================================
+--  PERMISSIONS & GRANTS (Required for PostgREST & Supabase API)
+-- ============================================================
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated, service_role;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON ROUTINES TO anon, authenticated, service_role;
+
+
 
 

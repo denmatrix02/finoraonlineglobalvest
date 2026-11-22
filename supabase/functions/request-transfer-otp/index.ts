@@ -154,7 +154,7 @@ async function sendEmailViaResend({
   html: string;
 }): Promise<{ success: boolean; error?: string }> {
   const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-  const SENDER_EMAIL = Deno.env.get("SENDER_EMAIL") ?? "support@FINORAreserve.online";
+  const SENDER_EMAIL = Deno.env.get("SENDER_EMAIL") ?? "onboarding@resend.dev";
   const SENDER_NAME = Deno.env.get("SENDER_NAME") ?? "Finora";
 
   if (!RESEND_API_KEY) {
@@ -171,6 +171,7 @@ async function sendEmailViaResend({
     body: JSON.stringify({
       from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
       to: [to],
+      reply_to: "finoraonlineglobalvest@gmail.com",
       subject,
       html,
     }),

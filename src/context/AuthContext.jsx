@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase, IS_MOCK_ENV } from '../lib/supabase';
+import { supabase, IS_MOCK_ENV, SUPABASE_URL } from '../lib/supabase';
 import { dispatchRollback } from '../lib/rollback';
 import { getExternalBankDetails } from '../utils/externalBankUtils';
 
@@ -163,7 +163,7 @@ export function AuthProvider({ children }) {
 
     console.group('%c[FINORA] signup()', 'color:#CAFF33;font-weight:bold');
     console.log('📧 email:', email);
-    console.log('🌍 Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+    console.log('🌍 Supabase URL:', SUPABASE_URL);
 
     const { data: authData, error: authErr } = await supabase.auth.signUp({
       email,

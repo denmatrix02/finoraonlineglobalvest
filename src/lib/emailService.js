@@ -3,10 +3,9 @@
  * Routes OTP and receipt emails through Supabase Edge Functions,
  * which use Resend API for reliable delivery.
  */
-import { supabase, IS_MOCK_ENV } from './supabase';
+import { supabase, IS_MOCK_ENV, SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
 
 // ─── Resolve the edge function base URL from env ──────────────────────────────
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? '';
 const FUNCTIONS_BASE = `${SUPABASE_URL}/functions/v1`;
 
 /**
@@ -25,7 +24,7 @@ async function callEdgeFunction(functionName, payload) {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`,
-      'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY ?? '',
+      'apikey': SUPABASE_ANON_KEY,
     },
     body: JSON.stringify(payload),
   });

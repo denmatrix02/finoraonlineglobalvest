@@ -37,7 +37,7 @@ export default function AdminSidebar() {
             <span className="text-base font-semibold text-white tracking-tight flex items-center gap-1.5">
               Finora Admin
             </span>
-            <span className="text-[10px] text-[#6EE7B7] font-mono tracking-widest uppercase">
+            <span className="text-[10px] text-[#CAFF33] font-mono tracking-widest uppercase">
               Control Panel
             </span>
           </div>

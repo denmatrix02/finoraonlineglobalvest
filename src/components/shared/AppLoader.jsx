@@ -15,7 +15,7 @@ export default function AppLoader({ message = 'Loading your account…' }) {
           width: '72px', height: '72px', borderRadius: '20px',
           background: 'linear-gradient(135deg, #1a1a1a, #222)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 0 0 1px rgba(201,168,76,0.2), 0 0 40px rgba(201,168,76,0.15)',
+          boxShadow: '0 0 0 1px rgba(202,255,51,0.2), 0 0 40px rgba(202,255,51,0.15)',
           animation: 'pulse 2s ease-in-out infinite',
           padding: '10px',
         }}>
@@ -33,7 +33,7 @@ export default function AppLoader({ message = 'Loading your account…' }) {
           }}>FINORA</p>
           <p style={{
             fontFamily: "'Inter', sans-serif", fontWeight: 400,
-            fontSize: '11px', color: '#6EE7B7', letterSpacing: '0.2em',
+            fontSize: '11px', color: '#CAFF33', letterSpacing: '0.2em',
             textTransform: 'uppercase', margin: '2px 0 0',
           }}>Digital Banking</p>
         </div>
@@ -43,12 +43,12 @@ export default function AppLoader({ message = 'Loading your account…' }) {
       <div style={{ position: 'relative', width: '48px', height: '48px' }}>
         <div style={{
           position: 'absolute', inset: 0, borderRadius: '50%',
-          border: '3px solid rgba(201,168,76,0.15)',
+          border: '3px solid rgba(202,255,51,0.15)',
         }} />
         <div style={{
           position: 'absolute', inset: 0, borderRadius: '50%',
           border: '3px solid transparent',
-          borderTopColor: '#C9A84C',
+          borderTopColor: '#CAFF33',
           animation: 'spin 0.9s linear infinite',
         }} />
       </div>
@@ -65,8 +65,8 @@ export default function AppLoader({ message = 'Loading your account…' }) {
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes pulse {
-          0%, 100% { box-shadow: 0 0 0 1px rgba(201,168,76,0.2), 0 0 40px rgba(201,168,76,0.15); }
-          50% { box-shadow: 0 0 0 1px rgba(201,168,76,0.35), 0 0 60px rgba(201,168,76,0.3); }
+          0%, 100% { box-shadow: 0 0 0 1px rgba(202,255,51,0.2), 0 0 40px rgba(202,255,51,0.15); }
+          50% { box-shadow: 0 0 0 1px rgba(202,255,51,0.35), 0 0 60px rgba(202,255,51,0.3); }
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>

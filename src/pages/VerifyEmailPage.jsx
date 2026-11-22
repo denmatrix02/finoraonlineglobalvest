@@ -73,8 +73,8 @@ export default function VerifyEmailPage() {
 
       {/* Card */}
       <div className="w-full max-w-md">
-        {/* Gold top accent */}
-        <div style={{ height: '3px', background: 'linear-gradient(90deg, #C9A84C, #E8C96D, #C9A84C)', borderRadius: '3px 3px 0 0' }} />
+        {/* Top accent */}
+        <div style={{ height: '3px', background: 'linear-gradient(90deg, #CAFF33, #b8e820, #CAFF33)', borderRadius: '3px 3px 0 0' }} />
 
         <div className="bg-[#141414] border border-[#1E1E1E] border-t-0 rounded-b-3xl px-8 py-10 text-center space-y-7">
 
@@ -83,10 +83,10 @@ export default function VerifyEmailPage() {
             <div style={{
               width: '52px', height: '52px', borderRadius: '14px',
               background: 'linear-gradient(135deg, #1a1a1a, #222)',
-              border: '1px solid rgba(201,168,76,0.2)',
+              border: '1px solid rgba(202,255,51,0.2)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               padding: '8px',
-              boxShadow: '0 0 24px rgba(201,168,76,0.1)',
+              boxShadow: '0 0 24px rgba(202,255,51,0.1)',
             }}>
               <img src={logo} alt="Finora" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
@@ -98,16 +98,16 @@ export default function VerifyEmailPage() {
               {/* Outer pulse ring */}
               <div style={{
                 position: 'absolute', inset: '-12px', borderRadius: '50%',
-                background: 'rgba(201,168,76,0.06)',
+                background: 'rgba(202,255,51,0.06)',
                 animation: 'ping 2s ease-in-out infinite',
               }} />
               <div style={{
                 width: '80px', height: '80px', borderRadius: '50%',
-                background: 'rgba(201,168,76,0.08)',
-                border: '1px solid rgba(201,168,76,0.18)',
+                background: 'rgba(202,255,51,0.08)',
+                border: '1px solid rgba(202,255,51,0.18)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <Mail size={34} color="#C9A84C" strokeWidth={1.5} />
+                <Mail size={34} color="#CAFF33" strokeWidth={1.5} />
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@ export default function VerifyEmailPage() {
             <p className="text-[13px] text-[#666] font-['Inter'] leading-relaxed">
               We've sent a confirmation link to
             </p>
-            <p className="text-[14px] font-semibold text-[#C9A84C] font-mono mt-1">
+            <p className="text-[14px] font-semibold text-[#CAFF33] font-mono mt-1">
               {maskEmail(stateEmail) || 'your email address'}
             </p>
           </div>
@@ -135,12 +135,12 @@ export default function VerifyEmailPage() {
               <div key={n} className="flex items-center gap-3">
                 <div style={{
                   width: '24px', height: '24px', borderRadius: '50%',
-                  background: 'rgba(201,168,76,0.1)',
-                  border: '1px solid rgba(201,168,76,0.2)',
+                  background: 'rgba(202,255,51,0.1)',
+                  border: '1px solid rgba(202,255,51,0.2)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   flexShrink: 0,
                 }}>
-                  <span className="text-[11px] font-bold text-[#C9A84C] font-mono">{n}</span>
+                  <span className="text-[11px] font-bold text-[#CAFF33] font-mono">{n}</span>
                 </div>
                 <p className="text-[12px] text-[#888] font-['Inter']">{text}</p>
               </div>
@@ -165,8 +165,8 @@ export default function VerifyEmailPage() {
           <button
             onClick={handleResend}
             disabled={resendCooldown > 0 || resendLoading || !stateEmail}
-            className="w-full py-3.5 rounded-full border border-[#2A2A2A] text-[13px] font-semibold font-['Inter'] transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ color: resendCooldown > 0 ? '#555' : '#C9A84C' }}
+            className="w-full py-3.5 rounded-full border border-[#2A2A2A] text-[13px] font-semibold font-['Inter'] transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#CAFF33]/50"
+            style={{ color: resendCooldown > 0 ? '#555' : '#CAFF33' }}
           >
             {resendLoading
               ? <><Loader2 size={14} className="animate-spin" /> Sending…</>

@@ -6,8 +6,8 @@
    FINORA DESIGN TOKENS
    ═══════════════════════════════════════════ */
 @theme {
-  --color-primary:       #6EE7B7;
-  --color-primary-hover: #5AD4A0;
+  --color-primary:       #CAFF33;
+  --color-primary-hover: #b8e820;
   --color-bg:            #0D0F14;
   --color-surface:       #141821;
   --color-surface-2:     #1C2130;
@@ -21,7 +21,7 @@
   --font-body:           'Inter', sans-serif;
   --font-mono:           'JetBrains Mono', monospace;
   --color-danger:        #F87171;
-  --color-success:       #6EE7B7;
+  --color-success:       #CAFF33;
 }
 
 

@@ -48,7 +48,7 @@ export default function Navbar() {
           </Link>
           <Link
             to="/login"
-            className="bg-[#6EE7B7] hover:bg-[#5AD4A0] text-[#0D0F14] text-[14px] font-semibold px-5 py-2 rounded-full transition-colors"
+            className="bg-[#CAFF33] hover:bg-[#b8e820] text-[#111111] text-[14px] font-semibold px-5 py-2 rounded-full transition-colors"
           >
             Login
           </Link>
@@ -105,7 +105,7 @@ export default function Navbar() {
             </Link>
             <Link
               to="/login"
-              className="bg-[#6EE7B7] text-[#0D0F14] text-[13px] font-semibold px-5 py-2 rounded-full"
+              className="bg-[#CAFF33] text-[#111111] text-[13px] font-semibold px-5 py-2 rounded-full"
               onClick={() => setIsOpen(false)}
             >
               Login

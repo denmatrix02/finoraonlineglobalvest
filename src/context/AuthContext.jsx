@@ -169,6 +169,7 @@ export function AuthProvider({ children }) {
       email,
       password,
       options: {
+        emailRedirectTo: `${window.location.origin}/verify-email`,
         data: { name, phone, role, accountNo, joined },
       },
     });

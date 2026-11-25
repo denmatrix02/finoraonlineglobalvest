@@ -14,6 +14,7 @@ export default function VerifyEmailPage() {
   // Pick up email/name from navigation state (set by SignUpPage)
   const stateEmail = location.state?.email || '';
   const stateName = location.state?.name || '';
+  const [inputEmail, setInputEmail] = useState(stateEmail || '');
 
   // Supabase automatically sends the first confirmation email on signUp,
   // so start the cooldown immediately to prevent duplicate sends on mount.
@@ -21,6 +22,18 @@ export default function VerifyEmailPage() {
   const [resendLoading, setResendLoading] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
   const [resendError, setResendError] = useState('');
+
+  // Check URL hash for error feedback (e.g. expired or invalid confirmation tokens)
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.includes('error=')) {
+      const params = new URLSearchParams(hash.replace('#', '?'));
+      const desc = params.get('error_description');
+      if (desc) {
+        setResendError(desc.replace(/\+/g, ' '));
+      }
+    }
+  }, []);
 
   // If user somehow lands here already verified, push to dashboard
   useEffect(() => {
@@ -35,12 +48,13 @@ export default function VerifyEmailPage() {
   }, [resendCooldown]);
 
   const handleResend = async () => {
-    if (!stateEmail || resendCooldown > 0 || resendLoading) return;
+    const targetEmail = stateEmail || inputEmail;
+    if (!targetEmail || resendCooldown > 0 || resendLoading) return;
     setResendError('');
     setResendSuccess(false);
     setResendLoading(true);
     try {
-      await resendVerificationEmail(stateEmail);
+      await resendVerificationEmail(targetEmail);
       setResendSuccess(true);
       setResendCooldown(RESEND_COOLDOWN);
     } catch (err) {
@@ -161,10 +175,23 @@ export default function VerifyEmailPage() {
             </div>
           )}
 
+          {!stateEmail && (
+            <div className="text-left space-y-1.5">
+              <label className="text-[12px] text-[#888] font-['Inter']">Email address</label>
+              <input
+                type="email"
+                value={inputEmail}
+                onChange={(e) => setInputEmail(e.target.value)}
+                placeholder="name@example.com"
+                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-xl px-4 py-3 text-[13px] text-white outline-none transition-colors font-mono"
+              />
+            </div>
+          )}
+
           {/* Resend button */}
           <button
             onClick={handleResend}
-            disabled={resendCooldown > 0 || resendLoading || !stateEmail}
+            disabled={resendCooldown > 0 || resendLoading || (!stateEmail && !inputEmail)}
             className="w-full py-3.5 rounded-full border border-[#2A2A2A] text-[13px] font-semibold font-['Inter'] transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed hover:border-[#CAFF33]/50"
             style={{ color: resendCooldown > 0 ? '#555' : '#CAFF33' }}
           >

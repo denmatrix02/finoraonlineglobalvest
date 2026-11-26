@@ -173,29 +173,51 @@ export function BankingProvider({ children }) {
   // ─── Supabase Account Sync Helper ─────────────────────────────────────────
   const syncAccount = async (userId, updatedBalances) => {
     if (IS_MOCK_ENV || !userId) return;
+    const { checking = 0, savings = 0, loan = 0 } = updatedBalances || {};
     const { error } = await supabase
       .from('accounts')
-      .upsert({ user_id: userId, ...updatedBalances, updated_at: new Date().toISOString() });
-    if (error) console.error('[syncAccount] Failed to sync account for', userId, error);
+      .upsert({
+        user_id: userId,
+        checking: parseFloat(checking || 0),
+        savings: parseFloat(savings || 0),
+        loan: parseFloat(loan || 0),
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id' });
+    if (error) {
+      console.error('[syncAccount] Failed to sync account for', userId, error);
+      throw error;
+    }
   };
 
   // Insert notifications into Supabase
   const insertNotifications = async (notifArray) => {
     if (IS_MOCK_ENV || !notifArray?.length) return;
-    const rows = notifArray.map(n => ({
-      id: n.id,
-      user_id: n.userId,
-      type: n.type,
-      title: n.title,
-      message: n.message,
-      timestamp: n.timestamp,
-      read: n.read || false,
-      request_id: n.requestId || null,
-    }));
-    const { error } = await supabase.from('notifications').insert(rows);
+    const rows = notifArray.map(n => {
+      const row = {
+        id: n.id,
+        user_id: n.userId,
+        type: n.type,
+        title: n.title,
+        message: n.message,
+        timestamp: n.timestamp,
+        read: n.read || false,
+      };
+      if (n.requestId) {
+        row.request_id = n.requestId;
+      }
+      return row;
+    });
+
+    let { error } = await supabase.from('notifications').insert(rows);
+    if (error && error.message?.includes('request_id')) {
+      const fallbackRows = rows.map(({ request_id, ...rest }) => rest);
+      const res = await supabase.from('notifications').insert(fallbackRows);
+      error = res.error;
+    }
+
     if (error) {
-      console.error('[insertNotifications] Failed to insert notifications', error);
-      throw error;
+      console.warn('[insertNotifications] Non-fatal notification insert warning:', error);
+      // Non-fatal: do not block or rollback financial transaction if notification fails
     }
   };
 
@@ -365,9 +387,10 @@ export function BankingProvider({ children }) {
       message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} has been added to your checking account.`,
       timestamp, read: false,
     };
+    const adminSenderId = users.find((u) => u.id === currentUser?.id)?.id || 'usr_admin';
     const mintTx = {
       id: txId, timestamp, type: 'deposit', category: 'Admin Credit',
-      senderId: currentUser?.id || 'usr_admin', senderName: 'Finora Central (Admin)',
+      senderId: adminSenderId, senderName: 'Finora Central (Admin)',
       senderAccount: 'ADM-0019283',
       recipientId: targetUserId, recipientName: targetUser.name, recipientAccount: targetUser.accountNo,
       amount: parsedAmount, status: 'Completed', note: note || 'Admin credit',

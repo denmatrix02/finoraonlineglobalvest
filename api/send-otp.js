@@ -23,7 +23,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing required parameters (email, otpCode).' });
     }
 
-    const RESEND_API_KEY = process.env.RESEND_API_KEY || Buffer.from('cmVfSlBKWGNUc1ZfRHlMdllVVW9iejQ1eXE3NTlTOWMzWlpt', 'base64').toString('utf8');
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    if (!RESEND_API_KEY) {
+      console.error('[send-otp api] RESEND_API_KEY environment variable is not set.');
+      return res.status(500).json({ error: 'Email service not configured. Contact support.' });
+    }
     const formattedAmount = amount ? `$${parseFloat(amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : 'transfer';
     const targetRecipient = recipientName || 'Recipient';
 

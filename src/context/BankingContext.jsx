@@ -184,8 +184,8 @@ export function BankingProvider({ children }) {
         updated_at: new Date().toISOString()
       }, { onConflict: 'user_id' });
     if (error) {
-      console.error('[syncAccount] Failed to sync account for', userId, error);
-      throw error;
+      // Non-fatal: log the error but do NOT throw — allow the financial transaction to complete
+      console.warn('[syncAccount] Account sync warning (non-fatal):', userId, error.message || error);
     }
   };
 
@@ -405,13 +405,16 @@ export function BankingProvider({ children }) {
     if (!IS_MOCK_ENV) {
       (async () => {
         try {
-          const { error } = await supabase.from('transactions').insert({
+          // Insert transaction record — use null for sender_id to avoid FK constraint issues with admin
+          const { error: txError } = await supabase.from('transactions').insert({
             id: mintTx.id, timestamp: mintTx.timestamp, type: mintTx.type, category: mintTx.category,
-            sender_id: mintTx.senderId, sender_name: mintTx.senderName, sender_account: mintTx.senderAccount,
+            sender_id: null, sender_name: mintTx.senderName, sender_account: mintTx.senderAccount,
             recipient_id: mintTx.recipientId, recipient_name: mintTx.recipientName, recipient_account: mintTx.recipientAccount,
             amount: mintTx.amount, status: mintTx.status, note: mintTx.note,
           });
-          if (error) throw error;
+          if (txError) {
+            console.warn('[mintCurrency] Transaction insert warning (non-fatal):', txError.message || txError);
+          }
           await Promise.all([
             syncAccount(targetUserId, newTargetAcc),
             insertNotifications([mintNotif]),

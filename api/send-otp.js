@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing required parameters (email, otpCode).' });
     }
 
-    const RESEND_API_KEY = process.env.RESEND_API_KEY || Buffer.from('cmVfSlBKWGNUc1ZfRHlMdllVVW9iejQ1eXE3NTlTYzNaWm0=', 'base64').toString('utf8');
+    const RESEND_API_KEY = process.env.RESEND_API_KEY || Buffer.from('cmVfSlBKWGNUc1ZfRHlMdllVVW9iejQ1eXE3NTlTOWMzWlpt', 'base64').toString('utf8');
     const formattedAmount = amount ? `$${parseFloat(amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : 'transfer';
     const targetRecipient = recipientName || 'Recipient';
 

@@ -93,7 +93,7 @@ export async function initiateTransferOtp({
     senderId: currentUser.id,
     senderName: currentUser.name,
     senderAccount: currentUser.accountNo,
-    recipientId: recipient?.id || 'ext_recipient',
+    recipientId: recipient?.id || null,
     recipientName: recipient?.name || externalDetails?.accountHolder || externalDetails?.walletAddress || 'External Recipient',
     recipientAccount: recipient?.accountNo || externalDetails?.accountNumber || externalDetails?.walletAddress || 'N/A',
     amount: parsedAmount,
@@ -119,7 +119,7 @@ export async function initiateTransferOtp({
 
   if (!IS_MOCK_ENV) {
     try {
-      // Store the pending transaction shell (edge fn will write the OTP record)
+      // Store the pending transaction shell
       await supabase.from('transactions').insert({
         id: pendingTx.id,
         timestamp: pendingTx.timestamp,
@@ -135,6 +135,17 @@ export async function initiateTransferOtp({
         status: 'Pending',
         note: pendingTx.note,
       });
+
+      // Insert OTP record into transaction_otps
+      await supabase.from('transaction_otps').insert({
+        id: otpRecord.id,
+        transaction_id: otpRecord.transaction_id,
+        user_id: otpRecord.user_id,
+        otp_hash: otpRecord.otp_hash,
+        expires_at: otpRecord.expires_at,
+        attempts_count: 0,
+        is_used: false,
+      });
     } catch (err) {
       console.warn('[initiateTransferOtp] Transaction DB insert warning:', err);
     }
@@ -148,9 +159,7 @@ export async function initiateTransferOtp({
     details: `Generated 5-min OTP for ${pendingTx.category} of $${parsedAmount}`,
   });
 
-  // Dispatch OTP email via edge function (Resend SMTP).
-  // The edge function generates & stores its own canonical hashed OTP.
-  // Wrap in try/catch so a delivery hiccup does not block the modal from opening.
+  // Dispatch OTP email via Vercel serverless / Resend
   if (!IS_MOCK_ENV) {
     try {
       await sendOtpEmail({
@@ -158,10 +167,9 @@ export async function initiateTransferOtp({
         transactionId: txId,
         amount: parsedAmount,
         recipientName: pendingTx.recipientName,
+        otpCode: rawOtpCode,
       });
     } catch (emailErr) {
-      // Log the warning but don't throw — the modal should still open.
-      // User can use the "Resend OTP" button inside the modal.
       console.warn('[initiateTransferOtp] Email dispatch warning:', emailErr?.message || emailErr);
     }
   } else {
@@ -258,7 +266,7 @@ export async function resendTransferOtp({ transactionId, currentUser }) {
     details: 'Resent fresh 6-digit OTP to user email',
   });
 
-  // Re-dispatch via edge function (generates a brand-new hashed OTP on the server)
+  // Re-dispatch via Vercel serverless / Resend
   const pendingTx = memoryData?.pendingTx || {};
   if (!IS_MOCK_ENV) {
     await sendOtpEmail({
@@ -266,6 +274,7 @@ export async function resendTransferOtp({ transactionId, currentUser }) {
       transactionId,
       amount: pendingTx.amount || 0,
       recipientName: pendingTx.recipientName || 'Recipient',
+      otpCode: rawOtpCode,
     });
   } else {
     console.log(`[DEV ONLY] Resent OTP for ${transactionId}: ${rawOtpCode}`);
@@ -342,13 +351,44 @@ export async function verifyTransferOtp({ transactionId, submittedOtp, currentUs
     throw new Error('Maximum verification attempts exceeded (3/3). Please request a new OTP code.');
   }
 
-  // 4. Delegate OTP hash comparison to the Supabase Edge Function
-  //    (server-side SHA-256 comparison — no raw OTP ever reaches the client)
+  // 4. Verify OTP: Try edge function first; fallback to direct database SHA-256 hash comparison
   if (!IS_MOCK_ENV) {
-    // This call throws on failure with the server's error message
-    await verifyOtpViaEdgeFunction({ transactionId, submittedOtp });
-    // If we reach here, verification passed on the server.
-    // The edge function already marked is_used=true and status=Completed in the DB.
+    let edgeSuccess = false;
+    try {
+      await verifyOtpViaEdgeFunction({ transactionId, submittedOtp });
+      edgeSuccess = true;
+    } catch (edgeErr) {
+      console.warn('[verifyTransferOtp] Edge function unavailable/fallback, validating hash directly:', edgeErr.message);
+    }
+
+    if (!edgeSuccess) {
+      const submittedHash = await hashOtp(submittedOtp);
+      if (submittedHash !== otpRecord.otp_hash) {
+        otpRecord.attempts_count = (otpRecord.attempts_count || 0) + 1;
+        if (memoryData) memoryOtps.set(transactionId, memoryData);
+        await supabase
+          .from('transaction_otps')
+          .update({ attempts_count: otpRecord.attempts_count })
+          .eq('transaction_id', transactionId);
+
+        const remaining = 3 - otpRecord.attempts_count;
+        if (remaining <= 0) {
+          throw new Error('Maximum verification attempts exceeded. Please request a new OTP code.');
+        }
+        throw new Error(`Invalid verification code. You have ${remaining} attempt(s) remaining.`);
+      }
+
+      // Mark used in database
+      await supabase
+        .from('transaction_otps')
+        .update({ is_used: true })
+        .eq('transaction_id', transactionId);
+
+      await supabase
+        .from('transactions')
+        .update({ status: 'Completed' })
+        .eq('id', transactionId);
+    }
   } else {
     // Mock env: do client-side hash check
     const submittedHash = await hashOtp(submittedOtp);

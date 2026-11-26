@@ -39,10 +39,10 @@ async function callEdgeFunction(functionName, payload) {
 }
 
 /**
- * Sends a 6-digit OTP to the user's registered email via the
- * `request-transfer-otp` edge function.
+ * Sends a 6-digit OTP to the user's registered email via Vercel Serverless API
+ * or falls back to Supabase Edge Functions.
  */
-export async function sendOtpEmail({ email, transactionId, amount, recipientName }) {
+export async function sendOtpEmail({ email, transactionId, amount, recipientName, otpCode }) {
   const formattedAmount = `$${parseFloat(amount || 0).toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -52,17 +52,35 @@ export async function sendOtpEmail({ email, transactionId, amount, recipientName
 
   if (IS_MOCK_ENV) {
     console.log('====================================================');
-    console.log(`[MOCK] OTP EMAIL TO: ${email}`);
+    console.log(`[MOCK] OTP EMAIL TO: ${email} | Code: ${otpCode}`);
     console.log(`[MOCK] Amount: ${formattedAmount} | Recipient: ${recipientName}`);
     console.log('====================================================');
     return { success: true, message: 'Mock OTP dispatched.' };
   }
 
+  // 1. Try Vercel Serverless Function first (/api/send-otp)
+  try {
+    const res = await fetch('/api/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, amount, recipientName, otpCode, transactionId }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      console.log('✅ [emailService] OTP email dispatched via /api/send-otp:', data);
+      return data;
+    }
+  } catch (apiErr) {
+    console.warn('[emailService] /api/send-otp fetch notice:', apiErr.message);
+  }
+
+  // 2. Try Supabase Edge Function fallback
   const result = await callEdgeFunction('request-transfer-otp', {
     transactionId,
     amount: parseFloat(amount || 0),
     recipientName: recipientName || 'Recipient',
     userEmail: email,
+    otpCode,
   });
 
   return result;

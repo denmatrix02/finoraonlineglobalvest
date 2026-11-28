@@ -153,7 +153,7 @@ export default function UserSupportPage() {
               Finora Support
               <span className="px-2 py-0.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] text-[9px] font-mono-figures rounded-[2px]">ONLINE</span>
             </h1>
-            <p className="text-[11px] text-[#444] font-['Inter']">Your direct line to the Finora admin team</p>
+            <p className="text-[11px] text-[#444] font-['Inter']">Your direct line to the Finora support team</p>
           </div>
           {unread > 0 && (
             <span className="bg-[#FF5555] text-white text-[10px] font-bold px-2.5 py-1 rounded-[2px] font-mono-figures">

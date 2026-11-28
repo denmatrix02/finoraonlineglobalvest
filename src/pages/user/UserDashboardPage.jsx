@@ -440,7 +440,7 @@ export default function UserDashboardPage() {
                             {isDebit ? `To ${tx.recipientName}` : `From ${tx.senderName}`}
                           </p>
                           <p className="text-[10px] text-[#555] font-['Inter'] truncate">
-                            {tx.timestamp} · {(tx.note === 'Admin credit' || tx.category === 'Admin Credit') ? 'Account Deposit' : (tx.note || tx.category)}
+                            {tx.timestamp} · {tx.note || tx.category}
                           </p>
                         </div>
                         <div className="text-right shrink-0 space-y-1">

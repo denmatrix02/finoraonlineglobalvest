@@ -35,7 +35,7 @@ function getTxMeta(tx, userId) {
     Icon = Coins;
     iconClass = 'text-[#CAFF33]';
     bgClass = 'bg-[#CAFF33]/10 border-[#CAFF33]/20';
-    label = tx.category === 'Admin Credit' ? 'Account Deposit' : (tx.category || 'Direct Credit');
+    label = tx.senderName ? `${tx.category || 'Deposit'} · ${tx.senderName}` : (tx.category || 'Direct Deposit');
   } else if (tx.type === 'loan_disbursement') {
     Icon = Landmark;
     iconClass = 'text-[#CAFF33]';
@@ -50,12 +50,12 @@ function getTxMeta(tx, userId) {
     Icon = ArrowUpRight;
     iconClass = 'text-[#FF5555]';
     bgClass = 'bg-[#FF5555]/10 border-[#FF5555]/20';
-    label = tx.category === 'Admin Credit' ? 'Account Credit' : tx.category;
+    label = tx.category || 'Withdrawal';
   } else {
     Icon = PiggyBank;
     iconClass = isDebit ? 'text-[#FF5555]' : 'text-[#CAFF33]';
     bgClass = isDebit ? 'bg-[#FF5555]/10 border-[#FF5555]/20' : 'bg-[#CAFF33]/10 border-[#CAFF33]/20';
-    label = tx.category === 'Admin Credit' ? 'Account Deposit' : tx.category;
+    label = tx.category || 'Account Activity';
   }
 
   const direction = isDebit || tx.type === 'loan_repayment' || tx.type === 'withdraw' ? 'debit' : 'credit';
@@ -180,9 +180,7 @@ export default function UserStatementsPage() {
               ) : (
                 filtered.slice(0, showCount).map((tx) => {
                   const { Icon, iconClass, bgClass, label, direction } = getTxMeta(tx, currentUser?.id);
-                  const displayNote = tx.note === 'Admin credit' || tx.category === 'Admin Credit'
-                    ? 'Account Deposit'
-                    : (tx.note || tx.category);
+                  const displayNote = tx.note || tx.category;
 
                   return (
                     <button

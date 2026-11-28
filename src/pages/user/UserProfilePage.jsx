@@ -268,7 +268,7 @@ export default function UserProfilePage() {
               <div className="flex items-center justify-between p-4 bg-[#FF5555]/5 border border-[#FF5555]/15 rounded-[3px]">
                 <div>
                   <p className="text-[13px] font-semibold text-[#FF5555] font-['Inter']">Account Status</p>
-                  <p className="text-[11px] text-[#444] font-['Inter']">Controlled by your Finora administrator</p>
+                  <p className="text-[11px] text-[#444] font-['Inter']">Verified by Finora Security Compliance</p>
                 </div>
                 <StatusBadge status={currentUser?.status || 'Active'} size="md" />
               </div>

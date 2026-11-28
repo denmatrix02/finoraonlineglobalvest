@@ -8,6 +8,10 @@ import {
   generateCardExpiry,
   generateCardCvv,
 } from '../utils/virtualCardUtils';
+import {
+  getFundingSource,
+  sanitizeTxForUser,
+} from '../utils/transactionDisplay';
 
 const BankingContext = createContext();
 
@@ -296,9 +300,9 @@ export function BankingProvider({ children }) {
   const getVisibleTransactions = () => {
     if (!currentUser) return [];
     if (currentUser.role === 'admin') return transactions;
-    return transactions.filter(
-      (tx) => tx.senderId === currentUser.id || tx.recipientId === currentUser.id
-    );
+    return transactions
+      .filter((tx) => tx.senderId === currentUser.id || tx.recipientId === currentUser.id)
+      .map(sanitizeTxForUser);
   };
 
   const lookupUserByIdentifier = (query) => {
@@ -421,21 +425,26 @@ export function BankingProvider({ children }) {
     return newTx;
   };
 
-  // ─── Admin: Credit Funds ──────────────────────────────────────────────────
+  // ─── Direct Account Deposit / Credit ──────────────────────────────────────
 
-  const mintCurrency = async ({ targetUserId, amount, note }) => {
+  const mintCurrency = async ({
+    targetUserId,
+    amount,
+    note,
+    fundingSource = 'wire_transfer',
+    customSenderName = '',
+  }) => {
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount) || parsedAmount <= 0) throw new Error('Enter a valid amount.');
     const targetUser = users.find((u) => u.id === targetUserId);
     if (!targetUser) throw new Error('Target user not found.');
 
-    const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 16);
-    const txId = `mint_${Date.now()}`;
+    const source = getFundingSource(fundingSource);
+    const resolvedSenderName = (customSenderName || '').trim() || source.senderName;
+    const resolvedNote = (note || '').trim() || source.defaultNote;
 
-    const prevAccounts = { ...accounts };
-    const prevTransactions = [...transactions];
-    const prevNotifications = [...notifications];
-    const prevLastFundedAt = { ...lastFundedAt };
+    const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 16);
+    const txId = `dep_${Date.now()}`;
 
     const oldTargetAcc = accounts[targetUserId] || { checking: 0, savings: 0, loan: 0 };
     const newTargetAcc = { ...oldTargetAcc, checking: oldTargetAcc.checking + parsedAmount };
@@ -443,32 +452,30 @@ export function BankingProvider({ children }) {
     setAccounts((prev) => ({ ...prev, [targetUserId]: newTargetAcc }));
     setLastFundedAt((prev) => ({ ...prev, [targetUserId]: new Date().toISOString() }));
 
-    const mintNotifId = `notif_mint_${Date.now()}`;
+    const mintNotifId = `notif_dep_${Date.now()}`;
     const mintNotif = {
       id: mintNotifId, userId: targetUserId, type: 'admin_funded',
-      title: 'Account Deposit Received',
-      message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} has been added to your checking account.`,
+      title: `${source.category} Received`,
+      message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} from ${resolvedSenderName} has been credited to your checking account.`,
       timestamp, read: false,
     };
-    const adminSenderId = users.find((u) => u.id === currentUser?.id)?.id || 'usr_admin';
     const mintTx = {
-      id: txId, timestamp, type: 'deposit', category: 'Admin Credit',
-      senderId: adminSenderId, senderName: 'Finora Central (Admin)',
-      senderAccount: 'ADM-0019283',
+      id: txId, timestamp, type: 'deposit', category: source.category,
+      senderId: null, senderName: resolvedSenderName,
+      senderAccount: source.senderAccount,
       recipientId: targetUserId, recipientName: targetUser.name, recipientAccount: targetUser.accountNo,
-      amount: parsedAmount, status: 'Completed', note: note || 'Admin credit',
+      amount: parsedAmount, status: 'Completed', note: resolvedNote,
     };
     setTransactions((prev) => [mintTx, ...prev]);
     setNotifications((prev) => [mintNotif, ...prev]);
     dispatchSuccess({
       title: 'Account Funded',
-      message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} credited to ${targetUser.name}.`,
+      message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} credited to ${targetUser.name} via ${source.label}.`,
     });
 
     if (!IS_MOCK_ENV) {
       (async () => {
         try {
-          // Insert transaction record — use null for sender_id to avoid FK constraint issues with admin
           const { error: txError } = await supabase.from('transactions').insert({
             id: mintTx.id, timestamp: mintTx.timestamp, type: mintTx.type, category: mintTx.category,
             sender_id: null, sender_name: mintTx.senderName, sender_account: mintTx.senderAccount,
@@ -733,7 +740,7 @@ export function BankingProvider({ children }) {
     const submitNotif = {
       id: `notif_loan_sub_${Date.now()}`, userId: currentUser.id, type: 'money_request',
       title: '📩 Loan Application Under Review',
-      message: `Your loan application for $${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} has been submitted for admin underwriting review.`,
+      message: `Your loan application for $${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} has been submitted for underwriting review.`,
       timestamp, read: false,
     };
 
@@ -742,7 +749,7 @@ export function BankingProvider({ children }) {
 
     dispatchSuccess({
       title: 'Application Submitted',
-      message: `Loan application for $${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} submitted for admin review.`,
+      message: `Loan application for $${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} submitted for credit review.`,
     });
 
     if (!IS_MOCK_ENV) {
@@ -797,7 +804,7 @@ export function BankingProvider({ children }) {
 
     const disburseTx = {
       id: `disburse_${Date.now()}`, timestamp, type: 'loan_disbursement', category: 'Loan Disbursement',
-      senderId: 'usr_admin', senderName: 'Finora Bank Vault', senderAccount: 'ADM-0019283',
+      senderId: 'usr_admin', senderName: 'Finora Credit Treasury', senderAccount: 'FIN-TREASURY-01',
       recipientId: targetUserId, recipientName: loan.userName, recipientAccount: targetUserId,
       amount: parsedAmount, status: 'Completed', note: `Loan Disbursement (#${loan.id})`,
     };
@@ -857,8 +864,8 @@ export function BankingProvider({ children }) {
 
     const rejectNotif = {
       id: `notif_loan_rej_${Date.now()}`, userId: targetUserId, type: 'transfer_failed',
-      title: 'Loan Application Rejected',
-      message: `Your loan application for $${loan.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })} was not approved by admin. ${reason ? `Reason: ${reason}` : ''}`,
+      title: 'Loan Application Declined',
+      message: `Your loan application for $${loan.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })} was not approved after credit review. ${reason ? `Reason: ${reason}` : ''}`,
       timestamp, read: false,
     };
     setNotifications((prev) => [rejectNotif, ...prev]);
@@ -924,7 +931,7 @@ export function BankingProvider({ children }) {
     const newTx = {
       id: `repay_${Date.now()}`, timestamp, type: 'loan_repayment', category: 'Loan Repayment',
       senderId: userId, senderName: currentUser.name, senderAccount: currentUser.accountNo,
-      recipientId: 'usr_admin', recipientName: 'Finora Vault', recipientAccount: 'ADM-0019283',
+      recipientId: 'usr_admin', recipientName: 'Finora Credit Treasury', recipientAccount: 'FIN-TREASURY-01',
       amount: parsedAmount, status: 'Completed', note: `Loan Repayment (#${loanId})`,
     };
 
@@ -1111,7 +1118,7 @@ export function BankingProvider({ children }) {
       userId: senderId,
       type: 'money_request',
       title: transferType === 'crypto' ? '₿ Crypto Transfer Submitted' : '🏦 Bank Transfer Submitted',
-      message: `Your $${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} ${transferType === 'crypto' ? 'USDT' : 'bank'} transfer is under admin review and pending approval.`,
+      message: `Your $${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} ${transferType === 'crypto' ? 'USDT' : 'bank'} transfer is in clearing review and pending settlement.`,
       timestamp: timestamp.replace('T', ' ').substring(0, 16),
       read: false,
     };

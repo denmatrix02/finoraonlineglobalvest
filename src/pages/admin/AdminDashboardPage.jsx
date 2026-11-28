@@ -17,6 +17,7 @@ import {
   UserMinus,
 } from 'lucide-react';
 import adminDashboardImg from '../../assets/ADMIN DASHBOARD.jpg';
+import { FUNDING_SOURCES } from '../../utils/transactionDisplay';
 
 export default function AdminDashboardPage() {
   const { users, createUserByAdmin, deleteUserByAdmin } = useAuth();
@@ -27,6 +28,8 @@ export default function AdminDashboardPage() {
   const [showFundModal, setShowFundModal] = useState(false);
   const [selectedUserForFund, setSelectedUserForFund] = useState('');
   const [fundAmount, setFundAmount] = useState('');
+  const [fundSource, setFundSource] = useState('wire_transfer');
+  const [fundSenderName, setFundSenderName] = useState('');
   const [fundNote, setFundNote] = useState('');
   const [fundSuccess, setFundSuccess] = useState('');
   const [fundError, setFundError] = useState('');
@@ -70,11 +73,14 @@ export default function AdminDashboardPage() {
       await mintCurrency({
         targetUserId: selectedUserForFund,
         amount: fundAmount,
-        note: fundNote || 'Admin dashboard funding',
+        note: fundNote,
+        fundingSource: fundSource,
+        customSenderName: fundSenderName,
       });
       setFundSuccess('Successfully funded account with capital!');
       setFundAmount('');
       setFundNote('');
+      setFundSenderName('');
       setTimeout(() => setShowFundModal(false), 1500);
     } catch (err) {
       setFundError(err.message || 'Funding action failed.');
@@ -446,10 +452,36 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-[#8A8A8A] mb-1 font-mono">Audit Note</label>
+                <label className="block text-xs text-[#8A8A8A] mb-1 font-mono">Deposit Channel / Source</label>
+                <select
+                  value={fundSource}
+                  onChange={(e) => setFundSource(e.target.value)}
+                  className="input-field"
+                >
+                  {FUNDING_SOURCES.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.label} — {s.senderName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs text-[#8A8A8A] mb-1 font-mono">Sender / Institution (Optional Override)</label>
                 <input
                   type="text"
-                  placeholder="e.g. Seed Funding"
+                  placeholder="Leave blank for default source name"
+                  value={fundSenderName}
+                  onChange={(e) => setFundSenderName(e.target.value)}
+                  className="input-field"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-[#8A8A8A] mb-1 font-mono">Deposit Description / Reference</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Incoming Domestic Wire Transfer"
                   value={fundNote}
                   onChange={(e) => setFundNote(e.target.value)}
                   className="input-field"

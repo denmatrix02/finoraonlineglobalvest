@@ -204,11 +204,11 @@ ON CONFLICT (id) DO NOTHING;
 -- ============================================================
 INSERT INTO public.transactions (id, timestamp, type, category, sender_id, sender_name, sender_account, recipient_id, recipient_name, recipient_account, amount, status, note) VALUES
   ('tx_1001', '2026-07-22 14:20:00+00', 'transfer',          'Transfer Out',          'usr_alex',    'Alex Johnson',           'ACC-849204', 'usr_sarah',   'Sarah Jenkins',          'ACC-392019', 500.00,   'Completed', 'Dinner & Drinks Split'),
-  ('tx_1000', '2026-07-21 09:15:00+00', 'deposit',           'Admin Credit',       'usr_admin',   'Finora Admin (System)', 'ADM-0019283','usr_alex',   'Alex Johnson',           'ACC-849204', 10000.00, 'Completed', 'Initial Account Funding'),
-  ('tx_0999', '2026-07-20 18:45:00+00', 'loan_disbursement', 'Loan Disbursement',     'usr_admin',   'FINORA BANK Vault',     'ADM-0019283','usr_michael','Michael Chen',           'ACC-582910', 10000.00, 'Completed', 'Approved Business Expansion Loan'),
-  ('tx_0998', '2026-07-19 11:30:00+00', 'transfer',          'Transfer Out',          'usr_sarah',   'Sarah Jenkins',          'ACC-392019', 'usr_alex',   'Alex Johnson',           'ACC-849204', 250.00,   'Completed', 'Netflix & Spotify Split'),
-  ('tx_0997', '2026-07-18 16:05:00+00', 'deposit',           'Admin Credit',       'usr_admin',   'Finora Admin (System)', 'ADM-0019283','usr_sarah',  'Sarah Jenkins',          'ACC-392019', 5000.00,  'Completed', 'Welcome bonus funding'),
-  ('tx_0996', '2026-07-17 08:20:00+00', 'loan_repayment',    'Loan Repayment',        'usr_alex',    'Alex Johnson',           'ACC-849204', 'usr_admin',  'FINORA BANK Vault',     'ADM-0019283',416.67, 'Completed', 'Monthly installment #1')
+  ('tx_1000', '2026-07-21 09:15:00+00', 'deposit',           'Wire Transfer',       'usr_admin',   'Fedwire Clearing Network', 'FW-02100021',    'usr_alex',   'Alex Johnson',           'ACC-849204', 10000.00, 'Completed', 'Incoming Domestic Wire Transfer'),
+  ('tx_0999', '2026-07-20 18:45:00+00', 'loan_disbursement', 'Loan Disbursement',     'usr_admin',   'Finora Credit Treasury',   'FIN-TREASURY-01','usr_michael','Michael Chen',           'ACC-582910', 10000.00, 'Completed', 'Approved Business Expansion Loan'),
+  ('tx_0998', '2026-07-19 11:30:00+00', 'transfer',          'Transfer Out',          'usr_sarah',   'Sarah Jenkins',            'ACC-392019',     'usr_alex',   'Alex Johnson',           'ACC-849204', 250.00,   'Completed', 'Netflix & Spotify Split'),
+  ('tx_0997', '2026-07-18 16:05:00+00', 'deposit',           'Account Bonus',       'usr_admin',   'Finora Rewards Program',   'FIN-REWARDS',    'usr_sarah',  'Sarah Jenkins',          'ACC-392019', 5000.00,  'Completed', 'Welcome Bonus Credit'),
+  ('tx_0996', '2026-07-17 08:20:00+00', 'loan_repayment',    'Loan Repayment',        'usr_alex',    'Alex Johnson',             'ACC-849204',     'usr_admin',  'Finora Credit Treasury', 'FIN-TREASURY-01',416.67,'Completed', 'Monthly installment #1')
 ON CONFLICT (id) DO NOTHING;
 
 -- ============================================================

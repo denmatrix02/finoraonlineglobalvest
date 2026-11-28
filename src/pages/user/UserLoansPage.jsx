@@ -79,7 +79,7 @@ export default function UserLoansPage() {
       if (createdLoan?.status === 'Active') {
         setApplySuccess(`Loan of $${parseFloat(applyAmount).toLocaleString()} approved and disbursed to your checking account!`);
       } else {
-        setApplySuccess(`Loan application of $${parseFloat(applyAmount).toLocaleString()} submitted and is pending admin approval.`);
+        setApplySuccess(`Loan application of $${parseFloat(applyAmount).toLocaleString()} submitted and is pending underwriting approval.`);
       }
       setShowApply(false);
     } catch (err) {

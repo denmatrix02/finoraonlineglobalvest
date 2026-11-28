@@ -1,8 +1,8 @@
-import React from 'react';
-import { X, ArrowUpRight, ArrowDownLeft, Landmark, PiggyBank, Coins, AlertCircle, MessageCircle } from 'lucide-react';
+import { X, ArrowUpRight, ArrowDownLeft, Landmark, Coins, AlertCircle, MessageCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import StatusBadge from './StatusBadge';
 import MonoAmount from './MonoAmount';
+import { sanitizeTxForUser } from '../../utils/transactionDisplay';
 
 const TYPE_ICONS = {
   transfer: { sent: ArrowUpRight, received: ArrowDownLeft },
@@ -12,9 +12,10 @@ const TYPE_ICONS = {
   loan_repayment: Landmark,
 };
 
-export default function TxDetailModal({ tx, currentUserId, onClose }) {
-  if (!tx) return null;
+export default function TxDetailModal({ tx: rawTx, currentUserId, onClose }) {
   const navigate = useNavigate();
+  if (!rawTx) return null;
+  const tx = sanitizeTxForUser(rawTx);
 
   const handleContactSupport = () => {
     onClose();
@@ -80,12 +81,12 @@ export default function TxDetailModal({ tx, currentUserId, onClose }) {
           <div className="space-y-3 text-sm">
             <DetailRow label="Transaction ID" value={tx.id} mono />
             <DetailRow label="Date & Time" value={tx.timestamp} />
-            <DetailRow label="Type" value={tx.category === 'Admin Credit' ? 'Account Deposit' : tx.category} />
+            <DetailRow label="Type" value={tx.category || 'Account Deposit'} />
             <div className="h-px bg-[#262626]" />
             <DetailRow label="From" value={`${tx.senderName}`} sub={tx.senderAccount} />
             <DetailRow label="To" value={`${tx.recipientName}`} sub={tx.recipientAccount} />
             <div className="h-px bg-[#262626]" />
-            {tx.note && <DetailRow label="Note" value={tx.note === 'Admin credit' ? 'Account Deposit' : tx.note} />}
+            {tx.note && <DetailRow label="Note" value={tx.note} />}
             <DetailRow label="Fee" value="$0.00" mono />
           </div>
         </div>

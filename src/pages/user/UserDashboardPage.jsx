@@ -64,7 +64,7 @@ function getNewYorkDateTime(date) {
 const QuickAction = ({ to, icon: Icon, label, sub, accent }) => (
   <Link
     to={to}
-    className={`flex flex-col justify-between gap-3 p-3.5 sm:p-4 rounded-[2px] border transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] hover:shadow-lg group
+    className={`flex flex-col justify-between gap-3 p-3.5 sm:p-4 rounded-[3px] border transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] hover:shadow-lg group
       ${accent
         ? 'bg-[#CAFF33] border-[#CAFF33] hover:bg-[#b8e820] hover:border-[#b8e820] hover:shadow-[#CAFF33]/20'
         : 'bg-[#1D1D1D] border-[#262626] hover:border-[#363636] hover:bg-[#222] hover:shadow-black/40'
@@ -166,7 +166,7 @@ export default function UserDashboardPage() {
           <div className="flex items-center gap-2.5 min-w-0">
             <Link
               to="/"
-              className="md:hidden w-9 h-9 rounded-[2px] bg-[#1A1A1A] border border-[#262626] flex items-center justify-center shrink-0"
+              className="md:hidden w-9 h-9 rounded-[3px] bg-[#1A1A1A] border border-[#262626] flex items-center justify-center shrink-0"
               title="Finora Home"
             >
               <img src={logoImg} alt="Finora" width="18" height="18" className="object-contain" />
@@ -187,7 +187,7 @@ export default function UserDashboardPage() {
               to="/notifications"
               aria-label="Notifications"
               title="Notifications"
-              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-[2px] bg-[#1A1A1A] border border-[#262626] hover:border-[#CAFF33]/40 flex items-center justify-center transition-colors"
+              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-[3px] bg-[#1A1A1A] border border-[#262626] hover:border-[#CAFF33]/40 flex items-center justify-center transition-colors"
             >
               <Bell size={17} className="text-[#B5B5B5]" />
               {myNotifs.length > 0 && (
@@ -216,7 +216,7 @@ export default function UserDashboardPage() {
         <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-5 sm:space-y-6">
           {/* Sleek Hero Banking Card */}
           <div
-            className={`relative rounded-[2px] sm:rounded-[2px] border p-4 sm:p-6 overflow-hidden transition-all duration-700 shadow-[0_20px_50px_rgba(0,0,0,0.45)] ${
+            className={`relative rounded-[4px] border p-4 sm:p-6 overflow-hidden transition-all duration-700 shadow-[0_20px_50px_rgba(0,0,0,0.45)] ${
               highlight
                 ? 'border-[#CAFF33] shadow-[0_0_45px_rgba(202,255,51,0.2)] bg-gradient-to-br from-[#233817] via-[#151D13] to-[#111412]'
                 : 'border-[#CAFF33]/20 bg-gradient-to-br from-[#192814] via-[#131914] to-[#0E1110]'
@@ -253,7 +253,7 @@ export default function UserDashboardPage() {
 
               <div className="text-right shrink-0">
                 <div className="flex items-center justify-end gap-1.5">
-                  <span className="inline-flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-[1.5px] bg-white/[0.07] border border-white/10 text-[#CAFF33] font-mono-figures">
+                  <span className="inline-flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-[2px] bg-white/[0.07] border border-white/10 text-[#CAFF33] font-mono-figures">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#CAFF33] animate-pulse" />
                     NY · {nyClock.tzAbbr}
                   </span>
@@ -294,16 +294,16 @@ export default function UserDashboardPage() {
                 onClick={toggleHideBalance}
                 aria-label={hideBalance ? 'Show balances' : 'Hide balances'}
                 title={hideBalance ? 'Show balances' : 'Hide balances'}
-                className="w-10 h-10 sm:w-11 sm:h-11 rounded-[2px] bg-white/[0.07] hover:bg-white/[0.14] border border-white/10 flex items-center justify-center text-[#D4DFCD] hover:text-[#CAFF33] transition-all shrink-0 active:scale-95"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-[3px] bg-white/[0.07] hover:bg-white/[0.14] border border-white/10 flex items-center justify-center text-[#D4DFCD] hover:text-[#CAFF33] transition-all shrink-0 active:scale-95"
               >
                 {hideBalance ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
 
             {/* Card Bottom Glass Strip: Account Number + Status + Action Pills */}
-            <div className="relative bg-black/35 backdrop-blur-md border border-white/[0.08] rounded-[2px] p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="relative bg-black/35 backdrop-blur-md border border-white/[0.08] rounded-[3px] p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-[2px] bg-white/[0.07] border border-white/10 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-[3px] bg-white/[0.07] border border-white/10 flex items-center justify-center shrink-0">
                   <ShieldCheck size={17} className="text-[#CAFF33]" />
                 </div>
                 <div className="min-w-0">
@@ -324,7 +324,7 @@ export default function UserDashboardPage() {
                       {copiedAcc ? <Check size={13} className="text-[#CAFF33]" /> : <Copy size={13} />}
                     </button>
                     <span
-                      className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-[1.5px] border ${
+                      className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-[2px] border ${
                         isActive
                           ? 'bg-[#CAFF33]/15 border-[#CAFF33]/30 text-[#CAFF33]'
                           : 'bg-[#FF5555]/15 border-[#FF5555]/30 text-[#FF5555]'
@@ -385,7 +385,7 @@ export default function UserDashboardPage() {
           </div>
 
           {/* Quick Actions Container */}
-          <div className="bg-[#161616] border border-[#1F1F1F] rounded-[2px] p-4 sm:p-5">
+          <div className="bg-[#161616] border border-[#1F1F1F] rounded-[4px] p-4 sm:p-5">
             <div className="mb-3.5 sm:mb-4">
               <h2 className="text-[15px] sm:text-[16px] font-bold text-white font-['Poppins']">
                 What would you like to do today?
@@ -405,7 +405,7 @@ export default function UserDashboardPage() {
           {/* Main grid */}
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-5 sm:gap-6">
             {/* Recent Transactions */}
-            <div className="xl:col-span-2 bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] overflow-hidden">
+            <div className="xl:col-span-2 bg-[#1A1A1A] border border-[#1F1F1F] rounded-[4px] overflow-hidden">
               <div className="flex items-center justify-between px-4 sm:px-5 py-4 border-b border-[#222]">
                 <div>
                   <h2 className="text-[14px] font-semibold text-white font-['Poppins']">Recent Transactions</h2>
@@ -426,9 +426,9 @@ export default function UserDashboardPage() {
                       <button
                         key={tx.id}
                         onClick={() => setSelectedTx(tx)}
-                        className="w-full flex items-center gap-3 p-2.5 sm:p-3 rounded-[2px] hover:bg-[#222] transition-colors text-left group"
+                        className="w-full flex items-center gap-3 p-2.5 sm:p-3 rounded-[3px] hover:bg-[#222] transition-colors text-left group"
                       >
-                        <div className={`p-2 sm:p-2.5 rounded-[2px] border shrink-0 ${
+                        <div className={`p-2 sm:p-2.5 rounded-[3px] border shrink-0 ${
                           isDebit
                             ? 'bg-[#FF5555]/10 border-[#FF5555]/20 text-[#FF5555]'
                             : 'bg-[#CAFF33]/10 border-[#CAFF33]/20 text-[#CAFF33]'
@@ -468,14 +468,14 @@ export default function UserDashboardPage() {
             {/* Side cards */}
             <div className="space-y-4">
               {/* Virtual Card Widget */}
-              <div className="bg-gradient-to-br from-[#192415] to-[#161616] border border-[#CAFF33]/20 rounded-[2px] p-4 sm:p-5">
+              <div className="bg-gradient-to-br from-[#192415] to-[#161616] border border-[#CAFF33]/20 rounded-[4px] p-4 sm:p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <CreditCard size={15} className="text-[#CAFF33]" />
                     <span className="text-[12px] font-semibold text-white font-['Poppins']">Virtual Card</span>
                   </div>
                   {primaryCard ? (
-                    <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-[1.5px] border ${
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-[2px] border ${
                       primaryCard.status === 'Frozen'
                         ? 'bg-sky-400/10 border-sky-400/30 text-sky-300'
                         : 'bg-[#CAFF33]/10 border-[#CAFF33]/25 text-[#CAFF33]'
@@ -484,7 +484,7 @@ export default function UserDashboardPage() {
                       {primaryCard.status}
                     </span>
                   ) : (
-                    <span className="text-[10px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] font-mono-figures px-2 py-0.5 rounded-[1.5px]">
+                    <span className="text-[10px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] font-mono-figures px-2 py-0.5 rounded-[2px]">
                       Instant Issue
                     </span>
                   )}
@@ -516,7 +516,7 @@ export default function UserDashboardPage() {
                     </p>
                     <Link
                       to="/cards"
-                      className="flex items-center justify-center gap-2 py-2.5 bg-[#CAFF33] hover:bg-[#b8e820] rounded-[2px] text-[12px] text-[#111] font-bold font-['Poppins'] transition-colors"
+                      className="flex items-center justify-center gap-2 py-2.5 bg-[#CAFF33] hover:bg-[#b8e820] rounded-[3px] text-[12px] text-[#111] font-bold font-['Poppins'] transition-colors"
                     >
                       Get Virtual Card
                     </Link>
@@ -526,7 +526,7 @@ export default function UserDashboardPage() {
 
               {/* Active loan card */}
               {activeLoan ? (
-                <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] p-4 sm:p-5">
+                <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[4px] p-4 sm:p-5">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <Landmark size={14} className="text-[#FF5555]" />
@@ -543,7 +543,7 @@ export default function UserDashboardPage() {
                     remaining of {hideBalance ? maskedText : <MonoAmount amount={activeLoan.amount} size="xs" />} at {activeLoan.interestRate}% APR
                   </p>
                   <div className="mt-3">
-                    <div className="h-1.5 bg-[#222] rounded-[1.5px] overflow-hidden">
+                    <div className="h-1.5 bg-[#222] rounded-[2px] overflow-hidden">
                       <div
                         className="h-full bg-[#FF5555] rounded-[2px] transition-all"
                         style={{ width: `${Math.round((activeLoan.remainingAmount / activeLoan.amount) * 100)}%` }}
@@ -559,7 +559,7 @@ export default function UserDashboardPage() {
                   </Link>
                 </div>
               ) : (
-                <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] p-4 sm:p-5">
+                <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[4px] p-4 sm:p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <Landmark size={14} className="text-[#666]" />
                     <span className="text-[12px] font-semibold text-white font-['Poppins']">Loans</span>
@@ -567,20 +567,20 @@ export default function UserDashboardPage() {
                   <p className="text-[12px] text-[#666] font-['Inter'] mb-3">
                     No active loans. Apply for up to <MonoAmount amount={settings.maxLoanAmount || 50000} size="xs" direction="credit" />.
                   </p>
-                  <Link to="/loans" className="flex items-center justify-center gap-2 py-2.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[2px] text-[12px] text-[#CAFF33] font-semibold hover:bg-[#CAFF33]/20 transition-colors">
+                  <Link to="/loans" className="flex items-center justify-center gap-2 py-2.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[3px] text-[12px] text-[#CAFF33] font-semibold hover:bg-[#CAFF33]/20 transition-colors">
                     Apply Now
                   </Link>
                 </div>
               )}
 
               {/* Savings card */}
-              <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] p-4 sm:p-5">
+              <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[4px] p-4 sm:p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <PiggyBank size={14} className="text-[#CAFF33]" />
                     <span className="text-[12px] font-semibold text-white font-['Poppins']">High-Yield Savings</span>
                   </div>
-                  <span className="text-[10px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] font-mono-figures px-2 py-0.5 rounded-[1.5px]">
+                  <span className="text-[10px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] font-mono-figures px-2 py-0.5 rounded-[2px]">
                     {settings.savingsAPY}% APY
                   </span>
                 </div>
@@ -602,16 +602,16 @@ export default function UserDashboardPage() {
 
               {/* Notifications preview */}
               {myNotifs.length > 0 && (
-                <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] p-4 sm:p-5">
+                <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[4px] p-4 sm:p-5">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-[12px] font-semibold text-white font-['Poppins']">Notifications</span>
-                    <span className="text-[9px] bg-[#FF5555]/10 border border-[#FF5555]/20 text-[#FF5555] font-mono-figures px-2 py-0.5 rounded-[1.5px]">
+                    <span className="text-[9px] bg-[#FF5555]/10 border border-[#FF5555]/20 text-[#FF5555] font-mono-figures px-2 py-0.5 rounded-[2px]">
                       {myNotifs.length} new
                     </span>
                   </div>
                   <div className="space-y-2">
                     {myNotifs.slice(0, 3).map((n) => (
-                      <div key={n.id} className="p-2.5 bg-[#CAFF33]/5 border border-[#CAFF33]/10 rounded-[2px]">
+                      <div key={n.id} className="p-2.5 bg-[#CAFF33]/5 border border-[#CAFF33]/10 rounded-[3px]">
                         <p className="text-[11px] font-semibold text-white font-['Inter']">{n.title}</p>
                         <p className="text-[10px] text-[#666] mt-0.5 font-['Inter'] line-clamp-2">{n.message}</p>
                       </div>

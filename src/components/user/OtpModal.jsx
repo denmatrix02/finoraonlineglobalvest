@@ -166,7 +166,7 @@ export default function OtpModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-modal-fade">
       <div
-        className={`relative bg-[#151515] border border-[#2A2A2A] rounded-[2px] p-6 sm:p-8 max-w-md w-full shadow-[0_0_60px_rgba(0,0,0,0.9)] animate-modal-pop overflow-hidden ${
+        className={`relative bg-[#151515] border border-[#2A2A2A] rounded-[4px] p-6 sm:p-8 max-w-md w-full shadow-[0_0_60px_rgba(0,0,0,0.9)] animate-modal-pop overflow-hidden ${
           isShaking ? 'animate-otp-shake' : ''
         }`}
       >
@@ -177,7 +177,7 @@ export default function OtpModal({
         <button
           onClick={onClose}
           disabled={verifying}
-          className="absolute top-6 right-6 p-2 rounded-[2px] text-[#666] hover:text-white hover:bg-[#222] transition-colors disabled:opacity-30"
+          className="absolute top-6 right-6 p-2 rounded-[3px] text-[#666] hover:text-white hover:bg-[#222] transition-colors disabled:opacity-30"
           title="Cancel Authorization"
         >
           <X size={18} />
@@ -186,10 +186,10 @@ export default function OtpModal({
         {/* Shield Header */}
         <div className="flex flex-col items-center text-center mb-6">
           <div className="relative mb-4">
-            <div className="w-16 h-16 rounded-[2px] bg-[#CAFF33]/10 border border-[#CAFF33]/30 flex items-center justify-center text-[#CAFF33] shadow-[0_0_25px_rgba(202,255,51,0.2)]">
+            <div className="w-16 h-16 rounded-[3px] bg-[#CAFF33]/10 border border-[#CAFF33]/30 flex items-center justify-center text-[#CAFF33] shadow-[0_0_25px_rgba(202,255,51,0.2)]">
               <ShieldCheck size={32} />
             </div>
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-[2px] bg-[#111] border border-[#2A2A2A] flex items-center justify-center text-[#CAFF33]">
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-[3px] bg-[#111] border border-[#2A2A2A] flex items-center justify-center text-[#CAFF33]">
               <Lock size={12} />
             </div>
           </div>
@@ -207,8 +207,8 @@ export default function OtpModal({
         </div>
 
         {/* Email Notification Box */}
-        <div className="mb-6 p-4 bg-[#1E1E1E] border border-[#2A2A2A] rounded-[2px] flex items-center gap-3 text-left">
-          <div className="p-2.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[2px] text-[#CAFF33]">
+        <div className="mb-6 p-4 bg-[#1E1E1E] border border-[#2A2A2A] rounded-[3px] flex items-center gap-3 text-left">
+          <div className="p-2.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[3px] text-[#CAFF33]">
             <Mail size={18} />
           </div>
           <div className="min-w-0 flex-1">
@@ -235,7 +235,7 @@ export default function OtpModal({
                 onChange={(e) => handleInputChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 disabled={verifying}
-                className={`w-11 h-14 sm:w-12 sm:h-14 text-center text-xl font-bold font-mono rounded-[2px] border outline-none transition-all duration-200 ${
+                className={`w-11 h-14 sm:w-12 sm:h-14 text-center text-xl font-bold font-mono rounded-[3px] border outline-none transition-all duration-200 ${
                   digit
                     ? 'bg-[#1A1A1A] border-[#CAFF33] text-[#CAFF33] shadow-[0_0_12px_rgba(202,255,51,0.25)]'
                     : 'bg-[#111] border-[#2A2A2A] text-white focus:border-[#CAFF33] focus:bg-[#161616] focus:shadow-[0_0_10px_rgba(202,255,51,0.15)]'
@@ -245,13 +245,13 @@ export default function OtpModal({
           </div>
 
           {infoNotice && (
-            <div className="text-[12px] text-[#CAFF33] bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[2px] px-4 py-2.5 text-center font-['Inter']">
+            <div className="text-[12px] text-[#CAFF33] bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[3px] px-4 py-2.5 text-center font-['Inter']">
               {infoNotice}
             </div>
           )}
 
           {error && (
-            <div className="flex items-center justify-center gap-2 text-[12px] text-[#FF5555] bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[2px] px-4 py-2.5 animate-modal-fade font-['Inter']">
+            <div className="flex items-center justify-center gap-2 text-[12px] text-[#FF5555] bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[3px] px-4 py-2.5 animate-modal-fade font-['Inter']">
               <AlertCircle size={14} className="shrink-0" />
               <span>{error}</span>
             </div>
@@ -263,7 +263,7 @@ export default function OtpModal({
           <button
             onClick={() => handleVerifyCode()}
             disabled={verifying || otp.some((d) => !d)}
-            className="w-full py-4 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-all flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(202,255,51,0.25)] disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none"
+            className="w-full py-4 rounded-[3px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-all flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(202,255,51,0.25)] disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none"
           >
             {verifying ? (
               <>

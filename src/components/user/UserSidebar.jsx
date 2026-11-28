@@ -60,7 +60,7 @@ export default function UserSidebar() {
         </div>
 
         {/* Balance widget */}
-        <div className="mx-4 mt-4 mb-2 bg-gradient-to-br from-[#CAFF33]/10 to-[#1A1A1A] border border-[#CAFF33]/20 rounded-[2px] p-4">
+        <div className="mx-4 mt-4 mb-2 bg-gradient-to-br from-[#CAFF33]/10 to-[#1A1A1A] border border-[#CAFF33]/20 rounded-[4px] p-4">
           <div className="flex items-center justify-between mb-1">
             <span className="text-[10px] text-[#666] uppercase tracking-widest font-['Inter']">Checking Balance</span>
             <CreditCard size={13} className="text-[#CAFF33]" />
@@ -85,7 +85,7 @@ export default function UserSidebar() {
                 to={path}
                 end={end}
                 className={({ isActive }) =>
-                  `relative flex items-center gap-3 px-3 py-2.5 rounded-[2px] text-[13px] font-medium transition-all duration-150 font-['Inter'] ${
+                  `relative flex items-center gap-3 px-3 py-2.5 rounded-[3px] text-[13px] font-medium transition-all duration-150 font-['Inter'] ${
                     isActive
                       ? 'bg-[#CAFF33] text-[#111] font-semibold shadow-sm'
                       : 'text-[#777] hover:bg-[#1E1E1E] hover:text-white'
@@ -95,7 +95,7 @@ export default function UserSidebar() {
                 <Icon size={16} className="shrink-0" />
                 <span className="flex-1">{label}</span>
                 {badgeCount > 0 && (
-                  <span className="bg-[#FF5555] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-[1.5px] min-w-[18px] text-center">
+                  <span className="bg-[#FF5555] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-[2px] min-w-[18px] text-center">
                     {badgeCount > 9 ? '9+' : badgeCount}
                   </span>
                 )}
@@ -116,7 +116,7 @@ export default function UserSidebar() {
 
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center gap-2 w-full py-2 text-[12px] text-[#666] hover:text-[#FF5555] hover:bg-[#FF5555]/5 border border-[#222] hover:border-[#FF5555]/20 rounded-[2px] transition-all font-['Inter']"
+            className="flex items-center justify-center gap-2 w-full py-2 text-[12px] text-[#666] hover:text-[#FF5555] hover:bg-[#FF5555]/5 border border-[#222] hover:border-[#FF5555]/20 rounded-[3px] transition-all font-['Inter']"
           >
             <LogOut size={13} />
             Log Out
@@ -131,10 +131,10 @@ export default function UserSidebar() {
           onClick={() => setMobileMenuOpen(false)}
         >
           <div
-            className="w-full bg-[#151515] border-t border-[#262626] rounded-t-[2px] p-5 pb-24 max-h-[82vh] overflow-y-auto shadow-2xl"
+            className="w-full bg-[#151515] border-t border-[#262626] rounded-t-[4px] p-5 pb-24 max-h-[82vh] overflow-y-auto shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-10 h-1 bg-[#333] rounded-[1.5px] mx-auto mb-4" />
+            <div className="w-10 h-1 bg-[#333] rounded-[2px] mx-auto mb-4" />
 
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3 min-w-0">
@@ -147,7 +147,7 @@ export default function UserSidebar() {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 rounded-[2px] bg-[#222] text-[#999] hover:text-white"
+                className="p-2 rounded-[3px] bg-[#222] text-[#999] hover:text-white"
                 aria-label="Close menu"
               >
                 <X size={16} />
@@ -176,7 +176,7 @@ export default function UserSidebar() {
                       {label.replace(' Money', '')}
                     </span>
                     {badgeCount > 0 && (
-                      <span className="absolute top-1.5 right-1.5 bg-[#FF5555] text-white text-[9px] font-bold px-1.5 py-0.2 rounded-[1.5px] min-w-[16px]">
+                      <span className="absolute top-1.5 right-1.5 bg-[#FF5555] text-white text-[9px] font-bold px-1.5 py-0.2 rounded-[2px] min-w-[16px]">
                         {badgeCount > 9 ? '9+' : badgeCount}
                       </span>
                     )}
@@ -188,7 +188,7 @@ export default function UserSidebar() {
             <button
               type="button"
               onClick={handleLogout}
-              className="flex items-center justify-center gap-2 w-full py-3 rounded-[2px] bg-[#FF5555]/10 border border-[#FF5555]/25 text-[#FF5555] text-[13px] font-semibold font-['Inter']"
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-[3px] bg-[#FF5555]/10 border border-[#FF5555]/25 text-[#FF5555] text-[13px] font-semibold font-['Inter']"
             >
               <LogOut size={15} />
               Log Out
@@ -211,7 +211,7 @@ export default function UserSidebar() {
             type="button"
             onClick={() => setMobileMenuOpen((v) => !v)}
             aria-label="All banking services"
-            className={`relative -mt-6 w-12 h-12 rounded-[2px] flex items-center justify-center border-4 border-[#111] shadow-[0_6px_22px_rgba(202,255,51,0.3)] transition-all active:scale-95 ${
+            className={`relative -mt-6 w-12 h-12 rounded-[3px] flex items-center justify-center border-4 border-[#111] shadow-[0_6px_22px_rgba(202,255,51,0.3)] transition-all active:scale-95 ${
               mobileMenuOpen ? 'bg-white text-[#111]' : 'bg-[#CAFF33] text-[#111]'
             }`}
           >
@@ -236,7 +236,7 @@ function MobileTab({ to, label, icon: Icon, end, onSelect }) {
       end={end}
       onClick={onSelect}
       className={({ isActive }) =>
-        `flex flex-col items-center justify-center gap-1 py-1.5 rounded-[2px] text-[10px] font-medium font-['Inter'] transition-colors ${
+        `flex flex-col items-center justify-center gap-1 py-1.5 rounded-[3px] text-[10px] font-medium font-['Inter'] transition-colors ${
           isActive ? 'text-[#CAFF33] font-semibold' : 'text-[#777] hover:text-white'
         }`
       }

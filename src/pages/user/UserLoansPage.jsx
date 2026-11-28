@@ -126,7 +126,7 @@ export default function UserLoansPage() {
           {!showApply && (
             <button
               onClick={() => setShowApply(true)}
-              className="px-4 py-2 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-semibold font-['Poppins'] transition-colors"
+              className="px-4 py-2 rounded-[3px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-semibold font-['Poppins'] transition-colors"
             >
               + Apply for Loan
             </button>
@@ -135,7 +135,7 @@ export default function UserLoansPage() {
 
         <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-6">
           {applySuccess && (
-            <div className="flex items-start gap-2 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[2px] p-4">
+            <div className="flex items-start gap-2 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[3px] p-4">
               <CheckCircle2 size={15} className="text-[#CAFF33] mt-0.5 shrink-0" />
               <p className="text-[13px] text-[#CAFF33] font-['Inter']">{applySuccess}</p>
             </div>
@@ -143,7 +143,7 @@ export default function UserLoansPage() {
 
           {/* Apply form */}
           {showApply && (
-            <div className="bg-[#1A1A1A] border border-[#222] rounded-[2px] p-6 space-y-5">
+            <div className="bg-[#1A1A1A] border border-[#222] rounded-[3px] p-6 space-y-5">
               <div className="flex items-center justify-between">
                 <h2 className="text-[15px] font-semibold text-white font-['Poppins']">Apply for Loan</h2>
                 <button onClick={() => setShowApply(false)} className="text-[#444] hover:text-white transition-colors">
@@ -182,7 +182,7 @@ export default function UserLoansPage() {
                     onChange={(e) => setApplyAmount(e.target.value)}
                     min={minAmt}
                     max={maxAmt}
-                    className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[2px] pl-10 pr-5 py-3 text-[15px] text-white font-mono-figures outline-none transition-colors"
+                    className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[3px] pl-10 pr-5 py-3 text-[15px] text-white font-mono-figures outline-none transition-colors"
                   />
                 </div>
 
@@ -195,7 +195,7 @@ export default function UserLoansPage() {
                         key={t}
                         type="button"
                         onClick={() => setApplyTerm(t)}
-                        className={`px-4 py-2 rounded-[2px] border text-[12px] font-medium font-['Inter'] transition-all ${
+                        className={`px-4 py-2 rounded-[3px] border text-[12px] font-medium font-['Inter'] transition-all ${
                           applyTerm === t
                             ? 'bg-[#CAFF33] border-[#CAFF33] text-[#111] font-bold'
                             : 'border-[#2A2A2A] text-[#555] hover:border-[#CAFF33] hover:text-[#CAFF33]'
@@ -213,11 +213,11 @@ export default function UserLoansPage() {
                   value={applyReason}
                   onChange={(e) => setApplyReason(e.target.value)}
                   placeholder="Reason for loan (optional)"
-                  className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[2px] px-5 py-3 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors font-['Inter']"
+                  className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[3px] px-5 py-3 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors font-['Inter']"
                 />
 
                 {/* Live repayment preview */}
-                <div className="bg-[#141414] border border-[#CAFF33]/15 rounded-[2px] p-4 space-y-2.5">
+                <div className="bg-[#141414] border border-[#CAFF33]/15 rounded-[3px] p-4 space-y-2.5">
                   <p className="text-[10px] uppercase tracking-widest text-[#555] font-['Inter'] font-semibold mb-3">Repayment Preview</p>
                   <PreviewRow label="Interest Rate" value={`${settings.loanBaseRate}% APR`} />
                   <PreviewRow label="Monthly Payment" value={<MonoAmount amount={monthlyPayment} size="sm" direction="debit" />} />
@@ -232,7 +232,7 @@ export default function UserLoansPage() {
                 </div>
 
                 {applyError && (
-                  <div className="flex items-start gap-2 bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[2px] p-3">
+                  <div className="flex items-start gap-2 bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[3px] p-3">
                     <AlertCircle size={13} className="text-[#FF5555] mt-0.5 shrink-0" />
                     <p className="text-[12px] text-[#FF5555] font-['Inter']">{applyError}</p>
                   </div>
@@ -240,7 +240,7 @@ export default function UserLoansPage() {
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors"
+                  className="w-full py-3.5 rounded-[3px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors"
                 >
                   Apply Now — <MonoAmount amount={parseFloat(applyAmount) || 0} size="sm" />
                 </button>
@@ -270,7 +270,7 @@ export default function UserLoansPage() {
                     <button
                       key={tab.id}
                       onClick={() => setLoanFilter(tab.id)}
-                      className={`px-3 py-1.5 rounded-[1.5px] font-medium transition-all flex items-center gap-1.5 whitespace-nowrap ${
+                      className={`px-3 py-1.5 rounded-[2px] font-medium transition-all flex items-center gap-1.5 whitespace-nowrap ${
                         loanFilter === tab.id
                           ? 'bg-[#CAFF33] text-[#111] font-semibold shadow-sm'
                           : 'text-[#888] hover:text-white hover:bg-[#1F1F1F]'
@@ -278,7 +278,7 @@ export default function UserLoansPage() {
                     >
                       <span>{tab.label}</span>
                       {tab.count > 0 && (
-                        <span className={`px-1.5 py-0.2 rounded-[1.5px] text-[9px] font-mono ${
+                        <span className={`px-1.5 py-0.2 rounded-[2px] text-[9px] font-mono ${
                           loanFilter === tab.id ? 'bg-[#111]/20 text-[#111]' : 'bg-[#222] text-[#AAA]'
                         }`}>
                           {tab.count}
@@ -290,7 +290,7 @@ export default function UserLoansPage() {
               </div>
 
               {filteredLoans.length === 0 ? (
-                <div className="text-center py-12 text-[#555] bg-[#141414] border border-[#222] rounded-[2px]">
+                <div className="text-center py-12 text-[#555] bg-[#141414] border border-[#222] rounded-[3px]">
                   <p className="text-[13px] font-['Inter']">No {loanFilter !== 'all' ? loanFilter : ''} loans found.</p>
                 </div>
               ) : (
@@ -315,7 +315,7 @@ export default function UserLoansPage() {
 
         return (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-            <div className="bg-[#1A1A1A] border border-[#222] rounded-[2px] w-full max-w-md p-6 space-y-5 shadow-2xl">
+            <div className="bg-[#1A1A1A] border border-[#222] rounded-[4px] w-full max-w-md p-6 space-y-5 shadow-2xl">
               <div>
                 <h3 className="text-[16px] font-bold text-white font-['Poppins']">Make a Loan Repayment</h3>
                 <p className="text-[12px] text-[#888] font-['Inter'] mt-0.5">
@@ -328,7 +328,7 @@ export default function UserLoansPage() {
                 <button
                   type="button"
                   onClick={() => setRepayAmount(String(monthly))}
-                  className={`p-3 rounded-[2px] border text-left transition-all ${
+                  className={`p-3 rounded-[3px] border text-left transition-all ${
                     repayAmount === String(monthly)
                       ? 'bg-[#CAFF33]/10 border-[#CAFF33] text-white'
                       : 'bg-[#141414] border-[#222] text-[#888] hover:border-[#333] hover:text-white'
@@ -343,7 +343,7 @@ export default function UserLoansPage() {
                 <button
                   type="button"
                   onClick={() => setRepayAmount(String(remaining))}
-                  className={`p-3 rounded-[2px] border text-left transition-all ${
+                  className={`p-3 rounded-[3px] border text-left transition-all ${
                     repayAmount === String(remaining)
                       ? 'bg-[#CAFF33]/10 border-[#CAFF33] text-white'
                       : 'bg-[#141414] border-[#222] text-[#888] hover:border-[#333] hover:text-white'
@@ -369,7 +369,7 @@ export default function UserLoansPage() {
                       max={remaining}
                       step="0.01"
                       required
-                      className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[2px] pl-10 pr-5 py-3.5 text-[16px] text-white font-mono-figures outline-none transition-colors"
+                      className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[3px] pl-10 pr-5 py-3.5 text-[16px] text-white font-mono-figures outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -385,13 +385,13 @@ export default function UserLoansPage() {
                   <button
                     type="button"
                     onClick={() => { setRepayLoanId(null); setRepayError(''); }}
-                    className="flex-1 py-3 rounded-[2px] border border-[#2A2A2A] text-[13px] text-[#666] hover:text-white transition-colors font-['Inter']"
+                    className="flex-1 py-3 rounded-[3px] border border-[#2A2A2A] text-[13px] text-[#666] hover:text-white transition-colors font-['Inter']"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="flex-[2] py-3 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-bold font-['Poppins'] transition-colors shadow-lg"
+                    className="flex-[2] py-3 rounded-[3px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-bold font-['Poppins'] transition-colors shadow-lg"
                   >
                     Confirm Repayment
                   </button>
@@ -421,7 +421,7 @@ function LoanCard({ loan, onRepay }) {
   const nextDue = loan.repaymentSchedule.find((s) => s.status === 'Pending');
 
   return (
-    <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] overflow-hidden">
+    <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[3px] overflow-hidden">
       <div className="p-5">
         <div className="flex items-start justify-between mb-4">
           <div>
@@ -437,7 +437,7 @@ function LoanCard({ loan, onRepay }) {
           {(loan.status === 'Active') && (
             <button
               onClick={() => onRepay(loan.id)}
-              className="px-4 py-2 rounded-[2px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] text-[12px] font-semibold hover:bg-[#CAFF33] hover:text-[#111] transition-all font-['Poppins']"
+              className="px-4 py-2 rounded-[3px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] text-[12px] font-semibold hover:bg-[#CAFF33] hover:text-[#111] transition-all font-['Poppins']"
             >
               Repay
             </button>
@@ -446,9 +446,9 @@ function LoanCard({ loan, onRepay }) {
 
         {/* Progress bar */}
         <div className="space-y-1.5 mb-4">
-          <div className="h-1.5 bg-[#222] rounded-[1.5px] overflow-hidden">
+          <div className="h-1.5 bg-[#222] rounded-[2px] overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-[#CAFF33] to-[#b8e820] rounded-[2px] transition-all duration-500"
+              className="h-full bg-gradient-to-r from-[#CAFF33] to-[#b8e820] rounded-[3px] transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>

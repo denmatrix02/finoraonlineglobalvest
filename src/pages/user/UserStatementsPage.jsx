@@ -121,15 +121,15 @@ export default function UserStatementsPage() {
         <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-5">
           {/* Summary strip — 2-col on mobile (Net spans full width), 3-col on md+ */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] p-3 md:p-4">
+            <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[3px] p-3 md:p-4">
               <p className="text-[9px] md:text-[10px] uppercase tracking-widest text-[#444] font-['Inter'] mb-1">Total In</p>
               <MonoAmount amount={totalCredit} direction="credit" size="sm" className="md:!text-lg" />
             </div>
-            <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] p-3 md:p-4">
+            <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[3px] p-3 md:p-4">
               <p className="text-[9px] md:text-[10px] uppercase tracking-widest text-[#444] font-['Inter'] mb-1">Total Out</p>
               <MonoAmount amount={totalDebit} direction="debit" size="sm" className="md:!text-lg" />
             </div>
-            <div className="col-span-2 md:col-span-1 bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] p-3 md:p-4">
+            <div className="col-span-2 md:col-span-1 bg-[#1A1A1A] border border-[#1F1F1F] rounded-[3px] p-3 md:p-4">
               <p className="text-[9px] md:text-[10px] uppercase tracking-widest text-[#444] font-['Inter'] mb-1">Net</p>
               <MonoAmount amount={totalCredit - totalDebit} direction={totalCredit >= totalDebit ? 'credit' : 'debit'} size="sm" className="md:!text-lg" />
             </div>
@@ -144,13 +144,13 @@ export default function UserStatementsPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by name, note, or TX ID…"
-                className="w-full bg-[#1A1A1A] border border-[#222] focus:border-[#CAFF33] rounded-[2px] pl-10 pr-4 py-2.5 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors font-['Inter']"
+                className="w-full bg-[#1A1A1A] border border-[#222] focus:border-[#CAFF33] rounded-[3px] pl-10 pr-4 py-2.5 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors font-['Inter']"
               />
             </div>
             <div className="flex gap-2 flex-wrap">
               {FILTERS.map((f) => (
                 <button key={f} onClick={() => setFilter(f)}
-                  className={`px-3 py-2 rounded-[2px] text-[11px] font-medium border transition-all font-['Inter'] ${
+                  className={`px-3 py-2 rounded-[3px] text-[11px] font-medium border transition-all font-['Inter'] ${
                     filter === f
                       ? 'bg-[#CAFF33] border-[#CAFF33] text-[#111] font-bold'
                       : 'border-[#222] text-[#555] hover:border-[#333] hover:text-white'
@@ -162,7 +162,7 @@ export default function UserStatementsPage() {
           </div>
 
           {/* Transactions table */}
-          <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] overflow-hidden">
+          <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[3px] overflow-hidden">
             {/* Table header */}
             <div className="grid grid-cols-[auto_1fr_auto_auto] gap-4 px-5 py-3 border-b border-[#1F1F1F] text-[10px] uppercase tracking-widest text-[#444] font-['Inter'] font-semibold">
               <span>Type</span>
@@ -190,7 +190,7 @@ export default function UserStatementsPage() {
                       onClick={() => setSelectedTx(tx)}
                       className="w-full grid grid-cols-[auto_1fr_auto_auto] gap-4 items-center px-5 py-3.5 border-b border-[#1A1A1A] hover:bg-[#1F1F1F] transition-colors text-left group"
                     >
-                      <div className={`p-2 rounded-[1.5px] border shrink-0 ${bgClass}`}>
+                      <div className={`p-2 rounded-[3px] border shrink-0 ${bgClass}`}>
                         <Icon size={13} className={iconClass} />
                       </div>
                       <div className="min-w-0">

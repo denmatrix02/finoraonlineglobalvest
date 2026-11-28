@@ -31,6 +31,7 @@ import UserStatementsPage from './pages/user/UserStatementsPage';
 import UserNotificationsPage from './pages/user/UserNotificationsPage';
 import UserProfilePage from './pages/user/UserProfilePage';
 import UserSupportPage from './pages/user/UserSupportPage';
+import UserCardsPage from './pages/user/UserCardsPage';
 
 // Auth + Banking context (for protected route logic and loading states)
 import { useAuth } from './context/AuthContext';
@@ -94,7 +95,7 @@ function MainLayout() {
 
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isPortalRoute = [
-    '/dashboard', '/transfers', '/receive', '/loans',
+    '/dashboard', '/transfers', '/receive', '/cards', '/loans',
     '/savings', '/statements', '/notifications', '/profile', '/support',
   ].some((p) => location.pathname.startsWith(p));
 
@@ -127,6 +128,7 @@ function MainLayout() {
           <Route path="/user/dashboard" element={<ProtectedUserRoute><UserDashboardPage /></ProtectedUserRoute>} />
           <Route path="/transfers" element={<ProtectedUserRoute><UserTransferPage /></ProtectedUserRoute>} />
           <Route path="/receive" element={<ProtectedUserRoute><UserReceivePage /></ProtectedUserRoute>} />
+          <Route path="/cards" element={<ProtectedUserRoute><UserCardsPage /></ProtectedUserRoute>} />
           <Route path="/loans" element={<ProtectedUserRoute><UserLoansPage /></ProtectedUserRoute>} />
           <Route path="/savings" element={<ProtectedUserRoute><UserSavingsPage /></ProtectedUserRoute>} />
           <Route path="/statements" element={<ProtectedUserRoute><UserStatementsPage /></ProtectedUserRoute>} />

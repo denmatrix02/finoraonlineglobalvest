@@ -343,13 +343,37 @@ CREATE TABLE IF NOT EXISTS public.external_transfers (
   updated_at      TIMESTAMPTZ DEFAULT now()
 );
 
+-- ============================================================
+--  TABLE: virtual_cards (Finora Virtual Debit Cards & Wallets)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS public.virtual_cards (
+  id                     TEXT PRIMARY KEY,
+  user_id                TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  label                  TEXT NOT NULL DEFAULT 'Online Shopping',
+  brand                  TEXT NOT NULL DEFAULT 'VISA' CHECK (brand IN ('VISA','MASTERCARD')),
+  theme                  TEXT NOT NULL DEFAULT 'obsidian',
+  card_number            TEXT NOT NULL,
+  expiry                 TEXT NOT NULL,
+  cvv                    TEXT NOT NULL,
+  holder_name            TEXT NOT NULL,
+  balance                NUMERIC(15,2) NOT NULL DEFAULT 0.00,
+  spending_limit         NUMERIC(15,2) NOT NULL DEFAULT 5000.00,
+  spent_this_month       NUMERIC(15,2) NOT NULL DEFAULT 0.00,
+  status                 TEXT NOT NULL DEFAULT 'Active' CHECK (status IN ('Active','Frozen','Terminated')),
+  online_payments        BOOLEAN NOT NULL DEFAULT true,
+  international_payments BOOLEAN NOT NULL DEFAULT true,
+  created_at             TIMESTAMPTZ DEFAULT now()
+);
+
 ALTER TABLE public.transaction_otps ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.otp_audit_logs   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.external_transfers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.virtual_cards      ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "allow_all_anon" ON public.transaction_otps     FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "allow_all_anon" ON public.otp_audit_logs       FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "allow_all_anon" ON public.external_transfers   FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "allow_all_anon" ON public.virtual_cards        FOR ALL USING (true) WITH CHECK (true);
 
 -- ============================================================
 --  PERMISSIONS & GRANTS (Required for PostgREST & Supabase API)

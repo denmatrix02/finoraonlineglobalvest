@@ -16,6 +16,7 @@ const navItems = [
   { path: '/dashboard', label: 'Overview', icon: LayoutDashboard, end: true },
   { path: '/transfers', label: 'Send Money', icon: Send },
   { path: '/receive', label: 'Receive Money', icon: Download },
+  { path: '/cards', label: 'Cards', icon: CreditCard },
   { path: '/loans', label: 'Loans', icon: Landmark },
   { path: '/savings', label: 'Savings', icon: PiggyBank },
   { path: '/statements', label: 'Statements', icon: FileText },
@@ -221,7 +222,7 @@ export default function UserSidebar() {
           </button>
         </div>
 
-        <MobileTab to="/statements" label="Activity" icon={FileText} onSelect={() => setMobileMenuOpen(false)} />
+        <MobileTab to="/cards" label="Cards" icon={CreditCard} onSelect={() => setMobileMenuOpen(false)} />
         <MobileTab to="/profile" label="Profile" icon={User} onSelect={() => setMobileMenuOpen(false)} />
       </nav>
     </>

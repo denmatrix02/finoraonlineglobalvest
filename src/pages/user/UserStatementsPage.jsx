@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   ArrowUpRight, ArrowDownLeft, Coins, Landmark, PiggyBank,
   Search, Filter, ChevronDown,
@@ -10,7 +10,7 @@ import TxDetailModal from '../../components/user/TxDetailModal';
 import { useAuth } from '../../context/AuthContext';
 import { useBanking } from '../../context/BankingContext';
 
-const FILTERS = ['All', 'Sent', 'Received', 'Deposits', 'Loans', 'Savings'];
+const FILTERS = ['All', 'Sent', 'Received', 'Deposits', 'Cards', 'Loans', 'Savings'];
 
 const TYPE_ICON = {
   transfer: { icon: ArrowUpRight, sentColor: 'text-[#FF5555]', receivedColor: 'text-[#CAFF33]', sentBg: 'bg-[#FF5555]/10 border-[#FF5555]/20', receivedBg: 'bg-[#CAFF33]/10 border-[#CAFF33]/20' },
@@ -68,6 +68,7 @@ function filterTx(tx, activeFilter, userId) {
     case 'Sent': return tx.type === 'transfer' && tx.senderId === userId;
     case 'Received': return tx.type === 'transfer' && tx.recipientId === userId && tx.senderId !== userId;
     case 'Deposits': return tx.type === 'deposit';
+    case 'Cards': return tx.category?.startsWith('Card');
     case 'Loans': return tx.type === 'loan_disbursement' || tx.type === 'loan_repayment';
     case 'Savings': return tx.category === 'Savings Deposit' || tx.category === 'Savings Withdrawal';
     default: return true;

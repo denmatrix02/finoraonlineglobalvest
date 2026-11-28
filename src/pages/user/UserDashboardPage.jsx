@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   Send, Download, Landmark, PiggyBank, ArrowUpRight, ArrowDownLeft,
   ChevronRight, Bell, TrendingUp, Zap, Eye, EyeOff, ShieldCheck,
-  Activity, Wallet, Copy, Check,
+  Activity, Wallet, Copy, Check, CreditCard, Snowflake,
 } from 'lucide-react';
 import UserSidebar from '../../components/user/UserSidebar';
 import StatusBadge from '../../components/user/StatusBadge';
@@ -86,11 +86,13 @@ const QuickAction = ({ to, icon: Icon, label, sub, accent }) => (
 
 export default function UserDashboardPage() {
   const { currentUser } = useAuth();
-  const { getUserBalances, getVisibleTransactions, notifications, loans, savingsMeta, lastFundedAt, settings } = useBanking();
+  const { getUserBalances, getVisibleTransactions, notifications, loans, savingsMeta, virtualCards, lastFundedAt, settings } = useBanking();
 
   const balances = getUserBalances();
   const userTx = getVisibleTransactions();
   const myNotifs = notifications.filter((n) => n.userId === currentUser?.id && !n.read);
+  const myCards = (virtualCards || []).filter((c) => c.userId === currentUser?.id && c.status !== 'Terminated');
+  const primaryCard = myCards[0] || null;
   const [selectedTx, setSelectedTx] = useState(null);
   const [highlight, setHighlight] = useState(false);
   const [copiedAcc, setCopiedAcc] = useState(false);
@@ -465,6 +467,63 @@ export default function UserDashboardPage() {
 
             {/* Side cards */}
             <div className="space-y-4">
+              {/* Virtual Card Widget */}
+              <div className="bg-gradient-to-br from-[#192415] to-[#161616] border border-[#CAFF33]/20 rounded-3xl p-4 sm:p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <CreditCard size={15} className="text-[#CAFF33]" />
+                    <span className="text-[12px] font-semibold text-white font-['Poppins']">Virtual Card</span>
+                  </div>
+                  {primaryCard ? (
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+                      primaryCard.status === 'Frozen'
+                        ? 'bg-sky-400/10 border-sky-400/30 text-sky-300'
+                        : 'bg-[#CAFF33]/10 border-[#CAFF33]/25 text-[#CAFF33]'
+                    }`}>
+                      {primaryCard.status === 'Frozen' && <Snowflake size={10} />}
+                      {primaryCard.status}
+                    </span>
+                  ) : (
+                    <span className="text-[10px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] font-mono-figures px-2 py-0.5 rounded-full">
+                      Instant Issue
+                    </span>
+                  )}
+                </div>
+
+                {primaryCard ? (
+                  <>
+                    <div className="flex items-baseline justify-between gap-2 mb-1">
+                      {hideBalance ? (
+                        <p className="font-mono-figures font-semibold text-xl text-white">{maskedText}</p>
+                      ) : (
+                        <MonoAmount amount={primaryCard.balance} size="xl" direction="credit" />
+                      )}
+                      <span className="text-[11px] text-[#888] font-mono-figures">
+                        {primaryCard.brand} •••• {String(primaryCard.cardNumber).slice(-4)}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#777] font-['Inter'] truncate">
+                      {primaryCard.label} · {myCards.length} active {myCards.length === 1 ? 'card' : 'cards'}
+                    </p>
+                    <Link to="/cards" className="mt-3 flex items-center justify-between text-[11px] text-[#CAFF33] font-['Inter'] hover:underline">
+                      Manage cards & top up <ChevronRight size={12} />
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-[12px] text-[#888] font-['Inter'] mb-3">
+                      Create an instant Visa or Mastercard virtual debit card for secure online payments.
+                    </p>
+                    <Link
+                      to="/cards"
+                      className="flex items-center justify-center gap-2 py-2.5 bg-[#CAFF33] hover:bg-[#b8e820] rounded-xl text-[12px] text-[#111] font-bold font-['Poppins'] transition-colors"
+                    >
+                      Get Virtual Card
+                    </Link>
+                  </>
+                )}
+              </div>
+
               {/* Active loan card */}
               {activeLoan ? (
                 <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-3xl p-4 sm:p-5">

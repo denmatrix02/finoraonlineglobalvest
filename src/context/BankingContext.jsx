@@ -3,6 +3,11 @@ import { useAuth } from './AuthContext';
 import { supabase, IS_MOCK_ENV } from '../lib/supabase';
 import { dispatchRollback } from '../lib/rollback';
 import { dispatchSuccess } from '../lib/success';
+import {
+  generateLuhnCardNumber,
+  generateCardExpiry,
+  generateCardCvv,
+} from '../utils/virtualCardUtils';
 
 const BankingContext = createContext();
 
@@ -38,6 +43,25 @@ const dedupeById = (list) => {
   });
 };
 
+const CARDS_STORAGE_KEY = 'finora_virtual_cards_v1';
+
+const loadCachedCards = () => {
+  try {
+    const raw = localStorage.getItem(CARDS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveCachedCards = (cardsList) => {
+  try {
+    localStorage.setItem(CARDS_STORAGE_KEY, JSON.stringify(cardsList));
+  } catch {
+    // Ignore storage errors
+  }
+};
+
 export function BankingProvider({ children }) {
   const { currentUser, users } = useAuth();
 
@@ -49,6 +73,7 @@ export function BankingProvider({ children }) {
   const [settings, setSettings] = useState(INITIAL_SETTINGS);
   const [moneyRequests, setMoneyRequests] = useState([]);
   const [externalTransfers, setExternalTransfers] = useState([]);
+  const [virtualCards, setVirtualCards] = useState(() => loadCachedCards());
   const [lastFundedAt, setLastFundedAt] = useState({});
   const [bankingLoading, setBankingLoading] = useState(true);
 
@@ -148,6 +173,47 @@ export function BankingProvider({ children }) {
             note: e.note, status: e.status, failureReason: e.failure_reason,
             createdAt: e.created_at,
           })));
+        }
+
+        // Virtual cards hydration (optional DB table, gracefully falls back to localStorage)
+        try {
+          const { data: cardData, error: cardErr } = await supabase
+            .from('virtual_cards')
+            .select('*')
+            .order('created_at', { ascending: false });
+          if (!cardErr && Array.isArray(cardData)) {
+            const dbMapped = cardData
+              .filter((c) => c.status !== 'Terminated')
+              .map((c) => ({
+                id: c.id,
+                userId: c.user_id,
+                label: c.label,
+                brand: c.brand,
+                theme: c.theme,
+                cardNumber: c.card_number,
+                expiry: c.expiry,
+                cvv: c.cvv,
+                holderName: c.holder_name,
+                balance: parseFloat(c.balance || 0),
+                spendingLimit: parseFloat(c.spending_limit || 5000),
+                spentThisMonth: parseFloat(c.spent_this_month || 0),
+                status: c.status,
+                onlinePayments: c.online_payments !== false,
+                internationalPayments: c.international_payments !== false,
+                createdAt: c.created_at,
+              }));
+            if (dbMapped.length > 0) {
+              setVirtualCards((prev) => {
+                const dbIds = new Set(dbMapped.map((d) => d.id));
+                const localOnly = prev.filter((p) => !dbIds.has(p.id));
+                const merged = dedupeById([...dbMapped, ...localOnly]);
+                saveCachedCards(merged);
+                return merged;
+              });
+            }
+          }
+        } catch {
+          // Non-fatal: localStorage virtual card cache remains active
         }
       } catch (err) {
         console.error('Failed to fetch banking data', err);
@@ -1159,10 +1225,562 @@ export function BankingProvider({ children }) {
     }
   };
 
+  // ─── Virtual Debit Cards ──────────────────────────────────────────────────
+
+  const syncVirtualCardDb = async (card) => {
+    if (IS_MOCK_ENV || !card) return;
+    try {
+      const { error } = await supabase.from('virtual_cards').upsert({
+        id: card.id,
+        user_id: card.userId,
+        label: card.label,
+        brand: card.brand,
+        theme: card.theme,
+        card_number: card.cardNumber,
+        expiry: card.expiry,
+        cvv: card.cvv,
+        holder_name: card.holderName,
+        balance: parseFloat(card.balance || 0),
+        spending_limit: parseFloat(card.spendingLimit || 5000),
+        spent_this_month: parseFloat(card.spentThisMonth || 0),
+        status: card.status,
+        online_payments: card.onlinePayments !== false,
+        international_payments: card.internationalPayments !== false,
+        created_at: card.createdAt,
+      }, { onConflict: 'id' });
+      if (error) {
+        console.warn('[virtual_cards] DB upsert notice (non-fatal):', error.message || error);
+      }
+    } catch {
+      // Non-fatal if virtual_cards table isn't migrated yet
+    }
+  };
+
+  const issueVirtualCard = async ({
+    label = 'Online Shopping',
+    brand = 'VISA',
+    theme = 'obsidian',
+    initialFund = 0,
+    spendingLimit = 5000,
+  } = {}) => {
+    if (!currentUser) throw new Error('Must be logged in to issue a virtual card.');
+    const userCards = virtualCards.filter((c) => c.userId === currentUser.id && c.status !== 'Terminated');
+    if (userCards.length >= 5) {
+      throw new Error('Maximum limit of 5 active virtual cards reached.');
+    }
+
+    const parsedFund = parseFloat(initialFund || 0);
+    const parsedLimit = parseFloat(spendingLimit || 5000);
+    if (isNaN(parsedFund) || parsedFund < 0) throw new Error('Enter a valid funding amount.');
+    if (isNaN(parsedLimit) || parsedLimit < 50) throw new Error('Monthly spend limit must be at least $50.00.');
+
+    const uAcc = accounts[currentUser.id] || { checking: 0, savings: 0, loan: 0 };
+    if (parsedFund > 0 && uAcc.checking < parsedFund) {
+      throw new Error('Insufficient funds in your Checking account for initial card funding.');
+    }
+
+    const nowIso = new Date().toISOString();
+    const timestamp = nowIso.replace('T', ' ').substring(0, 16);
+    const cardNumber = generateLuhnCardNumber(brand);
+    const last4 = cardNumber.slice(-4);
+
+    const newCard = {
+      id: `vcard_${Date.now()}`,
+      userId: currentUser.id,
+      label: label.trim() || 'Virtual Debit Card',
+      brand: brand === 'MASTERCARD' ? 'MASTERCARD' : 'VISA',
+      theme,
+      cardNumber,
+      expiry: generateCardExpiry(),
+      cvv: generateCardCvv(),
+      holderName: (currentUser.name || 'FINORA MEMBER').toUpperCase(),
+      balance: parsedFund,
+      spendingLimit: parsedLimit,
+      spentThisMonth: 0,
+      status: 'Active',
+      onlinePayments: true,
+      internationalPayments: true,
+      createdAt: nowIso,
+    };
+
+    const nextCards = [newCard, ...virtualCards];
+    setVirtualCards(nextCards);
+    saveCachedCards(nextCards);
+
+    let newAcc = null;
+    let fundTx = null;
+    if (parsedFund > 0) {
+      newAcc = { ...uAcc, checking: uAcc.checking - parsedFund };
+      setAccounts((prev) => ({ ...prev, [currentUser.id]: newAcc }));
+      fundTx = {
+        id: `cardfund_${Date.now()}`,
+        timestamp,
+        type: 'withdraw',
+        category: 'Card Top-Up',
+        senderId: currentUser.id,
+        senderName: currentUser.name,
+        senderAccount: currentUser.accountNo,
+        recipientId: null,
+        recipientName: `Finora Virtual Card (•••• ${last4})`,
+        recipientAccount: `CARD-${last4}`,
+        amount: parsedFund,
+        status: 'Completed',
+        note: `Initial funding for ${newCard.label} (•••• ${last4})`,
+      };
+      setTransactions((prev) => [fundTx, ...prev]);
+    }
+
+    const issueNotif = {
+      id: `notif_card_${Date.now()}`,
+      userId: currentUser.id,
+      type: 'admin_funded',
+      title: 'Virtual Card Issued',
+      message: `${newCard.brand} virtual card (${newCard.label} •••• ${last4}) is now active${parsedFund > 0 ? ` with $${parsedFund.toLocaleString('en-US', { minimumFractionDigits: 2 })} loaded` : ''}.`,
+      timestamp,
+      read: false,
+    };
+    setNotifications((prev) => [issueNotif, ...prev]);
+
+    dispatchSuccess({
+      title: 'Virtual Card Issued',
+      message: `${newCard.label} (•••• ${last4}) is ready to use.`,
+    });
+
+    if (!IS_MOCK_ENV) {
+      (async () => {
+        try {
+          await syncVirtualCardDb(newCard);
+          const tasks = [insertNotifications([issueNotif])];
+          if (newAcc) tasks.push(syncAccount(currentUser.id, newAcc));
+          if (fundTx) {
+            tasks.push(
+              supabase.from('transactions').insert({
+                id: fundTx.id,
+                timestamp: fundTx.timestamp,
+                type: fundTx.type,
+                category: fundTx.category,
+                sender_id: fundTx.senderId,
+                sender_name: fundTx.senderName,
+                sender_account: fundTx.senderAccount,
+                recipient_id: null,
+                recipient_name: fundTx.recipientName,
+                recipient_account: fundTx.recipientAccount,
+                amount: fundTx.amount,
+                status: fundTx.status,
+                note: fundTx.note,
+              })
+            );
+          }
+          await Promise.all(tasks);
+        } catch (err) {
+          console.warn('[issueVirtualCard] Background sync warning (non-fatal):', err.message || err);
+        }
+      })();
+    }
+
+    return newCard;
+  };
+
+  const fundVirtualCard = async (cardId, amount) => {
+    if (!currentUser) throw new Error('Must be logged in.');
+    const card = virtualCards.find((c) => c.id === cardId && c.userId === currentUser.id);
+    if (!card) throw new Error('Virtual card not found.');
+    if (card.status === 'Terminated') throw new Error('Cannot fund a terminated card.');
+
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) throw new Error('Enter a valid amount greater than $0.00.');
+
+    const uAcc = accounts[currentUser.id] || { checking: 0, savings: 0, loan: 0 };
+    if (uAcc.checking < parsedAmount) {
+      throw new Error('Insufficient funds in your Checking account.');
+    }
+
+    const last4 = String(card.cardNumber).slice(-4);
+    const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 16);
+    const updatedCard = { ...card, balance: parseFloat((card.balance + parsedAmount).toFixed(2)) };
+    const newAcc = { ...uAcc, checking: parseFloat((uAcc.checking - parsedAmount).toFixed(2)) };
+
+    const nextCards = virtualCards.map((c) => (c.id === cardId ? updatedCard : c));
+    setVirtualCards(nextCards);
+    saveCachedCards(nextCards);
+    setAccounts((prev) => ({ ...prev, [currentUser.id]: newAcc }));
+
+    const fundTx = {
+      id: `cardtop_${Date.now()}`,
+      timestamp,
+      type: 'withdraw',
+      category: 'Card Top-Up',
+      senderId: currentUser.id,
+      senderName: currentUser.name,
+      senderAccount: currentUser.accountNo,
+      recipientId: null,
+      recipientName: `Finora Card •••• ${last4}`,
+      recipientAccount: `CARD-${last4}`,
+      amount: parsedAmount,
+      status: 'Completed',
+      note: `Top-up to ${card.label} (•••• ${last4})`,
+    };
+    setTransactions((prev) => [fundTx, ...prev]);
+
+    const notif = {
+      id: `notif_ctop_${Date.now()}`,
+      userId: currentUser.id,
+      type: 'transfer_sent',
+      title: 'Card Funded',
+      message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} moved from Checking to card •••• ${last4}.`,
+      timestamp,
+      read: false,
+    };
+    setNotifications((prev) => [notif, ...prev]);
+
+    dispatchSuccess({
+      title: 'Card Topped Up',
+      message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} added to •••• ${last4}.`,
+    });
+
+    if (!IS_MOCK_ENV) {
+      (async () => {
+        try {
+          await Promise.all([
+            syncVirtualCardDb(updatedCard),
+            syncAccount(currentUser.id, newAcc),
+            insertNotifications([notif]),
+            supabase.from('transactions').insert({
+              id: fundTx.id,
+              timestamp: fundTx.timestamp,
+              type: fundTx.type,
+              category: fundTx.category,
+              sender_id: fundTx.senderId,
+              sender_name: fundTx.senderName,
+              sender_account: fundTx.senderAccount,
+              recipient_id: null,
+              recipient_name: fundTx.recipientName,
+              recipient_account: fundTx.recipientAccount,
+              amount: fundTx.amount,
+              status: fundTx.status,
+              note: fundTx.note,
+            }),
+          ]);
+        } catch (err) {
+          console.warn('[fundVirtualCard] Background sync warning (non-fatal):', err.message || err);
+        }
+      })();
+    }
+
+    return updatedCard;
+  };
+
+  const unloadVirtualCard = async (cardId, amount) => {
+    if (!currentUser) throw new Error('Must be logged in.');
+    const card = virtualCards.find((c) => c.id === cardId && c.userId === currentUser.id);
+    if (!card) throw new Error('Virtual card not found.');
+
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) throw new Error('Enter a valid amount greater than $0.00.');
+    if (card.balance < parsedAmount) throw new Error('Insufficient funds on this virtual card.');
+
+    const last4 = String(card.cardNumber).slice(-4);
+    const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 16);
+    const uAcc = accounts[currentUser.id] || { checking: 0, savings: 0, loan: 0 };
+    const updatedCard = { ...card, balance: parseFloat((card.balance - parsedAmount).toFixed(2)) };
+    const newAcc = { ...uAcc, checking: parseFloat((uAcc.checking + parsedAmount).toFixed(2)) };
+
+    const nextCards = virtualCards.map((c) => (c.id === cardId ? updatedCard : c));
+    setVirtualCards(nextCards);
+    saveCachedCards(nextCards);
+    setAccounts((prev) => ({ ...prev, [currentUser.id]: newAcc }));
+
+    const unloadTx = {
+      id: `cardout_${Date.now()}`,
+      timestamp,
+      type: 'deposit',
+      category: 'Card Unload',
+      senderId: null,
+      senderName: `Finora Card •••• ${last4}`,
+      senderAccount: `CARD-${last4}`,
+      recipientId: currentUser.id,
+      recipientName: currentUser.name,
+      recipientAccount: currentUser.accountNo,
+      amount: parsedAmount,
+      status: 'Completed',
+      note: `Returned funds from ${card.label} (•••• ${last4}) to Checking`,
+    };
+    setTransactions((prev) => [unloadTx, ...prev]);
+
+    const notif = {
+      id: `notif_cout_${Date.now()}`,
+      userId: currentUser.id,
+      type: 'admin_funded',
+      title: 'Card Funds Returned',
+      message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} withdrawn from card •••• ${last4} back to Checking.`,
+      timestamp,
+      read: false,
+    };
+    setNotifications((prev) => [notif, ...prev]);
+
+    dispatchSuccess({
+      title: 'Funds Returned to Checking',
+      message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} transferred to Checking.`,
+    });
+
+    if (!IS_MOCK_ENV) {
+      (async () => {
+        try {
+          await Promise.all([
+            syncVirtualCardDb(updatedCard),
+            syncAccount(currentUser.id, newAcc),
+            insertNotifications([notif]),
+            supabase.from('transactions').insert({
+              id: unloadTx.id,
+              timestamp: unloadTx.timestamp,
+              type: unloadTx.type,
+              category: unloadTx.category,
+              sender_id: null,
+              sender_name: unloadTx.senderName,
+              sender_account: unloadTx.senderAccount,
+              recipient_id: unloadTx.recipientId,
+              recipient_name: unloadTx.recipientName,
+              recipient_account: unloadTx.recipientAccount,
+              amount: unloadTx.amount,
+              status: unloadTx.status,
+              note: unloadTx.note,
+            }),
+          ]);
+        } catch (err) {
+          console.warn('[unloadVirtualCard] Background sync warning (non-fatal):', err.message || err);
+        }
+      })();
+    }
+
+    return updatedCard;
+  };
+
+  const toggleFreezeVirtualCard = async (cardId) => {
+    const card = virtualCards.find((c) => c.id === cardId && c.userId === currentUser?.id);
+    if (!card) throw new Error('Virtual card not found.');
+    const nextStatus = card.status === 'Frozen' ? 'Active' : 'Frozen';
+    const updatedCard = { ...card, status: nextStatus };
+
+    const nextCards = virtualCards.map((c) => (c.id === cardId ? updatedCard : c));
+    setVirtualCards(nextCards);
+    saveCachedCards(nextCards);
+
+    dispatchSuccess({
+      title: nextStatus === 'Frozen' ? 'Card Frozen' : 'Card Activated',
+      message: `${card.label} (•••• ${String(card.cardNumber).slice(-4)}) is now ${nextStatus.toLowerCase()}.`,
+    });
+
+    if (!IS_MOCK_ENV) {
+      syncVirtualCardDb(updatedCard).catch(() => {});
+    }
+
+    return updatedCard;
+  };
+
+  const updateVirtualCardControls = async (cardId, updates) => {
+    const card = virtualCards.find((c) => c.id === cardId && c.userId === currentUser?.id);
+    if (!card) throw new Error('Virtual card not found.');
+    if (updates.spendingLimit !== undefined) {
+      const lim = parseFloat(updates.spendingLimit);
+      if (isNaN(lim) || lim < 50) throw new Error('Spending limit must be at least $50.00.');
+      updates.spendingLimit = lim;
+    }
+
+    const updatedCard = { ...card, ...updates };
+    const nextCards = virtualCards.map((c) => (c.id === cardId ? updatedCard : c));
+    setVirtualCards(nextCards);
+    saveCachedCards(nextCards);
+
+    if (!IS_MOCK_ENV) {
+      syncVirtualCardDb(updatedCard).catch(() => {});
+    }
+
+    return updatedCard;
+  };
+
+  const chargeVirtualCard = async (cardId, { merchant, amount, isInternational = false }) => {
+    if (!currentUser) throw new Error('Must be logged in.');
+    const card = virtualCards.find((c) => c.id === cardId && c.userId === currentUser.id);
+    if (!card) throw new Error('Virtual card not found.');
+
+    const cleanMerchant = (merchant || '').trim() || 'Online Merchant';
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) throw new Error('Enter a valid payment amount.');
+
+    if (card.status === 'Frozen') {
+      throw new Error('Declined: This card is frozen. Unfreeze it to authorize payments.');
+    }
+    if (!card.onlinePayments) {
+      throw new Error('Declined: Online & e-commerce payments are disabled in card controls.');
+    }
+    if (isInternational && !card.internationalPayments) {
+      throw new Error('Declined: International payments are disabled in card controls.');
+    }
+    if (card.spentThisMonth + parsedAmount > card.spendingLimit) {
+      throw new Error(`Declined: Exceeds monthly card spend limit of $${card.spendingLimit.toLocaleString('en-US')}.`);
+    }
+    if (card.balance < parsedAmount) {
+      throw new Error('Declined: Insufficient virtual card balance. Top up from Checking first.');
+    }
+
+    const last4 = String(card.cardNumber).slice(-4);
+    const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 16);
+    const updatedCard = {
+      ...card,
+      balance: parseFloat((card.balance - parsedAmount).toFixed(2)),
+      spentThisMonth: parseFloat((card.spentThisMonth + parsedAmount).toFixed(2)),
+    };
+
+    const nextCards = virtualCards.map((c) => (c.id === cardId ? updatedCard : c));
+    setVirtualCards(nextCards);
+    saveCachedCards(nextCards);
+
+    const payTx = {
+      id: `cardpay_${Date.now()}`,
+      timestamp,
+      type: 'withdraw',
+      category: 'Card Payment',
+      senderId: currentUser.id,
+      senderName: currentUser.name,
+      senderAccount: `CARD-${last4}`,
+      recipientId: null,
+      recipientName: cleanMerchant,
+      recipientAccount: isInternational ? 'INTL-POS' : 'US-POS',
+      amount: parsedAmount,
+      status: 'Completed',
+      note: `Virtual Card •••• ${last4} purchase at ${cleanMerchant}`,
+    };
+    setTransactions((prev) => [payTx, ...prev]);
+
+    const notif = {
+      id: `notif_cpay_${Date.now()}`,
+      userId: currentUser.id,
+      type: 'transfer_sent',
+      title: `Card Charge: ${cleanMerchant}`,
+      message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} authorized on card •••• ${last4} at ${cleanMerchant}.`,
+      timestamp,
+      read: false,
+    };
+    setNotifications((prev) => [notif, ...prev]);
+
+    dispatchSuccess({
+      title: 'Card Payment Approved',
+      message: `$${parsedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} paid to ${cleanMerchant}.`,
+    });
+
+    if (!IS_MOCK_ENV) {
+      (async () => {
+        try {
+          await Promise.all([
+            syncVirtualCardDb(updatedCard),
+            insertNotifications([notif]),
+            supabase.from('transactions').insert({
+              id: payTx.id,
+              timestamp: payTx.timestamp,
+              type: payTx.type,
+              category: payTx.category,
+              sender_id: payTx.senderId,
+              sender_name: payTx.senderName,
+              sender_account: payTx.senderAccount,
+              recipient_id: null,
+              recipient_name: payTx.recipientName,
+              recipient_account: payTx.recipientAccount,
+              amount: payTx.amount,
+              status: payTx.status,
+              note: payTx.note,
+            }),
+          ]);
+        } catch (err) {
+          console.warn('[chargeVirtualCard] Background sync warning (non-fatal):', err.message || err);
+        }
+      })();
+    }
+
+    return payTx;
+  };
+
+  const terminateVirtualCard = async (cardId) => {
+    if (!currentUser) throw new Error('Must be logged in.');
+    const card = virtualCards.find((c) => c.id === cardId && c.userId === currentUser.id);
+    if (!card) throw new Error('Virtual card not found.');
+
+    const last4 = String(card.cardNumber).slice(-4);
+    const refundAmount = parseFloat(card.balance || 0);
+    const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 16);
+
+    const nextCards = virtualCards.filter((c) => c.id !== cardId);
+    setVirtualCards(nextCards);
+    saveCachedCards(nextCards);
+
+    let newAcc = null;
+    let refundTx = null;
+    if (refundAmount > 0) {
+      const uAcc = accounts[currentUser.id] || { checking: 0, savings: 0, loan: 0 };
+      newAcc = { ...uAcc, checking: parseFloat((uAcc.checking + refundAmount).toFixed(2)) };
+      setAccounts((prev) => ({ ...prev, [currentUser.id]: newAcc }));
+      refundTx = {
+        id: `cardclose_${Date.now()}`,
+        timestamp,
+        type: 'deposit',
+        category: 'Card Refund',
+        senderId: null,
+        senderName: `Finora Card •••• ${last4}`,
+        senderAccount: `CARD-${last4}`,
+        recipientId: currentUser.id,
+        recipientName: currentUser.name,
+        recipientAccount: currentUser.accountNo,
+        amount: refundAmount,
+        status: 'Completed',
+        note: `Auto-refund upon closing virtual card •••• ${last4}`,
+      };
+      setTransactions((prev) => [refundTx, ...prev]);
+    }
+
+    dispatchSuccess({
+      title: 'Virtual Card Closed',
+      message: refundAmount > 0
+        ? `Card •••• ${last4} closed and $${refundAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} returned to Checking.`
+        : `Card •••• ${last4} has been permanently closed.`,
+    });
+
+    if (!IS_MOCK_ENV) {
+      (async () => {
+        try {
+          const tasks = [
+            supabase.from('virtual_cards').update({ status: 'Terminated', balance: 0 }).eq('id', cardId),
+          ];
+          if (newAcc) tasks.push(syncAccount(currentUser.id, newAcc));
+          if (refundTx) {
+            tasks.push(
+              supabase.from('transactions').insert({
+                id: refundTx.id,
+                timestamp: refundTx.timestamp,
+                type: refundTx.type,
+                category: refundTx.category,
+                sender_id: null,
+                sender_name: refundTx.senderName,
+                sender_account: refundTx.senderAccount,
+                recipient_id: refundTx.recipientId,
+                recipient_name: refundTx.recipientName,
+                recipient_account: refundTx.recipientAccount,
+                amount: refundTx.amount,
+                status: refundTx.status,
+                note: refundTx.note,
+              })
+            );
+          }
+          await Promise.all(tasks);
+        } catch (err) {
+          console.warn('[terminateVirtualCard] Background sync warning (non-fatal):', err.message || err);
+        }
+      })();
+    }
+  };
+
   return (
     <BankingContext.Provider
       value={{
-        accounts, savingsMeta, transactions, loans, notifications, settings, moneyRequests, externalTransfers, lastFundedAt,
+        accounts, savingsMeta, transactions, loans, notifications, settings, moneyRequests, externalTransfers, virtualCards, lastFundedAt,
         bankingLoading,
         getUserBalances, getVisibleTransactions, lookupUserByIdentifier,
         transferFunds, mintCurrency, toggleTransactionStatus,
@@ -1170,6 +1788,8 @@ export function BankingProvider({ children }) {
         applyForLoan, approveLoan, rejectLoan, repayLoanInstallment,
         createMoneyRequest,
         submitExternalTransfer, resolveExternalTransfer,
+        issueVirtualCard, fundVirtualCard, unloadVirtualCard, toggleFreezeVirtualCard,
+        updateVirtualCardControls, chargeVirtualCard, terminateVirtualCard,
         markNotificationRead, markAllNotificationsRead,
         updateSettings,
       }}

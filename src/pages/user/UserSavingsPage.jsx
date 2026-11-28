@@ -63,14 +63,14 @@ export default function UserSavingsPage() {
 
         <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-6">
           {/* Balance Hero */}
-          <div className="relative bg-gradient-to-br from-[#1A1A1A] to-[#141414] border border-[#CAFF33]/20 rounded-2xl p-6 overflow-hidden">
+          <div className="relative bg-gradient-to-br from-[#1A1A1A] to-[#141414] border border-[#CAFF33]/20 rounded-[2px] p-6 overflow-hidden">
             <div className="absolute -right-8 -top-8 w-40 h-40 bg-[#CAFF33]/5 rounded-full blur-3xl pointer-events-none" />
             <div className="flex items-start justify-between mb-4">
               <div>
                 <p className="text-[11px] uppercase tracking-widest text-[#555] font-['Inter'] mb-2">Savings Balance</p>
                 <MonoAmount amount={balances.savings} size="4xl" direction="credit" />
               </div>
-              <span className="px-3 py-1.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-full text-[#CAFF33] font-mono-figures text-[12px] font-bold">
+              <span className="px-3 py-1.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[2px] text-[#CAFF33] font-mono-figures text-[12px] font-bold">
                 {settings.savingsAPY}% APY
               </span>
             </div>
@@ -85,16 +85,16 @@ export default function UserSavingsPage() {
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             {/* Deposit / Withdraw form */}
-            <div className="bg-[#1A1A1A] border border-[#222] rounded-2xl p-6 space-y-5">
+            <div className="bg-[#1A1A1A] border border-[#222] rounded-[2px] p-6 space-y-5">
               <h2 className="text-[15px] font-semibold text-white font-['Poppins']">Manage Savings</h2>
 
               {/* Tab toggle */}
-              <div className="flex bg-[#141414] border border-[#222] rounded-full p-1 gap-1">
+              <div className="flex bg-[#141414] border border-[#222] rounded-[2px] p-1 gap-1">
                 {['deposit', 'withdraw'].map((t) => (
                   <button
                     key={t}
                     onClick={() => { setTab(t); setAmount(''); setError(''); setSuccess(''); }}
-                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full text-[13px] font-semibold transition-all font-['Poppins'] ${
+                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[2px] text-[13px] font-semibold transition-all font-['Poppins'] ${
                       tab === t
                         ? 'bg-[#CAFF33] text-[#111]'
                         : 'text-[#555] hover:text-white'
@@ -124,7 +124,7 @@ export default function UserSavingsPage() {
                     min="1"
                     step="0.01"
                     required
-                    className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-full pl-10 pr-5 py-4 text-[20px] text-white font-mono-figures placeholder:text-[#333] outline-none transition-colors text-center"
+                    className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[2px] pl-10 pr-5 py-4 text-[20px] text-white font-mono-figures placeholder:text-[#333] outline-none transition-colors text-center"
                   />
                 </div>
 
@@ -132,17 +132,17 @@ export default function UserSavingsPage() {
                 <div className="flex gap-2 flex-wrap">
                   {[100, 250, 500, 1000, 2500].map((v) => (
                     <button key={v} type="button" onClick={() => setAmount(String(v))}
-                      className="px-3 py-1.5 rounded-full border border-[#2A2A2A] text-[11px] text-[#555] hover:border-[#CAFF33] hover:text-[#CAFF33] transition-colors font-mono-figures">
+                      className="px-3 py-1.5 rounded-[2px] border border-[#2A2A2A] text-[11px] text-[#555] hover:border-[#CAFF33] hover:text-[#CAFF33] transition-colors font-mono-figures">
                       ${v.toLocaleString()}
                     </button>
                   ))}
                 </div>
 
-                {error && <p className="text-[12px] text-[#FF5555] bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-xl px-4 py-2.5 font-['Inter']">{error}</p>}
-                {success && <p className="text-[12px] text-[#CAFF33] bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-xl px-4 py-2.5 font-['Inter']">{success}</p>}
+                {error && <p className="text-[12px] text-[#FF5555] bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[2px] px-4 py-2.5 font-['Inter']">{error}</p>}
+                {success && <p className="text-[12px] text-[#CAFF33] bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[2px] px-4 py-2.5 font-['Inter']">{success}</p>}
 
                 <button type="submit"
-                  className="w-full py-3.5 rounded-full bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors">
+                  className="w-full py-3.5 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors">
                   {tab === 'deposit' ? 'Deposit to Savings' : 'Withdraw to Checking'}
                 </button>
               </form>
@@ -150,7 +150,7 @@ export default function UserSavingsPage() {
               {/* Simulate interest button (demo) */}
               <button
                 onClick={handleSimulateInterest}
-                className="w-full flex items-center justify-center gap-2 py-2.5 border border-[#CAFF33]/20 rounded-full text-[12px] text-[#CAFF33] hover:bg-[#CAFF33]/5 transition-colors font-['Inter']"
+                className="w-full flex items-center justify-center gap-2 py-2.5 border border-[#CAFF33]/20 rounded-[2px] text-[12px] text-[#CAFF33] hover:bg-[#CAFF33]/5 transition-colors font-['Inter']"
               >
                 <Zap size={13} />
                 Simulate Interest Credit (Demo)
@@ -158,7 +158,7 @@ export default function UserSavingsPage() {
             </div>
 
             {/* Savings history */}
-            <div className="bg-[#1A1A1A] border border-[#222] rounded-2xl">
+            <div className="bg-[#1A1A1A] border border-[#222] rounded-[2px]">
               <div className="px-5 py-4 border-b border-[#1F1F1F]">
                 <h2 className="text-[14px] font-semibold text-white font-['Poppins']">Savings History</h2>
                 <p className="text-[11px] text-[#444] font-['Inter']">{savingsTx.length} transactions</p>
@@ -171,8 +171,8 @@ export default function UserSavingsPage() {
                     const isDeposit = tx.category === 'Savings Deposit';
                     return (
                       <button key={tx.id} onClick={() => setSelectedTx(tx)}
-                        className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-[#222] transition-colors text-left">
-                        <div className={`p-2.5 rounded-xl border shrink-0 ${
+                        className="w-full flex items-center gap-3 p-3 rounded-[2px] hover:bg-[#222] transition-colors text-left">
+                        <div className={`p-2.5 rounded-[2px] border shrink-0 ${
                           isDeposit ? 'bg-[#CAFF33]/10 border-[#CAFF33]/20 text-[#CAFF33]' : 'bg-[#FF5555]/10 border-[#FF5555]/20 text-[#FF5555]'
                         }`}>
                           {isDeposit ? <ArrowDownLeft size={13} /> : <ArrowUpRight size={13} />}
@@ -196,21 +196,21 @@ export default function UserSavingsPage() {
           </div>
 
           {/* Interest info card */}
-          <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-2xl p-5">
+          <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] p-5">
             <div className="flex items-center gap-2 mb-3">
               <TrendingUp size={15} className="text-[#CAFF33]" />
               <h3 className="text-[13px] font-semibold text-white font-['Poppins']">How Your Interest Works</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-[12px] font-['Inter']">
-              <div className="p-3 bg-[#141414] rounded-xl">
+              <div className="p-3 bg-[#141414] rounded-[2px]">
                 <p className="text-[#555] mb-1">Annual Percentage Yield</p>
                 <p className="text-[#CAFF33] font-bold font-mono-figures text-[16px]">{settings.savingsAPY}%</p>
               </div>
-              <div className="p-3 bg-[#141414] rounded-xl">
+              <div className="p-3 bg-[#141414] rounded-[2px]">
                 <p className="text-[#555] mb-1">Payout Frequency</p>
                 <p className="text-white font-semibold">{settings.savingsPayoutFrequency || 'Monthly'}</p>
               </div>
-              <div className="p-3 bg-[#141414] rounded-xl">
+              <div className="p-3 bg-[#141414] rounded-[2px]">
                 <p className="text-[#555] mb-1">Last Interest Credit</p>
                 <p className="text-white font-semibold font-mono-figures">{meta.lastCreditedAt}</p>
               </div>

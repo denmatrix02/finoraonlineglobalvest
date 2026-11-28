@@ -32,11 +32,11 @@ function AttachmentBubble({ att }) {
   const isImage = att.type?.startsWith('image/');
   return isImage ? (
     <a href={att.data} target="_blank" rel="noreferrer" className="block mt-1">
-      <img src={att.data} alt={att.name} className="max-w-[200px] max-h-[160px] rounded-xl object-cover border border-[#333] hover:opacity-90 transition-opacity" />
+      <img src={att.data} alt={att.name} className="max-w-[200px] max-h-[160px] rounded-[2px] object-cover border border-[#333] hover:opacity-90 transition-opacity" />
     </a>
   ) : (
     <a href={att.data} download={att.name}
-      className="flex items-center gap-2 mt-1 px-3 py-2 bg-[#222] border border-[#333] rounded-xl text-[11px] text-[#CAFF33] hover:bg-[#2A2A2A] transition-colors max-w-[200px]">
+      className="flex items-center gap-2 mt-1 px-3 py-2 bg-[#222] border border-[#333] rounded-[2px] text-[11px] text-[#CAFF33] hover:bg-[#2A2A2A] transition-colors max-w-[200px]">
       <FileText size={13} />
       <span className="truncate font-['Inter']">{att.name}</span>
     </a>
@@ -51,21 +51,21 @@ function ChatBubble({ msg, currentUserId }) {
     <div className={`flex ${isOwn ? 'justify-end' : 'justify-start'} mb-3`}>
       {/* Admin avatar */}
       {!isOwn && (
-        <div className="w-7 h-7 rounded-lg bg-[#CAFF33]/10 border border-[#CAFF33]/20 flex items-center justify-center mr-2 shrink-0 mt-1">
+        <div className="w-7 h-7 rounded-[1.5px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 flex items-center justify-center mr-2 shrink-0 mt-1">
           <img src={logoImg} alt="Support" width="14" className="object-contain opacity-70" />
         </div>
       )}
       <div className="max-w-[70%] space-y-1">
         {msg.txContext && (
-          <div className={`flex items-center gap-1.5 px-3 py-1 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-full text-[10px] text-[#CAFF33] font-mono-figures mb-1 ${isOwn ? 'ml-auto w-fit' : ''}`}>
+          <div className={`flex items-center gap-1.5 px-3 py-1 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[1.5px] text-[10px] text-[#CAFF33] font-mono-figures mb-1 ${isOwn ? 'ml-auto w-fit' : ''}`}>
             <Receipt size={10} />
             Re: {msg.txContext}
           </div>
         )}
-        <div className={`px-4 py-2.5 rounded-2xl text-[13px] leading-relaxed font-['Inter'] ${
+        <div className={`px-4 py-2.5 rounded-[2px] text-[13px] leading-relaxed font-['Inter'] ${
           isOwn
-            ? 'bg-[#1E1E1E] border border-[#2A2A2A] text-[#DDD] rounded-br-md'
-            : 'bg-[#CAFF33]/12 border border-[#CAFF33]/20 text-white rounded-bl-md'
+            ? 'bg-[#1E1E1E] border border-[#2A2A2A] text-[#DDD] rounded-br-[1.5px]'
+            : 'bg-[#CAFF33]/12 border border-[#CAFF33]/20 text-white rounded-bl-[1.5px]'
         }`}>
           {msg.content}
           {msg.attachments?.map((att, i) => <AttachmentBubble key={i} att={att} />)}
@@ -145,18 +145,18 @@ export default function UserSupportPage() {
       <main className="flex-1 flex flex-col min-w-0">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-4 sm:px-6 py-3.5 sm:py-4 flex items-center gap-3 sm:gap-4">
-          <div className="w-10 h-10 rounded-xl bg-[#CAFF33]/10 border border-[#CAFF33]/20 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-[2px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 flex items-center justify-center shrink-0">
             <img src={logoImg} alt="Support" width="18" className="object-contain" />
           </div>
           <div className="flex-1">
             <h1 className="text-[16px] font-bold text-white font-['Poppins'] flex items-center gap-2">
               Finora Support
-              <span className="px-2 py-0.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] text-[9px] font-mono-figures rounded-full">ONLINE</span>
+              <span className="px-2 py-0.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] text-[9px] font-mono-figures rounded-[1.5px]">ONLINE</span>
             </h1>
             <p className="text-[11px] text-[#444] font-['Inter']">Your direct line to the Finora admin team</p>
           </div>
           {unread > 0 && (
-            <span className="bg-[#FF5555] text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-mono-figures">
+            <span className="bg-[#FF5555] text-white text-[10px] font-bold px-2.5 py-1 rounded-[1.5px] font-mono-figures">
               {unread} new
             </span>
           )}
@@ -164,8 +164,8 @@ export default function UserSupportPage() {
 
         {/* Intro banner (shown only if no messages yet) */}
         {threadMessages.length === 0 && (
-          <div className="mx-6 mt-8 bg-gradient-to-br from-[#1A1A1A] to-[#141414] border border-[#CAFF33]/15 rounded-2xl p-6 flex items-start gap-4">
-            <div className="p-3 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-xl shrink-0">
+          <div className="mx-6 mt-8 bg-gradient-to-br from-[#1A1A1A] to-[#141414] border border-[#CAFF33]/15 rounded-[2px] p-6 flex items-start gap-4">
+            <div className="p-3 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[2px] shrink-0">
               <HeadphonesIcon size={22} className="text-[#CAFF33]" />
             </div>
             <div>
@@ -176,7 +176,7 @@ export default function UserSupportPage() {
               <div className="mt-3 flex flex-wrap gap-2">
                 {['Transaction issue', 'Loan query', 'Account funding', 'Report a bug'].map((label) => (
                   <button key={label} onClick={() => setInputText(label + ' — ')}
-                    className="px-3 py-1.5 rounded-full border border-[#2A2A2A] text-[11px] text-[#555] hover:text-[#CAFF33] hover:border-[#CAFF33]/30 transition-colors font-['Inter']">
+                    className="px-3 py-1.5 rounded-[2px] border border-[#2A2A2A] text-[11px] text-[#555] hover:text-[#CAFF33] hover:border-[#CAFF33]/30 transition-colors font-['Inter']">
                     {label}
                   </button>
                 ))}
@@ -196,7 +196,7 @@ export default function UserSupportPage() {
         {/* TX Context chip */}
         {txContext && (
           <div className="px-6 pb-2 flex items-center gap-2">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-full text-[11px] text-[#CAFF33] font-mono-figures">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[2px] text-[11px] text-[#CAFF33] font-mono-figures">
               <Receipt size={11} />
               Attaching TX: {txContext}
               <button onClick={() => { setTxContext(null); setInputText(''); }} className="text-[#CAFF33]/60 hover:text-[#CAFF33] ml-1">
@@ -212,16 +212,16 @@ export default function UserSupportPage() {
             {attachments.map((att, i) => (
               <div key={i} className="relative">
                 {att.type?.startsWith('image/') ? (
-                  <img src={att.data} alt={att.name} className="w-14 h-14 rounded-lg object-cover border border-[#333]" />
+                  <img src={att.data} alt={att.name} className="w-14 h-14 rounded-[1.5px] object-cover border border-[#333]" />
                 ) : (
-                  <div className="w-14 h-14 rounded-lg bg-[#1A1A1A] border border-[#333] flex flex-col items-center justify-center gap-1">
+                  <div className="w-14 h-14 rounded-[1.5px] bg-[#1A1A1A] border border-[#333] flex flex-col items-center justify-center gap-1">
                     <FileText size={15} className="text-[#CAFF33]" />
                     <span className="text-[7px] text-[#555] truncate w-12 text-center font-mono-figures px-0.5">{att.name}</span>
                   </div>
                 )}
                 <button
                   onClick={() => setAttachments((prev) => prev.filter((_, j) => j !== i))}
-                  className="absolute -top-1 -right-1 w-4 h-4 bg-[#FF5555] rounded-full flex items-center justify-center text-white"
+                  className="absolute -top-1 -right-1 w-4 h-4 bg-[#FF5555] rounded-[2px] flex items-center justify-center text-white"
                 >
                   <X size={9} />
                 </button>
@@ -242,7 +242,7 @@ export default function UserSupportPage() {
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="p-2.5 rounded-xl bg-[#1A1A1A] border border-[#222] text-[#555] hover:text-[#CAFF33] hover:border-[#CAFF33]/30 transition-all shrink-0"
+            className="p-2.5 rounded-[2px] bg-[#1A1A1A] border border-[#222] text-[#555] hover:text-[#CAFF33] hover:border-[#CAFF33]/30 transition-all shrink-0"
             title="Attach file or image"
           >
             <Paperclip size={15} />
@@ -253,12 +253,12 @@ export default function UserSupportPage() {
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
             placeholder="Type a message to Finora Support…"
-            className="flex-1 bg-[#1A1A1A] border border-[#222] focus:border-[#CAFF33] rounded-full px-5 py-3 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors font-['Inter']"
+            className="flex-1 bg-[#1A1A1A] border border-[#222] focus:border-[#CAFF33] rounded-[2px] px-5 py-3 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors font-['Inter']"
           />
           <button
             onClick={handleSend}
             disabled={!inputText.trim() && attachments.length === 0}
-            className="p-2.5 rounded-full bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0"
+            className="p-2.5 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0"
           >
             <Send size={15} />
           </button>

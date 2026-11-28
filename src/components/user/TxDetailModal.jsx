@@ -39,7 +39,7 @@ export default function TxDetailModal({ tx, currentUserId, onClose }) {
       onClick={onClose}
     >
       <div
-        className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-2xl w-full max-w-md shadow-2xl shadow-black/60 overflow-hidden"
+        className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-[2px] w-full max-w-md shadow-2xl shadow-black/60 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -54,7 +54,7 @@ export default function TxDetailModal({ tx, currentUserId, onClose }) {
         <div className="px-6 py-6 space-y-5">
           {/* Amount hero */}
           <div className="flex flex-col items-center text-center gap-2 py-4">
-            <div className={`p-4 rounded-2xl border ${iconBg}`}>
+            <div className={`p-4 rounded-[2px] border ${iconBg}`}>
               <Icon size={28} className={iconColor} />
             </div>
             <MonoAmount
@@ -68,7 +68,7 @@ export default function TxDetailModal({ tx, currentUserId, onClose }) {
 
           {/* Failure reason */}
           {tx.status === 'Failed' && tx.failureReason && (
-            <div className="flex items-start gap-2 bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-xl p-3">
+            <div className="flex items-start gap-2 bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[2px] p-3">
               <AlertCircle size={14} className="text-[#FF5555] mt-0.5 shrink-0" />
               <p className="text-xs text-[#FF5555] leading-relaxed">
                 <span className="font-semibold">Reason: </span>{tx.failureReason}
@@ -95,14 +95,14 @@ export default function TxDetailModal({ tx, currentUserId, onClose }) {
           {tx.status === 'Failed' && (
             <button
               onClick={handleContactSupport}
-              className="w-full py-3 flex items-center justify-center gap-2 bg-[#FF5555]/10 hover:bg-[#FF5555]/15 border border-[#FF5555]/25 rounded-full text-sm text-[#FF5555] font-semibold transition-colors font-['Poppins']"
+              className="w-full py-3 flex items-center justify-center gap-2 bg-[#FF5555]/10 hover:bg-[#FF5555]/15 border border-[#FF5555]/25 rounded-[2px] text-sm text-[#FF5555] font-semibold transition-colors font-['Poppins']"
             >
               <MessageCircle size={14} /> Contact Support About This
             </button>
           )}
           <button
             onClick={onClose}
-            className="w-full py-3 bg-[#222] hover:bg-[#2A2A2A] border border-[#333] rounded-full text-sm text-white font-medium transition-colors"
+            className="w-full py-3 bg-[#222] hover:bg-[#2A2A2A] border border-[#333] rounded-[2px] text-sm text-white font-medium transition-colors"
           >
             Close
           </button>

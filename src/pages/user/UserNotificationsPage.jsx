@@ -54,7 +54,7 @@ export default function UserNotificationsPage() {
             <h1 className="text-[18px] font-bold text-white font-['Poppins'] flex items-center gap-2">
               Notifications
               {unread > 0 && (
-                <span className="bg-[#FF5555] text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-mono-figures">
+                <span className="bg-[#FF5555] text-white text-[10px] font-bold px-2 py-0.5 rounded-[1.5px] font-mono-figures">
                   {unread}
                 </span>
               )}
@@ -64,7 +64,7 @@ export default function UserNotificationsPage() {
           {unread > 0 && (
             <button
               onClick={() => markAllNotificationsRead(currentUser?.id)}
-              className="px-4 py-2 rounded-full border border-[#222] text-[12px] text-[#555] hover:text-[#CAFF33] hover:border-[#CAFF33]/30 transition-all font-['Inter']"
+              className="px-4 py-2 rounded-[2px] border border-[#222] text-[12px] text-[#555] hover:text-[#CAFF33] hover:border-[#CAFF33]/30 transition-all font-['Inter']"
             >
               Mark all read
             </button>
@@ -94,13 +94,13 @@ export default function UserNotificationsPage() {
                         <div
                           key={n.id ? `${n.id}_${idx}` : `notif_${idx}`}
                           onClick={() => markNotificationRead(n.id)}
-                          className={`flex items-start gap-4 p-4 rounded-xl border transition-all cursor-pointer ${
+                          className={`flex items-start gap-4 p-4 rounded-[2px] border transition-all cursor-pointer ${
                             n.read
                               ? 'bg-[#141414] border-[#1A1A1A] opacity-60 hover:opacity-80'
                               : 'bg-[#1A1A1A] border-[#222] hover:border-[#2A2A2A]'
                           }`}
                         >
-                          <div className={`p-2.5 rounded-xl border shrink-0 mt-0.5 ${cfg.bg}`}>
+                          <div className={`p-2.5 rounded-[2px] border shrink-0 mt-0.5 ${cfg.bg}`}>
                             <Icon size={14} className={cfg.color} />
                           </div>
                           <div className="flex-1 min-w-0">

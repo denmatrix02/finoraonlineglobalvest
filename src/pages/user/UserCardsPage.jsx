@@ -177,7 +177,7 @@ export default function UserCardsPage() {
           <div className="min-w-0">
             <h1 className="text-[17px] sm:text-[18px] font-bold text-white font-['Poppins'] flex items-center gap-2">
               Virtual Cards
-              <span className="text-[10px] font-mono-figures px-2 py-0.5 rounded-full bg-[#1C1C1C] border border-[#2A2A2A] text-[#CAFF33]">
+              <span className="text-[10px] font-mono-figures px-2 py-0.5 rounded-[1.5px] bg-[#1C1C1C] border border-[#2A2A2A] text-[#CAFF33]">
                 {myCards.length}/5
               </span>
             </h1>
@@ -192,7 +192,7 @@ export default function UserCardsPage() {
                 setIssueError('');
                 setShowIssueModal(true);
               }}
-              className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[12px] sm:text-[13px] font-bold font-['Poppins'] transition-colors shrink-0"
+              className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[12px] sm:text-[13px] font-bold font-['Poppins'] transition-colors shrink-0"
             >
               <Plus size={15} /> Issue Card
             </button>
@@ -215,7 +215,7 @@ export default function UserCardsPage() {
                       setFlipped(false);
                       setConfirmClose(false);
                     }}
-                    className={`flex items-center gap-2 px-3.5 py-2 rounded-full border text-[12px] font-medium whitespace-nowrap transition-all shrink-0 ${
+                    className={`flex items-center gap-2 px-3.5 py-2 rounded-[2px] border text-[12px] font-medium whitespace-nowrap transition-all shrink-0 ${
                       isSelected
                         ? 'bg-[#CAFF33]/15 border-[#CAFF33]/50 text-[#CAFF33] font-semibold'
                         : 'bg-[#171717] border-[#242424] text-[#888] hover:text-white'
@@ -235,8 +235,8 @@ export default function UserCardsPage() {
 
           {/* Empty State if no cards yet */}
           {!activeCard ? (
-            <div className="bg-gradient-to-br from-[#192614] via-[#151814] to-[#111] border border-[#CAFF33]/25 rounded-3xl p-6 sm:p-10 text-center max-w-2xl mx-auto">
-              <div className="w-14 h-14 rounded-2xl bg-[#CAFF33]/15 border border-[#CAFF33]/30 flex items-center justify-center mx-auto mb-4 text-[#CAFF33]">
+            <div className="bg-gradient-to-br from-[#192614] via-[#151814] to-[#111] border border-[#CAFF33]/25 rounded-[2px] p-6 sm:p-10 text-center max-w-2xl mx-auto">
+              <div className="w-14 h-14 rounded-[2px] bg-[#CAFF33]/15 border border-[#CAFF33]/30 flex items-center justify-center mx-auto mb-4 text-[#CAFF33]">
                 <CreditCard size={26} />
               </div>
               <h2 className="text-[20px] sm:text-[22px] font-bold text-white font-['Poppins'] mb-2">
@@ -250,7 +250,7 @@ export default function UserCardsPage() {
               <button
                 type="button"
                 onClick={() => setShowIssueModal(true)}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors shadow-[0_10px_30px_rgba(202,255,51,0.2)]"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors shadow-[0_10px_30px_rgba(202,255,51,0.2)]"
               >
                 <Sparkles size={16} /> Issue Virtual Card Now
               </button>
@@ -272,7 +272,7 @@ export default function UserCardsPage() {
                   <button
                     type="button"
                     onClick={() => setRevealed((r) => !r)}
-                    className="flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-2xl bg-[#1A1A1A] border border-[#242424] hover:border-[#CAFF33]/40 text-[#CCC] hover:text-white transition-all"
+                    className="flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-[2px] bg-[#1A1A1A] border border-[#242424] hover:border-[#CAFF33]/40 text-[#CCC] hover:text-white transition-all"
                   >
                     {revealed ? <EyeOff size={16} className="text-[#CAFF33]" /> : <Eye size={16} />}
                     <span className="text-[10px] font-medium font-['Inter']">
@@ -283,7 +283,7 @@ export default function UserCardsPage() {
                   <button
                     type="button"
                     onClick={handleCopyPan}
-                    className="flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-2xl bg-[#1A1A1A] border border-[#242424] hover:border-[#CAFF33]/40 text-[#CCC] hover:text-white transition-all"
+                    className="flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-[2px] bg-[#1A1A1A] border border-[#242424] hover:border-[#CAFF33]/40 text-[#CCC] hover:text-white transition-all"
                   >
                     {copiedPan ? <Check size={16} className="text-[#CAFF33]" /> : <Copy size={16} />}
                     <span className="text-[10px] font-medium font-['Inter']">
@@ -294,7 +294,7 @@ export default function UserCardsPage() {
                   <button
                     type="button"
                     onClick={() => setFlipped((f) => !f)}
-                    className="flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-2xl bg-[#1A1A1A] border border-[#242424] hover:border-[#CAFF33]/40 text-[#CCC] hover:text-white transition-all"
+                    className="flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-[2px] bg-[#1A1A1A] border border-[#242424] hover:border-[#CAFF33]/40 text-[#CCC] hover:text-white transition-all"
                   >
                     <RotateCw size={16} className={flipped ? 'text-[#CAFF33]' : ''} />
                     <span className="text-[10px] font-medium font-['Inter']">
@@ -305,7 +305,7 @@ export default function UserCardsPage() {
                   <button
                     type="button"
                     onClick={() => toggleFreezeVirtualCard(activeCard.id)}
-                    className={`flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-2xl border transition-all ${
+                    className={`flex flex-col items-center justify-center gap-1 py-2.5 px-2 rounded-[2px] border transition-all ${
                       activeCard.status === 'Frozen'
                         ? 'bg-sky-500/15 border-sky-400/40 text-sky-300'
                         : 'bg-[#1A1A1A] border-[#242424] hover:border-sky-400/40 text-[#CCC] hover:text-sky-300'
@@ -319,7 +319,7 @@ export default function UserCardsPage() {
                 </div>
 
                 {/* Card Wallet Balance & Spend Progress */}
-                <div className="bg-[#181818] border border-[#222] rounded-3xl p-4 sm:p-5 space-y-4">
+                <div className="bg-[#181818] border border-[#222] rounded-[2px] p-4 sm:p-5 space-y-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="text-[10px] uppercase tracking-widest text-[#666] font-['Inter'] mb-1">
@@ -345,7 +345,7 @@ export default function UserCardsPage() {
                         setWalletAmount('');
                         setWalletModal('fund');
                       }}
-                      className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[12px] font-bold font-['Poppins'] transition-colors"
+                      className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[12px] font-bold font-['Poppins'] transition-colors"
                     >
                       <ArrowDownLeft size={14} /> Top Up
                     </button>
@@ -357,7 +357,7 @@ export default function UserCardsPage() {
                         setWalletAmount('');
                         setWalletModal('unload');
                       }}
-                      className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-[#222] hover:bg-[#2A2A2A] border border-[#2F2F2F] text-white text-[12px] font-semibold font-['Poppins'] transition-colors"
+                      className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-[#222] hover:bg-[#2A2A2A] border border-[#2F2F2F] text-white text-[12px] font-semibold font-['Poppins'] transition-colors"
                     >
                       <ArrowUpRight size={14} /> Withdraw
                     </button>
@@ -369,7 +369,7 @@ export default function UserCardsPage() {
                         setPayAmount('');
                         setShowPayModal(true);
                       }}
-                      className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-[#CAFF33]/10 hover:bg-[#CAFF33]/20 border border-[#CAFF33]/30 text-[#CAFF33] text-[12px] font-semibold font-['Poppins'] transition-colors"
+                      className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-[2px] bg-[#CAFF33]/10 hover:bg-[#CAFF33]/20 border border-[#CAFF33]/30 text-[#CAFF33] text-[12px] font-semibold font-['Poppins'] transition-colors"
                     >
                       <ShoppingBag size={14} /> Pay Test
                     </button>
@@ -400,21 +400,21 @@ export default function UserCardsPage() {
                           step="10"
                           value={limitInput}
                           onChange={(e) => setLimitInput(e.target.value)}
-                          className="flex-1 bg-[#111] border border-[#2E2E2E] focus:border-[#CAFF33] rounded-xl px-3 py-2 text-[13px] font-mono-figures text-white outline-none"
+                          className="flex-1 bg-[#111] border border-[#2E2E2E] focus:border-[#CAFF33] rounded-[2px] px-3 py-2 text-[13px] font-mono-figures text-white outline-none"
                           required
                         />
                         <button
                           type="submit"
-                          className="px-4 py-2 rounded-xl bg-[#CAFF33] text-[#111] text-[12px] font-bold font-['Poppins']"
+                          className="px-4 py-2 rounded-[2px] bg-[#CAFF33] text-[#111] text-[12px] font-bold font-['Poppins']"
                         >
                           Save
                         </button>
                       </form>
                     ) : (
                       <>
-                        <div className="h-2 bg-[#252525] rounded-full overflow-hidden">
+                        <div className="h-2 bg-[#252525] rounded-[1.5px] overflow-hidden">
                           <div
-                            className={`h-full rounded-full transition-all duration-500 ${
+                            className={`h-full rounded-[2px] transition-all duration-500 ${
                               spendPct >= 90 ? 'bg-[#FF5555]' : 'bg-[#CAFF33]'
                             }`}
                             style={{ width: `${spendPct}%` }}
@@ -438,7 +438,7 @@ export default function UserCardsPage() {
               {/* RIGHT: Security Controls + Card Transactions */}
               <div className="xl:col-span-7 space-y-5">
                 {/* Security & Payment Controls */}
-                <div className="bg-[#181818] border border-[#222] rounded-3xl p-4 sm:p-5 space-y-4">
+                <div className="bg-[#181818] border border-[#222] rounded-[2px] p-4 sm:p-5 space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Sliders size={15} className="text-[#CAFF33]" />
@@ -493,7 +493,7 @@ export default function UserCardsPage() {
                           key={t.id}
                           type="button"
                           onClick={() => updateVirtualCardControls(activeCard.id, { theme: t.id })}
-                          className={`px-2.5 py-1 rounded-full text-[10px] font-medium border transition-all ${
+                          className={`px-2.5 py-1 rounded-[1.5px] text-[10px] font-medium border transition-all ${
                             activeCard.theme === t.id
                               ? 'bg-[#CAFF33]/15 border-[#CAFF33]/40 text-[#CAFF33]'
                               : 'bg-[#141414] border-[#262626] text-[#777] hover:text-white'
@@ -509,14 +509,14 @@ export default function UserCardsPage() {
                         <button
                           type="button"
                           onClick={() => setConfirmClose(false)}
-                          className="px-3 py-1.5 rounded-xl bg-[#222] text-[11px] text-[#BBB]"
+                          className="px-3 py-1.5 rounded-[2px] bg-[#222] text-[11px] text-[#BBB]"
                         >
                           Keep Card
                         </button>
                         <button
                           type="button"
                           onClick={handleConfirmTerminate}
-                          className="px-3 py-1.5 rounded-xl bg-[#FF5555] text-white text-[11px] font-semibold"
+                          className="px-3 py-1.5 rounded-[2px] bg-[#FF5555] text-white text-[11px] font-semibold"
                         >
                           Confirm Close
                         </button>
@@ -534,7 +534,7 @@ export default function UserCardsPage() {
                 </div>
 
                 {/* Card Activity Feed */}
-                <div className="bg-[#181818] border border-[#222] rounded-3xl overflow-hidden">
+                <div className="bg-[#181818] border border-[#222] rounded-[2px] overflow-hidden">
                   <div className="px-4 sm:px-5 py-4 border-b border-[#222] flex items-center justify-between">
                     <div>
                       <h2 className="text-[14px] font-semibold text-white font-['Poppins']">
@@ -560,10 +560,10 @@ export default function UserCardsPage() {
                             key={tx.id}
                             type="button"
                             onClick={() => setSelectedTx(tx)}
-                            className="w-full flex items-center gap-3 p-2.5 sm:p-3 rounded-2xl hover:bg-[#222] transition-colors text-left"
+                            className="w-full flex items-center gap-3 p-2.5 sm:p-3 rounded-[2px] hover:bg-[#222] transition-colors text-left"
                           >
                             <div
-                              className={`p-2 rounded-xl border shrink-0 ${
+                              className={`p-2 rounded-[2px] border shrink-0 ${
                                 isCredit
                                   ? 'bg-[#CAFF33]/10 border-[#CAFF33]/20 text-[#CAFF33]'
                                   : 'bg-[#FF5555]/10 border-[#FF5555]/20 text-[#FF5555]'
@@ -614,7 +614,7 @@ export default function UserCardsPage() {
                 placeholder="e.g. Online Shopping, Travel, SaaS"
                 maxLength={28}
                 required
-                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-2xl px-4 py-3 text-[13px] text-white outline-none"
+                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[2px] px-4 py-3 text-[13px] text-white outline-none"
               />
             </div>
 
@@ -627,7 +627,7 @@ export default function UserCardsPage() {
                       key={b}
                       type="button"
                       onClick={() => setIssueBrand(b)}
-                      className={`py-2.5 rounded-xl border text-[11px] font-bold transition-all ${
+                      className={`py-2.5 rounded-[2px] border text-[11px] font-bold transition-all ${
                         issueBrand === b
                           ? 'bg-[#CAFF33]/15 border-[#CAFF33] text-[#CAFF33]'
                           : 'bg-[#141414] border-[#262626] text-[#888]'
@@ -647,7 +647,7 @@ export default function UserCardsPage() {
                   step="50"
                   value={issueLimit}
                   onChange={(e) => setIssueLimit(e.target.value)}
-                  className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-xl px-3.5 py-2.5 text-[13px] font-mono-figures text-white outline-none"
+                  className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[2px] px-3.5 py-2.5 text-[13px] font-mono-figures text-white outline-none"
                   required
                 />
               </div>
@@ -661,7 +661,7 @@ export default function UserCardsPage() {
                     key={t.id}
                     type="button"
                     onClick={() => setIssueTheme(t.id)}
-                    className={`py-2 px-2 rounded-xl border text-[11px] font-medium transition-all ${
+                    className={`py-2 px-2 rounded-[2px] border text-[11px] font-medium transition-all ${
                       issueTheme === t.id
                         ? 'bg-[#CAFF33]/15 border-[#CAFF33] text-[#CAFF33]'
                         : 'bg-[#141414] border-[#262626] text-[#888]'
@@ -687,13 +687,13 @@ export default function UserCardsPage() {
                 value={issueFund}
                 onChange={(e) => setIssueFund(e.target.value)}
                 placeholder="0.00"
-                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-2xl px-4 py-3 text-[14px] font-mono-figures text-white outline-none"
+                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[2px] px-4 py-3 text-[14px] font-mono-figures text-white outline-none"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-full bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors"
+              className="w-full py-3.5 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors"
             >
               Generate Virtual Card
             </button>
@@ -722,7 +722,7 @@ export default function UserCardsPage() {
                   key={amt}
                   type="button"
                   onClick={() => setWalletAmount(amt)}
-                  className="py-2 rounded-xl bg-[#141414] border border-[#262626] hover:border-[#CAFF33]/50 text-[12px] font-mono-figures text-[#CCC]"
+                  className="py-2 rounded-[2px] bg-[#141414] border border-[#262626] hover:border-[#CAFF33]/50 text-[12px] font-mono-figures text-[#CCC]"
                 >
                   ${amt}
                 </button>
@@ -739,13 +739,13 @@ export default function UserCardsPage() {
                 onChange={(e) => setWalletAmount(e.target.value)}
                 placeholder="0.00"
                 required
-                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-2xl pl-9 pr-4 py-3.5 text-[18px] font-mono-figures text-white outline-none"
+                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[2px] pl-9 pr-4 py-3.5 text-[18px] font-mono-figures text-white outline-none"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-full bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors"
+              className="w-full py-3.5 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors"
             >
               {walletModal === 'fund' ? 'Confirm Top Up' : 'Withdraw to Checking'}
             </button>
@@ -772,7 +772,7 @@ export default function UserCardsPage() {
                     setPayMerchant(m.name);
                     setPayAmount(m.amount);
                   }}
-                  className="px-3 py-1.5 rounded-full bg-[#141414] border border-[#262626] hover:border-[#CAFF33]/40 text-[11px] text-[#CCC]"
+                  className="px-3 py-1.5 rounded-[2px] bg-[#141414] border border-[#262626] hover:border-[#CAFF33]/40 text-[11px] text-[#CCC]"
                 >
                   {m.name} (${m.amount})
                 </button>
@@ -786,7 +786,7 @@ export default function UserCardsPage() {
                 value={payMerchant}
                 onChange={(e) => setPayMerchant(e.target.value)}
                 required
-                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-2xl px-4 py-3 text-[13px] text-white outline-none"
+                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[2px] px-4 py-3 text-[13px] text-white outline-none"
               />
             </div>
 
@@ -800,7 +800,7 @@ export default function UserCardsPage() {
                 onChange={(e) => setPayAmount(e.target.value)}
                 placeholder="15.99"
                 required
-                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-2xl px-4 py-3 text-[16px] font-mono-figures text-white outline-none"
+                className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[2px] px-4 py-3 text-[16px] font-mono-figures text-white outline-none"
               />
             </div>
 
@@ -816,7 +816,7 @@ export default function UserCardsPage() {
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-full bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors"
+              className="w-full py-3.5 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors"
             >
               Authorize Payment
             </button>
@@ -843,10 +843,10 @@ function ControlToggle({ icon: Icon, title, desc, enabled, onToggle, accentColor
       : 'bg-[#CAFF33]/10 text-[#CAFF33] border-[#CAFF33]/25';
 
   return (
-    <div className="flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-[#141414] border border-[#222]">
+    <div className="flex items-center justify-between gap-3 p-3.5 rounded-[2px] bg-[#141414] border border-[#222]">
       <div className="flex items-center gap-3 min-w-0">
         <div
-          className={`w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 ${
+          className={`w-9 h-9 rounded-[2px] border flex items-center justify-center shrink-0 ${
             enabled ? activeBadge : 'bg-[#1B1B1B] border-[#282828] text-[#666]'
           }`}
         >
@@ -863,12 +863,12 @@ function ControlToggle({ icon: Icon, title, desc, enabled, onToggle, accentColor
         onClick={onToggle}
         role="switch"
         aria-checked={enabled}
-        className={`w-11 h-6 rounded-full p-0.5 transition-colors shrink-0 ${
+        className={`w-11 h-6 rounded-[2px] p-0.5 transition-colors shrink-0 ${
           enabled ? activeBg : 'bg-[#2B2B2B]'
         }`}
       >
         <span
-          className={`block w-5 h-5 rounded-full bg-[#111] shadow transition-transform ${
+          className={`block w-5 h-5 rounded-[2px] bg-[#111] shadow transition-transform ${
             enabled ? 'translate-x-5' : 'translate-x-0'
           }`}
         />
@@ -884,7 +884,7 @@ function ModalShell({ title, children, onClose }) {
       onClick={onClose}
     >
       <div
-        className="bg-[#181818] border border-[#2A2A2A] rounded-3xl w-full max-w-md p-5 sm:p-6 shadow-2xl space-y-4"
+        className="bg-[#181818] border border-[#2A2A2A] rounded-[2px] w-full max-w-md p-5 sm:p-6 shadow-2xl space-y-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
@@ -892,7 +892,7 @@ function ModalShell({ title, children, onClose }) {
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-full bg-[#242424] text-[#999] hover:text-white"
+            className="p-1.5 rounded-[2px] bg-[#242424] text-[#999] hover:text-white"
             aria-label="Close modal"
           >
             <X size={16} />
@@ -906,7 +906,7 @@ function ModalShell({ title, children, onClose }) {
 
 function ModalError({ message }) {
   return (
-    <div className="flex items-start gap-2 bg-[#FF5555]/10 border border-[#FF5555]/30 text-[#FF5555] rounded-2xl p-3 text-[12px] font-['Inter']">
+    <div className="flex items-start gap-2 bg-[#FF5555]/10 border border-[#FF5555]/30 text-[#FF5555] rounded-[2px] p-3 text-[12px] font-['Inter']">
       <AlertCircle size={15} className="shrink-0 mt-0.5" />
       <span>{message}</span>
     </div>

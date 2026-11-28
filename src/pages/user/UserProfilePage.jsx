@@ -108,21 +108,21 @@ export default function UserProfilePage() {
 
         <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-6 max-w-2xl">
           {saveSuccess && (
-            <div className="flex items-center gap-2 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-xl p-3">
+            <div className="flex items-center gap-2 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[2px] p-3">
               <CheckCircle2 size={14} className="text-[#CAFF33]" />
               <p className="text-[13px] text-[#CAFF33] font-['Inter']">{saveSuccess}</p>
             </div>
           )}
 
           {/* Avatar + identity */}
-          <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-2xl p-4 sm:p-6">
+          <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] p-4 sm:p-6">
             <div className="flex items-center gap-3.5 sm:gap-5 mb-6">
               {/* Avatar with upload overlay */}
               <div className="relative group shrink-0">
                 {currentUser?.avatar ? (
-                  <img src={currentUser.avatar} alt={currentUser.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-[#CAFF33]/20" />
+                  <img src={currentUser.avatar} alt={currentUser.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-[2px] object-cover border-2 border-[#CAFF33]/20" />
                 ) : (
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#CAFF33]/10 border-2 border-[#CAFF33]/20 flex items-center justify-center text-[22px] sm:text-[28px] font-bold text-[#CAFF33] font-mono-figures">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[2px] bg-[#CAFF33]/10 border-2 border-[#CAFF33]/20 flex items-center justify-center text-[22px] sm:text-[28px] font-bold text-[#CAFF33] font-mono-figures">
                     {initials}
                   </div>
                 )}
@@ -131,7 +131,7 @@ export default function UserProfilePage() {
                   type="button"
                   onClick={() => avatarInputRef.current?.click()}
                   disabled={avatarUploading}
-                  className="absolute inset-0 rounded-2xl bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                  className="absolute inset-0 rounded-[2px] bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                   title="Change photo"
                 >
                   {avatarUploading
@@ -143,7 +143,7 @@ export default function UserProfilePage() {
                   onClick={() => avatarInputRef.current?.click()}
                   disabled={avatarUploading}
                   aria-label="Upload profile photo"
-                  className="md:hidden absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-[#CAFF33] text-[#111] flex items-center justify-center shadow-md ring-2 ring-[#1A1A1A]"
+                  className="md:hidden absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-[2px] bg-[#CAFF33] text-[#111] flex items-center justify-center shadow-md ring-2 ring-[#1A1A1A]"
                 >
                   {avatarUploading ? <Loader2 size={13} className="animate-spin" /> : <Camera size={13} />}
                 </button>
@@ -165,7 +165,7 @@ export default function UserProfilePage() {
               </div>
               <button
                 onClick={() => setEditMode(!editMode)}
-                className="ml-auto p-2.5 rounded-xl border border-[#222] text-[#555] hover:text-[#CAFF33] hover:border-[#CAFF33]/30 transition-all shrink-0"
+                className="ml-auto p-2.5 rounded-[2px] border border-[#222] text-[#555] hover:text-[#CAFF33] hover:border-[#CAFF33]/30 transition-all shrink-0"
               >
                 <Edit3 size={15} />
               </button>
@@ -201,11 +201,11 @@ export default function UserProfilePage() {
                 </Field>
                 <div className="flex gap-3 pt-2">
                   <button type="button" onClick={() => setEditMode(false)}
-                    className="flex-1 py-3 rounded-full border border-[#222] text-[13px] text-[#555] hover:text-white transition-colors font-['Inter']">
+                    className="flex-1 py-3 rounded-[2px] border border-[#222] text-[13px] text-[#555] hover:text-white transition-colors font-['Inter']">
                     Cancel
                   </button>
                   <button type="submit"
-                    className="flex-[2] py-3 rounded-full bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-bold font-['Poppins'] transition-colors">
+                    className="flex-[2] py-3 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-bold font-['Poppins'] transition-colors">
                     Save Changes
                   </button>
                 </div>
@@ -221,7 +221,7 @@ export default function UserProfilePage() {
           </div>
 
           {/* Security */}
-          <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-2xl p-6">
+          <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-[2px] p-6">
             <div className="flex items-center justify-between mb-5">
               <div>
                 <h3 className="text-[14px] font-semibold text-white font-['Poppins']">Security</h3>
@@ -232,10 +232,10 @@ export default function UserProfilePage() {
 
             <button
               onClick={() => setShowPasswordForm(!showPasswordForm)}
-              className="flex items-center justify-between w-full p-4 bg-[#141414] border border-[#222] rounded-xl hover:border-[#333] transition-colors"
+              className="flex items-center justify-between w-full p-4 bg-[#141414] border border-[#222] rounded-[2px] hover:border-[#333] transition-colors"
             >
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-[#222] rounded-lg">
+                <div className="p-2 bg-[#222] rounded-[1.5px]">
                   <Lock size={14} className="text-[#666]" />
                 </div>
                 <div className="text-left">
@@ -256,7 +256,7 @@ export default function UserProfilePage() {
                 {pwSuccess && <p className="text-[12px] text-[#CAFF33] font-['Inter']">{pwSuccess}</p>}
 
                 <button type="submit"
-                  className="w-full py-3 rounded-full bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-bold font-['Poppins'] transition-colors">
+                  className="w-full py-3 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-bold font-['Poppins'] transition-colors">
                   Update Password
                 </button>
               </form>
@@ -265,7 +265,7 @@ export default function UserProfilePage() {
             {/* Danger zone */}
             <div className="mt-5 pt-5 border-t border-[#1F1F1F]">
               <p className="text-[11px] text-[#444] font-['Inter'] mb-3">Account management</p>
-              <div className="flex items-center justify-between p-4 bg-[#FF5555]/5 border border-[#FF5555]/15 rounded-xl">
+              <div className="flex items-center justify-between p-4 bg-[#FF5555]/5 border border-[#FF5555]/15 rounded-[2px]">
                 <div>
                   <p className="text-[13px] font-semibold text-[#FF5555] font-['Inter']">Account Status</p>
                   <p className="text-[11px] text-[#444] font-['Inter']">Controlled by your Finora administrator</p>
@@ -282,7 +282,7 @@ export default function UserProfilePage() {
 
 function Field({ icon, label, children }) {
   return (
-    <div className="flex items-center gap-3 bg-[#111] border border-[#2A2A2A] focus-within:border-[#CAFF33] rounded-full px-5 py-3 transition-colors">
+    <div className="flex items-center gap-3 bg-[#111] border border-[#2A2A2A] focus-within:border-[#CAFF33] rounded-[2px] px-5 py-3 transition-colors">
       <span className="text-[#444] shrink-0">{icon}</span>
       <span className="text-[10px] text-[#444] font-['Inter'] shrink-0 w-16">{label}</span>
       {children}
@@ -305,7 +305,7 @@ function PwField({ label, value, onChange, show }) {
   return (
     <div className="relative">
       <label className="text-[11px] text-[#444] font-['Inter'] mb-1.5 block">{label}</label>
-      <div className="flex items-center bg-[#111] border border-[#2A2A2A] focus-within:border-[#CAFF33] rounded-full px-5 py-3 transition-colors">
+      <div className="flex items-center bg-[#111] border border-[#2A2A2A] focus-within:border-[#CAFF33] rounded-[2px] px-5 py-3 transition-colors">
         <Lock size={13} className="text-[#444] mr-3 shrink-0" />
         <input
           type={localShow ? 'text' : 'password'}
@@ -325,7 +325,7 @@ function PwField({ label, value, onChange, show }) {
 
 function StatCard({ label, value }) {
   return (
-    <div className="bg-[#141414] border border-[#222] rounded-xl p-3 text-center">
+    <div className="bg-[#141414] border border-[#222] rounded-[2px] p-3 text-center">
       <p className="text-[9px] uppercase tracking-widest text-[#444] font-['Inter'] mb-1">{label}</p>
       <p className="text-[13px] font-bold text-white font-mono-figures">{value}</p>
     </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { CheckCircle2, Clock, XCircle } from 'lucide-react';
 
 const STATUS_CONFIG = {
@@ -69,7 +68,7 @@ export default function StatusBadge({ status, size = 'sm' }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border font-semibold font-mono ${textSize} ${padding} ${cfg.bg} ${cfg.border} ${cfg.text}`}
+      className={`inline-flex items-center gap-1 rounded-[1.5px] border font-semibold font-mono ${textSize} ${padding} ${cfg.bg} ${cfg.border} ${cfg.text}`}
     >
       <Icon size={iconSize} />
       {cfg.label}

@@ -28,10 +28,10 @@ export default function SuccessModal() {
 
   return (
     <div className="fixed bottom-6 right-6 z-[9999] max-w-sm w-full mx-4 sm:mx-0 animate-bounce-in">
-      <div className="bg-[#181818]/95 border border-[#CAFF33]/30 rounded-2xl p-4 shadow-2xl backdrop-blur-xl relative overflow-hidden flex items-start gap-3.5 text-white">
+      <div className="bg-[#181818]/95 border border-[#CAFF33]/30 rounded-[2px] p-4 shadow-2xl backdrop-blur-xl relative overflow-hidden flex items-start gap-3.5 text-white">
         <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-[#CAFF33]" />
 
-        <div className="p-2.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-xl shrink-0 text-[#CAFF33] mt-0.5">
+        <div className="p-2.5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[2px] shrink-0 text-[#CAFF33] mt-0.5">
           <CheckCircle2 size={20} />
         </div>
 
@@ -46,7 +46,7 @@ export default function SuccessModal() {
 
         <button
           onClick={() => setData(null)}
-          className="text-[#666] hover:text-white transition-colors p-1 rounded-lg hover:bg-[#222] shrink-0"
+          className="text-[#666] hover:text-white transition-colors p-1 rounded-[1.5px] hover:bg-[#222] shrink-0"
           aria-label="Close success notification"
         >
           <X size={15} />

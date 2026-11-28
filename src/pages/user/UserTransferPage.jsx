@@ -357,7 +357,7 @@ export default function UserTransferPage() {
             <h1 className="text-[18px] font-bold text-white font-['Poppins']">Send Money</h1>
             <p className="text-[11px] text-[#555] font-['Inter']">Authorize transfers via Email OTP security</p>
           </div>
-          <div className="flex items-center gap-2 bg-[#CAFF33]/10 border border-[#CAFF33]/20 px-3 py-1.5 rounded-[3px] shrink-0">
+          <div className="flex items-center gap-2 bg-[#CAFF33]/10 border border-[#CAFF33]/20 px-3 py-1.5 rounded-[6px] shrink-0">
             <ShieldCheck size={14} className="text-[#CAFF33]" />
             <span className="text-[11px] text-[#CAFF33] font-semibold font-['Inter']">OTP Protected</span>
           </div>
@@ -377,12 +377,12 @@ export default function UserTransferPage() {
             />
 
             {/* Tab selector */}
-            <div className="flex gap-2 mb-8 bg-[#161616] border border-[#222] rounded-[2px] p-1.5">
+            <div className="flex gap-2 mb-8 bg-[#161616] border border-[#222] rounded-[4px] p-1.5">
               {TABS.map(({ id, label, icon: Icon }) => (
                 <button
                   key={id}
                   onClick={() => setActiveTab(id)}
-                  className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[2px] text-[12px] font-semibold font-['Inter'] transition-all
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[4px] text-[12px] font-semibold font-['Inter'] transition-all
                     ${activeTab === id
                       ? 'bg-[#CAFF33] text-[#111]'
                       : 'text-[#555] hover:text-white'}`}
@@ -403,7 +403,7 @@ export default function UserTransferPage() {
                   {STEPS.map((label, i) => (
                     <React.Fragment key={label}>
                       <div className="flex flex-col items-center gap-1">
-                        <div className={`w-7 h-7 rounded-[3px] flex items-center justify-center text-[11px] font-bold transition-all
+                        <div className={`w-7 h-7 rounded-[6px] flex items-center justify-center text-[11px] font-bold transition-all
                           ${i < step ? 'bg-[#CAFF33] text-[#111]'
                             : i === step ? 'bg-[#CAFF33]/20 border border-[#CAFF33] text-[#CAFF33]'
                             : 'bg-[#1A1A1A] border border-[#222] text-[#444]'}`}>
@@ -420,7 +420,7 @@ export default function UserTransferPage() {
 
                 {/* Step 0 — Recipient */}
                 {step === 0 && (
-                  <div className="bg-[#1A1A1A] border border-[#222] rounded-[3px] p-6 space-y-5">
+                  <div className="bg-[#1A1A1A] border border-[#222] rounded-[6px] p-6 space-y-5">
                     <div>
                       <h2 className="text-[16px] font-semibold text-white font-['Poppins'] mb-1">Find Recipient</h2>
                       <p className="text-[12px] text-[#444] font-['Inter']">Enter an email, username, or Finora Account ID.</p>
@@ -433,16 +433,16 @@ export default function UserTransferPage() {
                         onChange={(e) => { setQuery(e.target.value); setLookupError(''); }}
                         onKeyDown={(e) => e.key === 'Enter' && handleLookup()}
                         placeholder="alex@finora.app · alex.johnson · ACC-849204"
-                        className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[3px] pl-10 pr-4 py-3.5 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors font-['Inter']"
+                        className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[6px] pl-10 pr-4 py-3.5 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors font-['Inter']"
                       />
                     </div>
 
                     {lookupError && (
-                      <p className="text-[12px] text-[#FF5555] font-['Inter'] bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[3px] px-4 py-2.5">{lookupError}</p>
+                      <p className="text-[12px] text-[#FF5555] font-['Inter'] bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[6px] px-4 py-2.5">{lookupError}</p>
                     )}
 
                     <button onClick={handleLookup} disabled={!query.trim()}
-                      className="w-full py-3.5 rounded-[3px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-semibold font-['Poppins'] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                      className="w-full py-3.5 rounded-[6px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-semibold font-['Poppins'] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
                       Find Recipient
                     </button>
 
@@ -453,7 +453,7 @@ export default function UserTransferPage() {
                         <div className="space-y-2">
                           {recentRecipients.map((u) => (
                             <button key={u.id} onClick={() => { setRecipient(u); setStep(1); }}
-                              className="w-full flex items-center gap-3 p-3 bg-[#141414] border border-[#222] rounded-[3px] hover:border-[#CAFF33]/30 hover:bg-[#CAFF33]/5 transition-all text-left">
+                              className="w-full flex items-center gap-3 p-3 bg-[#141414] border border-[#222] rounded-[6px] hover:border-[#CAFF33]/30 hover:bg-[#CAFF33]/5 transition-all text-left">
                               {u.avatar
                                 ? <img src={u.avatar} alt={u.name} className="w-8 h-8 rounded-full object-cover border border-[#333]" />
                                 : <div className="w-8 h-8 rounded-full bg-[#222] flex items-center justify-center text-[11px] font-bold text-[#CAFF33]">{initials(u.name)}</div>
@@ -474,8 +474,8 @@ export default function UserTransferPage() {
                 {/* Step 1 — Amount */}
                 {step === 1 && recipient && (
                   <div className="space-y-4">
-                    <div className="bg-[#1A1A1A] border border-[#CAFF33]/20 rounded-[3px] p-4 flex items-center gap-3">
-                      <div className="p-1.5 bg-[#CAFF33]/10 rounded-[2px]"><CheckCircle2 size={16} className="text-[#CAFF33]" /></div>
+                    <div className="bg-[#1A1A1A] border border-[#CAFF33]/20 rounded-[6px] p-4 flex items-center gap-3">
+                      <div className="p-1.5 bg-[#CAFF33]/10 rounded-[4px]"><CheckCircle2 size={16} className="text-[#CAFF33]" /></div>
                       {recipient.avatar
                         ? <img src={recipient.avatar} alt={recipient.name} className="w-10 h-10 rounded-full object-cover border border-[#333]" />
                         : <div className="w-10 h-10 rounded-full bg-[#222] flex items-center justify-center text-[13px] font-bold text-[#CAFF33]">{initials(recipient.name)}</div>
@@ -487,7 +487,7 @@ export default function UserTransferPage() {
                       <button onClick={() => { setRecipient(null); setStep(0); }} className="text-[#444] hover:text-white transition-colors"><X size={15} /></button>
                     </div>
 
-                    <div className="bg-[#1A1A1A] border border-[#222] rounded-[3px] p-6 space-y-5">
+                    <div className="bg-[#1A1A1A] border border-[#222] rounded-[6px] p-6 space-y-5">
                       <div>
                         <h2 className="text-[16px] font-semibold text-white font-['Poppins'] mb-1">Enter Amount</h2>
                         <p className="text-[12px] text-[#444] font-['Inter']">Available: <MonoAmount amount={balances.checking} size="xs" direction="credit" /></p>
@@ -496,22 +496,22 @@ export default function UserTransferPage() {
                         <span className="absolute left-5 top-1/2 -translate-y-1/2 text-[#CAFF33] text-xl font-bold font-mono">$</span>
                         <input type="number" value={amount} onChange={(e) => { setAmount(e.target.value); setTxError(''); }}
                           placeholder="0.00" min="0.01" step="0.01"
-                          className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[3px] pl-10 pr-5 py-4 text-[20px] text-white font-mono placeholder:text-[#333] outline-none transition-colors text-center" />
+                          className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[6px] pl-10 pr-5 py-4 text-[20px] text-white font-mono placeholder:text-[#333] outline-none transition-colors text-center" />
                       </div>
                       <div className="flex gap-2 flex-wrap">
                         {[50, 100, 250, 500, 1000].map((v) => (
                           <button key={v} onClick={() => setAmount(String(v))}
-                            className="px-3 py-1.5 rounded-[3px] border border-[#2A2A2A] text-[11px] text-[#666] hover:border-[#CAFF33] hover:text-[#CAFF33] transition-colors font-mono">${v}</button>
+                            className="px-3 py-1.5 rounded-[6px] border border-[#2A2A2A] text-[11px] text-[#666] hover:border-[#CAFF33] hover:text-[#CAFF33] transition-colors font-mono">${v}</button>
                         ))}
                       </div>
                       <input type="text" value={note} onChange={(e) => setNote(e.target.value)}
                         placeholder="Add a comment / note (optional)"
-                        className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[3px] px-5 py-3 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors font-['Inter']" />
-                      {txError && <p className="text-[12px] text-[#FF5555] font-['Inter'] bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[3px] px-4 py-2.5">{txError}</p>}
+                        className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[6px] px-5 py-3 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors font-['Inter']" />
+                      {txError && <p className="text-[12px] text-[#FF5555] font-['Inter'] bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[6px] px-4 py-2.5">{txError}</p>}
                       <div className="flex gap-3">
-                        <button onClick={() => setStep(0)} className="flex-1 py-3 rounded-[3px] border border-[#2A2A2A] text-[13px] text-[#666] hover:text-white hover:border-[#333] transition-colors font-['Inter']">Back</button>
+                        <button onClick={() => setStep(0)} className="flex-1 py-3 rounded-[6px] border border-[#2A2A2A] text-[13px] text-[#666] hover:text-white hover:border-[#333] transition-colors font-['Inter']">Back</button>
                         <button onClick={handleAmountNext} disabled={!amount}
-                          className="flex-[2] py-3 rounded-[3px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-semibold font-['Poppins'] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                          className="flex-[2] py-3 rounded-[6px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-semibold font-['Poppins'] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
                           Review Transfer
                         </button>
                       </div>
@@ -521,9 +521,9 @@ export default function UserTransferPage() {
 
                 {/* Step 2 — Review & OTP Authorization Trigger */}
                 {step === 2 && recipient && (
-                  <div className="bg-[#1A1A1A] border border-[#222] rounded-[3px] p-6 space-y-5">
+                  <div className="bg-[#1A1A1A] border border-[#222] rounded-[6px] p-6 space-y-5">
                     <h2 className="text-[16px] font-semibold text-white font-['Poppins']">Review & Authorize</h2>
-                    <div className="bg-[#141414] border border-[#222] rounded-[3px] p-4 space-y-3 text-[13px]">
+                    <div className="bg-[#141414] border border-[#222] rounded-[6px] p-4 space-y-3 text-[13px]">
                       <Row label="From Account" value={currentUser?.name} sub={currentUser?.accountNo} />
                       <div className="h-px bg-[#222]" />
                       <Row label="Recipient" value={recipient.name} sub={recipient.accountNo} />
@@ -544,18 +544,18 @@ export default function UserTransferPage() {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-[#CAFF33]/5 border border-[#CAFF33]/15 rounded-[3px] flex items-center gap-2 text-[11px] text-[#CAFF33] font-['Inter']">
+                    <div className="p-3 bg-[#CAFF33]/5 border border-[#CAFF33]/15 rounded-[6px] flex items-center gap-2 text-[11px] text-[#CAFF33] font-['Inter']">
                       <ShieldCheck size={16} className="shrink-0" />
                       <span>Submitting will send a secure 6-digit OTP code to <strong className="text-white">{currentUser?.email}</strong>.</span>
                     </div>
 
-                    {txError && <p className="text-[12px] text-[#FF5555] font-['Inter'] bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[3px] px-4 py-2.5">{txError}</p>}
+                    {txError && <p className="text-[12px] text-[#FF5555] font-['Inter'] bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[6px] px-4 py-2.5">{txError}</p>}
                     <div className="flex gap-3">
-                      <button onClick={() => setStep(1)} className="flex-1 py-3.5 rounded-[3px] border border-[#2A2A2A] text-[13px] text-[#666] hover:text-white hover:border-[#333] transition-colors font-['Inter']" disabled={isSubmitting}>Back</button>
+                      <button onClick={() => setStep(1)} className="flex-1 py-3.5 rounded-[6px] border border-[#2A2A2A] text-[13px] text-[#666] hover:text-white hover:border-[#333] transition-colors font-['Inter']" disabled={isSubmitting}>Back</button>
                       <button
                         onClick={handleConfirmInternal}
                         disabled={isSubmitting || otpModalConfig.isOpen}
-                        className="flex-[2] py-3.5 rounded-[3px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#CAFF33]"
+                        className="flex-[2] py-3.5 rounded-[6px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#CAFF33]"
                       >
                         {isSubmitting ? (
                           <><Loader2 size={15} className="animate-spin" /> Sending OTP...</>
@@ -571,9 +571,9 @@ export default function UserTransferPage() {
 
                 {/* Step 3 — Success & Formal Receipt */}
                 {step === 3 && completedTx && (
-                  <div className="bg-[#1A1A1A] border border-[#CAFF33]/20 rounded-[3px] p-8 text-center space-y-6">
+                  <div className="bg-[#1A1A1A] border border-[#CAFF33]/20 rounded-[6px] p-8 text-center space-y-6">
                     <div className="flex justify-center">
-                      <div className="p-5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[3px]"><CheckCircle2 size={40} className="text-[#CAFF33]" /></div>
+                      <div className="p-5 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-[6px]"><CheckCircle2 size={40} className="text-[#CAFF33]" /></div>
                     </div>
                     <div>
                       <h2 className="text-[22px] font-bold text-white font-['Poppins'] mb-1">Transfer Authorized!</h2>
@@ -582,7 +582,7 @@ export default function UserTransferPage() {
                     <MonoAmount amount={completedTx.amount} direction="credit" size="3xl" />
                     <StatusBadge status={completedTx.status} size="md" />
 
-                    <div className="bg-[#141414] border border-[#222] rounded-[3px] p-4 text-left space-y-3">
+                    <div className="bg-[#141414] border border-[#222] rounded-[6px] p-4 text-left space-y-3">
                       <Row label="Transaction Reference" value={completedTx.id} sub="Verified via OTP" />
                       <div className="h-px bg-[#222]" />
                       <Row label="Sender" value={currentUser?.name} sub={currentUser?.accountNo} />
@@ -590,7 +590,7 @@ export default function UserTransferPage() {
                       <Row label="Recipient" value={completedTx.recipientName} sub={completedTx.recipientAccount} />
                     </div>
 
-                    <div className="bg-[#141414] border border-[#222] rounded-[3px] px-4 py-3 flex items-center justify-between gap-3">
+                    <div className="bg-[#141414] border border-[#222] rounded-[6px] px-4 py-3 flex items-center justify-between gap-3">
                       <div className="text-left">
                         <p className="text-[10px] text-[#444] font-['Inter'] uppercase tracking-widest mb-0.5">Transaction ID</p>
                         <p className="text-[12px] text-white font-mono">{completedTx.id}</p>
@@ -602,8 +602,8 @@ export default function UserTransferPage() {
                     </div>
 
                     <div className="flex gap-3 pt-2">
-                      <button onClick={resetFlow} className="flex-1 py-3 rounded-[3px] border border-[#2A2A2A] text-[13px] text-white hover:border-[#333] transition-colors font-['Inter']">Send Another</button>
-                      <button onClick={() => navigate('/statements')} className="flex-1 py-3 rounded-[3px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-semibold font-['Poppins'] transition-colors">View Receipt</button>
+                      <button onClick={resetFlow} className="flex-1 py-3 rounded-[6px] border border-[#2A2A2A] text-[13px] text-white hover:border-[#333] transition-colors font-['Inter']">Send Another</button>
+                      <button onClick={() => navigate('/statements')} className="flex-1 py-3 rounded-[6px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-semibold font-['Poppins'] transition-colors">View Receipt</button>
                     </div>
                   </div>
                 )}
@@ -623,7 +623,7 @@ export default function UserTransferPage() {
                   onReset={() => { setBankSubmitted(false); setBankForm({ bankName: '', accountHolder: '', accountNumber: '', routingNumber: '', swiftCode: '', bankAddress: '', amount: '', note: '' }); }}
                 />
               ) : (
-                <div className="bg-[#1A1A1A] border border-[#222] rounded-[3px] p-6 space-y-4">
+                <div className="bg-[#1A1A1A] border border-[#222] rounded-[6px] p-6 space-y-4">
                   <div>
                     <h2 className="text-[16px] font-semibold text-white font-['Poppins'] mb-1">External Bank Wire</h2>
                     <p className="text-[12px] text-[#555] font-['Inter']">Enter full wire details. Available: <span className="text-[#CAFF33] font-mono">${balances.checking.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span></p>
@@ -647,13 +647,13 @@ export default function UserTransferPage() {
                     <span className="absolute left-4 bottom-3.5 text-[#CAFF33] font-mono font-bold">$</span>
                     <input type="number" min="0.01" step="0.01" value={bankForm.amount} onChange={(e) => setBankForm(p => ({ ...p, amount: e.target.value }))}
                       placeholder="0.00"
-                      className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[3px] pl-8 pr-4 py-3 text-[14px] text-white font-mono placeholder:text-[#333] outline-none transition-colors" />
+                      className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[6px] pl-8 pr-4 py-3 text-[14px] text-white font-mono placeholder:text-[#333] outline-none transition-colors" />
                   </div>
                   <Field label="Transfer Comment / Note (optional)" value={bankForm.note} onChange={(v) => setBankForm(p => ({ ...p, note: v }))} placeholder="Invoice #, business purpose..." />
 
                   {bankError && <ErrorBanner message={bankError} />}
 
-                  <div className="pt-1 bg-[#CAFF33]/5 border border-[#CAFF33]/15 rounded-[3px] px-4 py-3 flex gap-2 items-start">
+                  <div className="pt-1 bg-[#CAFF33]/5 border border-[#CAFF33]/15 rounded-[6px] px-4 py-3 flex gap-2 items-start">
                     <ShieldCheck size={16} className="text-[#CAFF33] mt-0.5 shrink-0" />
                     <p className="text-[11px] text-[#888] font-['Inter']">Submitting will send a secure 6-digit verification OTP code to your registered email address before completing authorization.</p>
                   </div>
@@ -661,7 +661,7 @@ export default function UserTransferPage() {
                   <button
                     onClick={handleBankSubmit}
                     disabled={isSubmitting || otpModalConfig.isOpen}
-                    className="w-full py-3.5 rounded-[3px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#CAFF33]"
+                    className="w-full py-3.5 rounded-[6px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[14px] font-bold font-['Poppins'] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#CAFF33]"
                   >
                     {isSubmitting ? (
                       <><Loader2 size={15} className="animate-spin" /> Sending OTP...</>
@@ -688,7 +688,7 @@ export default function UserTransferPage() {
                   onReset={() => { setCryptoSubmitted(false); setCryptoForm({ walletAddress: '', network: 'TRC20', amount: '', note: '' }); }}
                 />
               ) : (
-                <div className="bg-[#1A1A1A] border border-[#222] rounded-[3px] p-6 space-y-4">
+                <div className="bg-[#1A1A1A] border border-[#222] rounded-[6px] p-6 space-y-4">
                   <div>
                     <h2 className="text-[16px] font-semibold text-white font-['Poppins'] mb-1">USDT Crypto Transfer</h2>
                     <p className="text-[12px] text-[#555] font-['Inter']">Send USDT securely. Available: <span className="text-[#CAFF33] font-mono">${balances.checking.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span></p>
@@ -701,7 +701,7 @@ export default function UserTransferPage() {
                     <div className="flex gap-2">
                       {['TRC20', 'ERC20', 'BEP20'].map((net) => (
                         <button key={net} onClick={() => setCryptoForm(p => ({ ...p, network: net }))}
-                          className={`flex-1 py-2.5 rounded-[3px] border text-[12px] font-bold font-mono transition-all
+                          className={`flex-1 py-2.5 rounded-[6px] border text-[12px] font-bold font-mono transition-all
                             ${cryptoForm.network === net
                               ? 'bg-[#CAFF33]/10 border-[#CAFF33] text-[#CAFF33]'
                               : 'border-[#2A2A2A] text-[#555] hover:border-[#333] hover:text-white'}`}>
@@ -716,13 +716,13 @@ export default function UserTransferPage() {
                     <span className="absolute left-4 bottom-3.5 text-[#CAFF33] font-mono font-bold">$</span>
                     <input type="number" min="0.01" step="0.01" value={cryptoForm.amount} onChange={(e) => setCryptoForm(p => ({ ...p, amount: e.target.value }))}
                       placeholder="0.00"
-                      className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[3px] pl-8 pr-4 py-3 text-[14px] text-white font-mono placeholder:text-[#333] outline-none transition-colors" />
+                      className="w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[6px] pl-8 pr-4 py-3 text-[14px] text-white font-mono placeholder:text-[#333] outline-none transition-colors" />
                   </div>
                   <Field label="Memo / Comment (optional)" value={cryptoForm.note} onChange={(v) => setCryptoForm(p => ({ ...p, note: v }))} placeholder="Optional reference..." />
 
                   {cryptoError && <ErrorBanner message={cryptoError} />}
 
-                  <div className="pt-1 bg-[#F7931A]/5 border border-[#F7931A]/15 rounded-[3px] px-4 py-3 flex gap-2 items-start">
+                  <div className="pt-1 bg-[#F7931A]/5 border border-[#F7931A]/15 rounded-[6px] px-4 py-3 flex gap-2 items-start">
                     <ShieldCheck size={16} className="text-[#F7931A] mt-0.5 shrink-0" />
                     <p className="text-[11px] text-[#888] font-['Inter']">Requires 6-digit Email OTP authorization. Crypto transfers are irreversible once processed.</p>
                   </div>
@@ -730,7 +730,7 @@ export default function UserTransferPage() {
                   <button
                     onClick={handleCryptoSubmit}
                     disabled={isSubmitting || otpModalConfig.isOpen}
-                    className="w-full py-3.5 rounded-[3px] text-[14px] font-bold font-['Poppins'] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-3.5 rounded-[6px] text-[14px] font-bold font-['Poppins'] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{ background: isSubmitting || otpModalConfig.isOpen ? '#b8720d' : 'linear-gradient(135deg, #F7931A, #FFAB40)', color: '#111' }}
                   >
                     {isSubmitting ? (
@@ -771,7 +771,7 @@ function Field({ label, value, onChange, placeholder, mono }) {
       <input
         type="text" value={value} onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[3px] px-4 py-3 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors ${mono ? 'font-mono' : "font-['Inter']"}`}
+        className={`w-full bg-[#111] border border-[#2A2A2A] focus:border-[#CAFF33] rounded-[6px] px-4 py-3 text-[13px] text-white placeholder:text-[#333] outline-none transition-colors ${mono ? 'font-mono' : "font-['Inter']"}`}
       />
     </div>
   );
@@ -779,7 +779,7 @@ function Field({ label, value, onChange, placeholder, mono }) {
 
 function ErrorBanner({ message }) {
   return (
-    <div className="flex items-center gap-2 bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[3px] px-4 py-2.5">
+    <div className="flex items-center gap-2 bg-[#FF5555]/10 border border-[#FF5555]/20 rounded-[6px] px-4 py-2.5">
       <AlertCircle size={14} className="text-[#FF5555] shrink-0" />
       <p className="text-[12px] text-[#FF5555] font-['Inter']">{message}</p>
     </div>
@@ -788,12 +788,12 @@ function ErrorBanner({ message }) {
 
 function PendingCard({ icon, title, desc, txId, onReset }) {
   return (
-    <div className="bg-[#1A1A1A] border border-[#CAFF33]/15 rounded-[3px] p-8 text-center space-y-5">
+    <div className="bg-[#1A1A1A] border border-[#CAFF33]/15 rounded-[6px] p-8 text-center space-y-5">
       <div className="flex justify-center">
-        <div className="p-4 bg-[#CAFF33]/8 border border-[#CAFF33]/15 rounded-[3px]">{icon}</div>
+        <div className="p-4 bg-[#CAFF33]/8 border border-[#CAFF33]/15 rounded-[6px]">{icon}</div>
       </div>
       <div className="flex justify-center">
-        <span className="flex items-center gap-1.5 px-3 py-1 rounded-[2px] bg-[#CAFF33]/10 border border-[#CAFF33]/30 text-[#CAFF33] text-[11px] font-semibold font-['Inter']">
+        <span className="flex items-center gap-1.5 px-3 py-1 rounded-[4px] bg-[#CAFF33]/10 border border-[#CAFF33]/30 text-[#CAFF33] text-[11px] font-semibold font-['Inter']">
           <ShieldCheck size={12} /> Email OTP Authorized
         </span>
       </div>
@@ -803,8 +803,8 @@ function PendingCard({ icon, title, desc, txId, onReset }) {
         {txId && <p className="text-[11px] text-[#555] font-mono mt-2">Ref: {txId}</p>}
       </div>
       <div className="flex gap-3 pt-2">
-        <button onClick={onReset} className="flex-1 py-3 rounded-[3px] border border-[#2A2A2A] text-[13px] text-white hover:border-[#333] transition-colors font-['Inter']">New Transfer</button>
-        <button onClick={() => window.location.href = '/statements'} className="flex-1 py-3 rounded-[3px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-semibold font-['Poppins'] transition-colors">View Statements</button>
+        <button onClick={onReset} className="flex-1 py-3 rounded-[6px] border border-[#2A2A2A] text-[13px] text-white hover:border-[#333] transition-colors font-['Inter']">New Transfer</button>
+        <button onClick={() => window.location.href = '/statements'} className="flex-1 py-3 rounded-[6px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[13px] font-semibold font-['Poppins'] transition-colors">View Statements</button>
       </div>
     </div>
   );
@@ -831,7 +831,7 @@ function PendingTransfersPanel({ pendingTxs, loading, resumingId, cancellingId, 
     <div className="mb-6">
       {/* Section header */}
       <div className="flex items-center gap-2 mb-3">
-        <div className="p-1.5 bg-amber-500/10 rounded-[2px] border border-amber-500/20">
+        <div className="p-1.5 bg-amber-500/10 rounded-[4px] border border-amber-500/20">
           <TriangleAlert size={13} className="text-amber-400" />
         </div>
         <p className="text-[12px] font-semibold text-amber-400 font-['Inter']">
@@ -861,7 +861,7 @@ function PendingTransfersPanel({ pendingTxs, loading, resumingId, cancellingId, 
           return (
             <div
               key={tx.id}
-              className="bg-[#1A1A1A] border border-amber-500/20 rounded-[3px] p-4 flex flex-col sm:flex-row sm:items-center gap-3"
+              className="bg-[#1A1A1A] border border-amber-500/20 rounded-[6px] p-4 flex flex-col sm:flex-row sm:items-center gap-3"
             >
               {/* Left: Transfer info */}
               <div className="flex-1 min-w-0">
@@ -880,19 +880,19 @@ function PendingTransfersPanel({ pendingTxs, loading, resumingId, cancellingId, 
 
                   {/* OTP status badge */}
                   {otpUsed ? (
-                    <span className="text-[10px] px-2 py-0.5 rounded-[2px] bg-[#333] text-[#666] font-['Inter']">
+                    <span className="text-[10px] px-2 py-0.5 rounded-[4px] bg-[#333] text-[#666] font-['Inter']">
                       OTP used
                     </span>
                   ) : otpLocked ? (
-                    <span className="text-[10px] px-2 py-0.5 rounded-[2px] bg-red-500/10 border border-red-500/20 text-red-400 font-['Inter']">
+                    <span className="text-[10px] px-2 py-0.5 rounded-[4px] bg-red-500/10 border border-red-500/20 text-red-400 font-['Inter']">
                       Locked (3 attempts)
                     </span>
                   ) : otpExpired ? (
-                    <span className="text-[10px] px-2 py-0.5 rounded-[2px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] font-['Inter'] flex items-center gap-1">
+                    <span className="text-[10px] px-2 py-0.5 rounded-[4px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] font-['Inter'] flex items-center gap-1">
                       <RefreshCw size={9} /> OTP expired — resend available
                     </span>
                   ) : (
-                    <span className="text-[10px] px-2 py-0.5 rounded-[2px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] font-['Inter'] flex items-center gap-1">
+                    <span className="text-[10px] px-2 py-0.5 rounded-[4px] bg-[#CAFF33]/10 border border-[#CAFF33]/20 text-[#CAFF33] font-['Inter'] flex items-center gap-1">
                       <Clock size={9} /> OTP valid {minsLeft}m left
                     </span>
                   )}
@@ -907,7 +907,7 @@ function PendingTransfersPanel({ pendingTxs, loading, resumingId, cancellingId, 
                   <button
                     onClick={() => onResume(tx)}
                     disabled={isResuming || isCancelling}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-[2px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[11px] font-bold font-['Poppins'] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-[4px] bg-[#CAFF33] hover:bg-[#b8e820] text-[#111] text-[11px] font-bold font-['Poppins'] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                   >
                     {isResuming ? (
                       <Loader2 size={12} className="animate-spin" />
@@ -921,7 +921,7 @@ function PendingTransfersPanel({ pendingTxs, loading, resumingId, cancellingId, 
                 <button
                   onClick={() => onCancel(tx.id)}
                   disabled={isCancelling || isResuming}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-[2px] bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 text-[11px] font-semibold font-['Inter'] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-[4px] bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 text-[11px] font-semibold font-['Inter'] transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
                   {isCancelling ? (
                     <Loader2 size={12} className="animate-spin" />

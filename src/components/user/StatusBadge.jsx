@@ -68,7 +68,7 @@ export default function StatusBadge({ status, size = 'sm' }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-[2px] border font-semibold font-mono ${textSize} ${padding} ${cfg.bg} ${cfg.border} ${cfg.text}`}
+      className={`inline-flex items-center gap-1 rounded-[4px] border font-semibold font-mono ${textSize} ${padding} ${cfg.bg} ${cfg.border} ${cfg.text}`}
     >
       <Icon size={iconSize} />
       {cfg.label}

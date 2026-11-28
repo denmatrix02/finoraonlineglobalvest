@@ -337,9 +337,10 @@ CREATE TABLE IF NOT EXISTS public.external_transfers (
   wallet_address  TEXT,
   network         TEXT,
   note            TEXT DEFAULT '',
-  status          TEXT DEFAULT 'Pending' CHECK (status IN ('Pending','Completed','Failed')),
+  status          TEXT DEFAULT 'Pending' CHECK (status IN ('Pending','Completed','Failed','Rejected')),
   failure_reason  TEXT DEFAULT NULL,
-  created_at      TIMESTAMPTZ DEFAULT now()
+  created_at      TIMESTAMPTZ DEFAULT now(),
+  updated_at      TIMESTAMPTZ DEFAULT now()
 );
 
 ALTER TABLE public.transaction_otps ENABLE ROW LEVEL SECURITY;

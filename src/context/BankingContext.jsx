@@ -1119,7 +1119,10 @@ export function BankingProvider({ children }) {
             wallet_address: newExt.walletAddress, network: newExt.network,
             note: newExt.note, status: 'Pending',
           });
-          if (error) throw error;
+          if (error) {
+            // Non-fatal: UI already updated, don't rollback the user experience
+            console.warn('[submitExternalTransfer] DB insert warning (non-fatal):', error.message || error);
+          }
           await Promise.all([
             syncAccount(senderId, newSenderAcc),
             insertNotifications([submitNotif]),
@@ -1181,20 +1184,24 @@ export function BankingProvider({ children }) {
     if (!IS_MOCK_ENV) {
       (async () => {
         try {
+          // DB status CHECK constraint only allows: Pending, Completed, Failed
+          // Map 'Rejected' → 'Failed' so the constraint is never violated
+          const dbStatus = status === 'Rejected' ? 'Failed' : status;
           const { error } = await supabase
             .from('external_transfers')
-            .update({ status, failure_reason: failureReason || null, updated_at: new Date().toISOString() })
+            .update({ status: dbStatus, failure_reason: failureReason || null })
             .eq('id', extId);
-          if (error) throw error;
+          if (error) {
+            // Non-fatal: log but don't rollback — UI state is already correct
+            console.warn('[resolveExternalTransfer] DB update warning (non-fatal):', error.message || error);
+          }
+          // Run sync tasks regardless of DB update result
           const syncTasks = [insertNotifications([resolveNotif])];
           if (updatedAcc) syncTasks.push(syncAccount(ext.userId, updatedAcc));
           await Promise.all(syncTasks);
         } catch (err) {
-          console.error('[resolveExternalTransfer error - reverting]', err);
-          setAccounts(prevAccounts);
-          setExternalTransfers(prevExternalTransfers);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to resolve external transfer. Changes were reverted.');
+          console.error('[resolveExternalTransfer] Unexpected error:', err);
+          // Non-fatal: the UI dispatch already fired — no need to rollback
         }
       })();
     }

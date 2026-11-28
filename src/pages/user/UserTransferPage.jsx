@@ -348,22 +348,22 @@ export default function UserTransferPage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-16 md:pb-0">
+    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-24 md:pb-0">
       <UserSidebar />
       <main className="flex-1 overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-8 py-4 flex items-center justify-between">
+        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between gap-3">
           <div>
             <h1 className="text-[18px] font-bold text-white font-['Poppins']">Send Money</h1>
             <p className="text-[11px] text-[#555] font-['Inter']">Authorize transfers via Email OTP security</p>
           </div>
-          <div className="flex items-center gap-2 bg-[#CAFF33]/10 border border-[#CAFF33]/20 px-3 py-1.5 rounded-full">
+          <div className="flex items-center gap-2 bg-[#CAFF33]/10 border border-[#CAFF33]/20 px-3 py-1.5 rounded-full shrink-0">
             <ShieldCheck size={14} className="text-[#CAFF33]" />
             <span className="text-[11px] text-[#CAFF33] font-semibold font-['Inter']">OTP Protected</span>
           </div>
         </div>
 
-        <div className="px-8 py-8 flex justify-center">
+        <div className="px-4 sm:px-8 py-5 sm:py-8 flex justify-center">
           <div className="w-full max-w-lg">
 
             {/* ── Pending Abandoned Transfers Panel ────────────────────── */}

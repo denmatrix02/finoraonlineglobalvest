@@ -82,16 +82,16 @@ export default function UserReceivePage() {
     ?.split(' ').map((p) => p[0]).join('').toUpperCase().slice(0, 2) || '?';
 
   return (
-    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-16 md:pb-0">
+    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-24 md:pb-0">
       <UserSidebar />
 
       <main className="flex-1 overflow-y-auto">
-        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-8 py-4">
+        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-4 sm:px-8 py-3.5 sm:py-4">
           <h1 className="text-[18px] font-bold text-white font-['Poppins']">Receive Money</h1>
           <p className="text-[11px] text-[#444] font-['Inter']">Internal Finora ID & External Bank Account details for incoming transfers</p>
         </div>
 
-        <div className="px-8 py-8 grid grid-cols-1 xl:grid-cols-2 gap-8 max-w-5xl">
+        <div className="px-4 sm:px-8 py-5 sm:py-8 grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8 max-w-5xl">
 
           {/* Left Column: Finora IDentity + External Bank Details */}
           <div className="space-y-6">

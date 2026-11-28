@@ -108,16 +108,16 @@ export default function UserStatementsPage() {
   }, 0);
 
   return (
-    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-16 md:pb-0">
+    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-24 md:pb-0">
       <UserSidebar />
 
       <main className="flex-1 overflow-y-auto">
-        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-8 py-4">
+        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-4 sm:px-8 py-3.5 sm:py-4">
           <h1 className="text-[18px] font-bold text-white font-['Poppins']">Account Statements</h1>
           <p className="text-[11px] text-[#444] font-['Inter']">{allTx.length} total transactions</p>
         </div>
 
-        <div className="px-8 py-6 space-y-5">
+        <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-5">
           {/* Summary strip — 2-col on mobile (Net spans full width), 3-col on md+ */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-xl p-3 md:p-4">

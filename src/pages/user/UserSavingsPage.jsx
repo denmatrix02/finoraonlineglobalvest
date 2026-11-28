@@ -49,11 +49,11 @@ export default function UserSavingsPage() {
   const yearlyInterest = balances.savings * ((settings.savingsAPY || 5.2) / 100);
 
   return (
-    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-16 md:pb-0">
+    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-24 md:pb-0">
       <UserSidebar />
 
       <main className="flex-1 overflow-y-auto">
-        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-8 py-4">
+        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-4 sm:px-8 py-3.5 sm:py-4">
           <h1 className="text-[18px] font-bold text-white font-['Poppins']">High-Yield Savings</h1>
           <p className="text-[11px] text-[#444] font-['Inter']">
             Earning <span className="text-[#CAFF33] font-semibold font-mono-figures">{settings.savingsAPY}% APY</span>
@@ -61,7 +61,7 @@ export default function UserSavingsPage() {
           </p>
         </div>
 
-        <div className="px-8 py-6 space-y-6">
+        <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-6">
           {/* Balance Hero */}
           <div className="relative bg-gradient-to-br from-[#1A1A1A] to-[#141414] border border-[#CAFF33]/20 rounded-2xl p-6 overflow-hidden">
             <div className="absolute -right-8 -top-8 w-40 h-40 bg-[#CAFF33]/5 rounded-full blur-3xl pointer-events-none" />

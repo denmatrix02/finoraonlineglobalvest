@@ -97,16 +97,16 @@ export default function UserProfilePage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-16 md:pb-0">
+    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-24 md:pb-0">
       <UserSidebar />
 
       <main className="flex-1 overflow-y-auto">
-        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-8 py-4">
+        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-4 sm:px-8 py-3.5 sm:py-4">
           <h1 className="text-[18px] font-bold text-white font-['Poppins']">Profile & Security</h1>
           <p className="text-[11px] text-[#444] font-['Inter']">Manage your account details and security settings</p>
         </div>
 
-        <div className="px-8 py-6 space-y-6 max-w-2xl">
+        <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-6 max-w-2xl">
           {saveSuccess && (
             <div className="flex items-center gap-2 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-xl p-3">
               <CheckCircle2 size={14} className="text-[#CAFF33]" />
@@ -115,18 +115,18 @@ export default function UserProfilePage() {
           )}
 
           {/* Avatar + identity */}
-          <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-2xl p-6">
-            <div className="flex items-center gap-5 mb-6">
+          <div className="bg-[#1A1A1A] border border-[#1F1F1F] rounded-2xl p-4 sm:p-6">
+            <div className="flex items-center gap-3.5 sm:gap-5 mb-6">
               {/* Avatar with upload overlay */}
-              <div className="relative group">
+              <div className="relative group shrink-0">
                 {currentUser?.avatar ? (
-                  <img src={currentUser.avatar} alt={currentUser.name} className="w-20 h-20 rounded-2xl object-cover border-2 border-[#CAFF33]/20" />
+                  <img src={currentUser.avatar} alt={currentUser.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-[#CAFF33]/20" />
                 ) : (
-                  <div className="w-20 h-20 rounded-2xl bg-[#CAFF33]/10 border-2 border-[#CAFF33]/20 flex items-center justify-center text-[28px] font-bold text-[#CAFF33] font-mono-figures">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#CAFF33]/10 border-2 border-[#CAFF33]/20 flex items-center justify-center text-[22px] sm:text-[28px] font-bold text-[#CAFF33] font-mono-figures">
                     {initials}
                   </div>
                 )}
-                {/* Upload overlay */}
+                {/* Upload overlay + always-visible touch camera pill */}
                 <button
                   type="button"
                   onClick={() => avatarInputRef.current?.click()}
@@ -138,6 +138,15 @@ export default function UserProfilePage() {
                     ? <Loader2 size={18} className="text-white animate-spin" />
                     : <Camera size={18} className="text-white" />}
                 </button>
+                <button
+                  type="button"
+                  onClick={() => avatarInputRef.current?.click()}
+                  disabled={avatarUploading}
+                  aria-label="Upload profile photo"
+                  className="md:hidden absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-[#CAFF33] text-[#111] flex items-center justify-center shadow-md ring-2 ring-[#1A1A1A]"
+                >
+                  {avatarUploading ? <Loader2 size={13} className="animate-spin" /> : <Camera size={13} />}
+                </button>
                 <input
                   ref={avatarInputRef}
                   type="file"
@@ -146,24 +155,24 @@ export default function UserProfilePage() {
                   onChange={handleAvatarUpload}
                 />
               </div>
-              <div>
-                <h2 className="text-[20px] font-bold text-white font-['Poppins']">{currentUser?.name}</h2>
-                <p className="text-[12px] text-[#555] font-mono-figures mb-1">{currentUser?.accountNo}</p>
-                <div className="flex items-center gap-2">
+              <div className="min-w-0">
+                <h2 className="text-[17px] sm:text-[20px] font-bold text-white font-['Poppins'] truncate">{currentUser?.name}</h2>
+                <p className="text-[11px] sm:text-[12px] text-[#555] font-mono-figures mb-1 truncate">{currentUser?.accountNo}</p>
+                <div className="flex items-center gap-2 flex-wrap">
                   <StatusBadge status={currentUser?.status || 'Active'} size="sm" />
                   <span className="text-[10px] text-[#444] font-['Inter']">Member since {currentUser?.joined}</span>
                 </div>
               </div>
               <button
                 onClick={() => setEditMode(!editMode)}
-                className="ml-auto p-2.5 rounded-xl border border-[#222] text-[#555] hover:text-[#CAFF33] hover:border-[#CAFF33]/30 transition-all"
+                className="ml-auto p-2.5 rounded-xl border border-[#222] text-[#555] hover:text-[#CAFF33] hover:border-[#CAFF33]/30 transition-all shrink-0"
               >
                 <Edit3 size={15} />
               </button>
             </div>
 
             {/* Account stats */}
-            <div className="grid grid-cols-3 gap-3 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 mb-5">
               <StatCard label="Checking" value={`$${balances.checking.toLocaleString('en-US', { minimumFractionDigits: 2 })}`} />
               <StatCard label="Savings" value={`$${balances.savings.toLocaleString('en-US', { minimumFractionDigits: 2 })}`} />
               <StatCard label="Active Loan" value={`$${balances.loan.toLocaleString('en-US', { minimumFractionDigits: 2 })}`} />

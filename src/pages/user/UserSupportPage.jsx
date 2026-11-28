@@ -139,12 +139,12 @@ export default function UserSupportPage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row bg-[#111] h-[100dvh] max-h-[100dvh] overflow-hidden text-white pb-16 md:pb-0">
+    <div className="flex flex-col md:flex-row bg-[#111] h-[100dvh] max-h-[100dvh] overflow-hidden text-white pb-[66px] md:pb-0">
       <UserSidebar />
 
       <main className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-6 py-4 flex items-center gap-4">
+        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-4 sm:px-6 py-3.5 sm:py-4 flex items-center gap-3 sm:gap-4">
           <div className="w-10 h-10 rounded-xl bg-[#CAFF33]/10 border border-[#CAFF33]/20 flex items-center justify-center shrink-0">
             <img src={logoImg} alt="Support" width="18" className="object-contain" />
           </div>

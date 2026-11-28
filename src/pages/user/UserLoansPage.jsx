@@ -114,11 +114,11 @@ export default function UserLoansPage() {
   const maxAmt = settings.maxLoanAmount || 50000;
 
   return (
-    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-16 md:pb-0">
+    <div className="flex flex-col md:flex-row bg-[#111] min-h-screen text-white pb-24 md:pb-0">
       <UserSidebar />
 
       <main className="flex-1 overflow-y-auto">
-        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-8 py-4 flex items-center justify-between">
+        <div className="sticky top-0 z-10 bg-[#111]/95 backdrop-blur-md border-b border-[#1A1A1A] px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between gap-3">
           <div>
             <h1 className="text-[18px] font-bold text-white font-['Poppins']">Loans</h1>
             <p className="text-[11px] text-[#444] font-['Inter']">From {settings.loanBaseRate}% APR · Auto-approved up to <MonoAmount amount={settings.autoApprovalLoanLimit} size="xs" direction="credit" /></p>
@@ -133,7 +133,7 @@ export default function UserLoansPage() {
           )}
         </div>
 
-        <div className="px-8 py-6 space-y-6">
+        <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-6">
           {applySuccess && (
             <div className="flex items-start gap-2 bg-[#CAFF33]/10 border border-[#CAFF33]/20 rounded-xl p-4">
               <CheckCircle2 size={15} className="text-[#CAFF33] mt-0.5 shrink-0" />

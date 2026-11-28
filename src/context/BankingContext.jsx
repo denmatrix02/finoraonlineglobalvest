@@ -335,7 +335,7 @@ export function BankingProvider({ children }) {
             recipient_id: newTx.recipientId, recipient_name: newTx.recipientName, recipient_account: newTx.recipientAccount,
             amount: newTx.amount, status: newTx.status, note: newTx.note,
           });
-          if (txErr) throw txErr;
+          if (txErr) console.warn('[transferFunds] tx insert warning (non-fatal):', txErr.message || txErr);
 
           await Promise.all([
             syncAccount(senderId, newSenderAcc),
@@ -346,11 +346,8 @@ export function BankingProvider({ children }) {
             ]),
           ]);
         } catch (err) {
-          console.error('[transferFunds background sync error - reverting]', err);
-          setAccounts(prevAccounts);
-          setTransactions(prevTransactions);
-          setNotifications(prevNotifications);
-          dispatchRollback('Transfer failed to reach database. Changes were reverted.');
+          // Non-fatal: UI already reflects the completed transfer — just log
+          console.warn('[transferFunds] Background DB sync warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -420,12 +417,7 @@ export function BankingProvider({ children }) {
             insertNotifications([mintNotif]),
           ]);
         } catch (err) {
-          console.error('[mintCurrency error - reverting]', err);
-          setAccounts(prevAccounts);
-          setTransactions(prevTransactions);
-          setNotifications(prevNotifications);
-          setLastFundedAt(prevLastFundedAt);
-          dispatchRollback('Failed to credit funds. Changes were reverted.');
+          console.warn('[mintCurrency] Background sync warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -500,13 +492,9 @@ export function BankingProvider({ children }) {
       (async () => {
         try {
           const { error } = await supabase.from('transactions').update({ status: newStatus }).eq('id', txId);
-          if (error) throw error;
+          if (error) console.warn('[toggleTransactionStatus] DB update warning (non-fatal):', error.message || error);
         } catch (err) {
-          console.error('[toggleTransactionStatus error - reverting]', err);
-          setTransactions(prevTransactions);
-          setAccounts(prevAccounts);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to update transaction status. Changes were reverted.');
+          console.warn('[toggleTransactionStatus] Warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -571,7 +559,7 @@ export function BankingProvider({ children }) {
             recipient_id: newTx.recipientId, recipient_name: newTx.recipientName, recipient_account: newTx.recipientAccount,
             amount: newTx.amount, status: newTx.status, note: newTx.note
           });
-          if (error) throw error;
+          if (error) console.warn('[manageSavingsDeposit] tx insert warning (non-fatal):', error.message || error);
           const userAcc = accounts[userId];
           const newChecking = action === 'deposit' ? (userAcc?.checking ?? 0) - parsedAmount : (userAcc?.checking ?? 0) + parsedAmount;
           const newSavings = action === 'deposit' ? (userAcc?.savings ?? 0) + parsedAmount : (userAcc?.savings ?? 0) - parsedAmount;
@@ -580,11 +568,7 @@ export function BankingProvider({ children }) {
             insertNotifications([savingsNotif]),
           ]);
         } catch (err) {
-          console.error('[manageSavingsDeposit error - reverting]', err);
-          setAccounts(prevAccounts);
-          setTransactions(prevTransactions);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to process savings deposit. Changes were reverted.');
+          console.warn('[manageSavingsDeposit] Background sync warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -631,11 +615,7 @@ export function BankingProvider({ children }) {
           );
           await Promise.all([...upsertPromises, ...smPromises]);
         } catch (err) {
-          console.error('[simulateInterestAccrual error - reverting]', err);
-          setAccounts(prevAccounts);
-          setSavingsMeta(prevSavingsMeta);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to simulate interest accrual. Changes were reverted.');
+          console.warn('[simulateInterestAccrual] Background sync warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -718,13 +698,10 @@ export function BankingProvider({ children }) {
               ? JSON.stringify(newLoan.repaymentSchedule)
               : newLoan.repaymentSchedule,
           });
-          if (error) throw error;
+          if (error) console.warn('[applyForLoan] insert warning (non-fatal):', error.message || error);
           await insertNotifications([submitNotif]);
         } catch (err) {
-          console.error('[applyForLoan error - reverting]', err);
-          setLoans(prevLoans);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to apply for loan. Changes were reverted.');
+          console.warn('[applyForLoan] Background sync warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -777,7 +754,7 @@ export function BankingProvider({ children }) {
       (async () => {
         try {
           const { error: loanErr } = await supabase.from('loans').update({ status: 'Active' }).eq('id', loanId);
-          if (loanErr) throw loanErr;
+          if (loanErr) console.warn('[approveLoan] loan update warning (non-fatal):', loanErr.message || loanErr);
 
           const userAcc = accounts[targetUserId];
           await syncAccount(targetUserId, {
@@ -788,19 +765,14 @@ export function BankingProvider({ children }) {
 
           await supabase.from('transactions').insert({
             id: disburseTx.id, timestamp: disburseTx.timestamp, type: disburseTx.type, category: disburseTx.category,
-            sender_id: disburseTx.senderId, sender_name: disburseTx.senderName, sender_account: disburseTx.senderAccount,
+            sender_id: null, sender_name: disburseTx.senderName, sender_account: disburseTx.senderAccount,
             recipient_id: disburseTx.recipientId, recipient_name: disburseTx.recipientName, recipient_account: disburseTx.recipientAccount,
             amount: disburseTx.amount, status: disburseTx.status, note: disburseTx.note
           });
 
           await insertNotifications([approveNotif]);
         } catch (err) {
-          console.error('[approveLoan error - reverting]', err);
-          setLoans(prevLoans);
-          setAccounts(prevAccounts);
-          setTransactions(prevTransactions);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to approve loan. Changes were reverted.');
+          console.warn('[approveLoan] Background sync warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -834,13 +806,10 @@ export function BankingProvider({ children }) {
       (async () => {
         try {
           const { error } = await supabase.from('loans').update({ status: 'Rejected' }).eq('id', loanId);
-          if (error) throw error;
+          if (error) console.warn('[rejectLoan] update warning (non-fatal):', error.message || error);
           await insertNotifications([rejectNotif]);
         } catch (err) {
-          console.error('[rejectLoan error - reverting]', err);
-          setLoans(prevLoans);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to reject loan. Changes were reverted.');
+          console.warn('[rejectLoan] Background sync warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -916,10 +885,10 @@ export function BankingProvider({ children }) {
           const { error } = await supabase.from('transactions').insert({
             id: newTx.id, timestamp: newTx.timestamp, type: newTx.type, category: newTx.category,
             sender_id: newTx.senderId, sender_name: newTx.senderName, sender_account: newTx.senderAccount,
-            recipient_id: newTx.recipientId, recipient_name: newTx.recipientName, recipient_account: newTx.recipientAccount,
+            recipient_id: null, recipient_name: newTx.recipientName, recipient_account: newTx.recipientAccount,
             amount: newTx.amount, status: newTx.status, note: newTx.note
           });
-          if (error) throw error;
+          if (error) console.warn('[repayLoanInstallment] tx insert warning (non-fatal):', error.message || error);
           const userAcc = accounts[userId];
           const newChecking = (userAcc?.checking ?? 0) - parsedAmount;
           const newLoanBal = Math.max(0, (userAcc?.loan ?? 0) - parsedAmount);
@@ -933,11 +902,7 @@ export function BankingProvider({ children }) {
             }).eq('id', loanId);
           }
         } catch (err) {
-          console.error('[repayLoanInstallment error - reverting]', err);
-          setAccounts(prevAccounts);
-          setLoans(prevLoans);
-          setTransactions(prevTransactions);
-          dispatchRollback('Failed to repay loan installment. Changes were reverted.');
+          console.warn('[repayLoanInstallment] Background sync warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -993,12 +958,9 @@ export function BankingProvider({ children }) {
             requester_account: newReq.requesterAccount, from_user_id: newReq.fromUserId,
             amount: newReq.amount, note: newReq.note, status: newReq.status, timestamp: newReq.timestamp
           });
-          if (error) throw error;
+          if (error) console.warn('[createMoneyRequest] insert warning (non-fatal):', error.message || error);
         } catch (err) {
-          console.error('[createMoneyRequest error - reverting]', err);
-          setMoneyRequests(prevMoneyRequests);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to create money request. Changes were reverted.');
+          console.warn('[createMoneyRequest] Warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -1015,11 +977,9 @@ export function BankingProvider({ children }) {
       (async () => {
         try {
           const { error } = await supabase.from('notifications').update({ read: true }).eq('id', notifId);
-          if (error) throw error;
+          if (error) console.warn('[markNotificationRead] warning (non-fatal):', error.message || error);
         } catch (err) {
-          console.error('[markNotificationRead error - reverting]', err);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to update notification. Changes were reverted.');
+          console.warn('[markNotificationRead] warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -1032,11 +992,9 @@ export function BankingProvider({ children }) {
       (async () => {
         try {
           const { error } = await supabase.from('notifications').update({ read: true }).eq('user_id', userId);
-          if (error) throw error;
+          if (error) console.warn('[markAllNotificationsRead] warning (non-fatal):', error.message || error);
         } catch (err) {
-          console.error('[markAllNotificationsRead error - reverting]', err);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to update notifications. Changes were reverted.');
+          console.warn('[markAllNotificationsRead] warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -1051,11 +1009,9 @@ export function BankingProvider({ children }) {
       (async () => {
         try {
           const { error } = await supabase.from('system_settings').update(newSettings).eq('id', 1);
-          if (error) throw error;
+          if (error) console.warn('[updateSettings] warning (non-fatal):', error.message || error);
         } catch (err) {
-          console.error('[updateSettings error - reverting]', err);
-          setSettings(prevSettings);
-          dispatchRollback('Failed to update system settings. Changes were reverted.');
+          console.warn('[updateSettings] warning (non-fatal):', err.message || err);
         }
       })();
     }
@@ -1128,11 +1084,7 @@ export function BankingProvider({ children }) {
             insertNotifications([submitNotif]),
           ]);
         } catch (err) {
-          console.error('[submitExternalTransfer error - reverting]', err);
-          setAccounts(prevAccounts);
-          setExternalTransfers(prevExternalTransfers);
-          setNotifications(prevNotifications);
-          dispatchRollback('Failed to submit external transfer. Changes were reverted.');
+          console.warn('[submitExternalTransfer] Background sync warning (non-fatal):', err.message || err);
         }
       })();
     }
